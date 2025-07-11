@@ -13,6 +13,8 @@
             --color-azul-oscuro: #0D47A1;
             --color-azul-medio: #1976D2;
             --color-naranja: #FF6F00;
+            --color-verde: #4CAF50; /* Color para Comuna 1 */
+            --color-rojo: #F44336;   /* Color para Comuna 10 */
             --color-blanco: #FFFFFF;
             --color-gris-claro: #f4f6f9;
             --color-texto: #333333;
@@ -36,14 +38,19 @@
             height: 100%;
         }
 
-        /* Panel de Información (Derecha) */
+        #map {
+            width: 70%;
+            height: 100%;
+            background-color: #e9ecef;
+        }
+
         .info-panel {
-            width: 35%;
-            max-width: 450px;
-            min-width: 400px;
+            width: 30%;
+            max-width: 400px;
+            min-width: 350px;
             background-color: var(--color-blanco);
             padding: 40px;
-            box-shadow: var(--sombra-card);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.08);
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -58,29 +65,36 @@
         }
 
         .header img {
-            max-width: 250px;
+            max-width: 220px;
             margin-bottom: 15px;
         }
 
         .header h1 {
-            font-size: 1.8em;
+            font-size: 1.6em;
             font-weight: 700;
             color: var(--color-azul-oscuro);
             margin: 0 0 10px 0;
         }
 
         .header p {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: #6c757d;
             margin: 0;
             line-height: 1.4;
         }
         
         .filter-section h2 {
-            font-size: 1.3em;
+            font-size: 1.2em;
             color: var(--color-texto);
             margin-bottom: 15px;
             text-align: left;
+        }
+        
+        .filter-section p {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
 
         label {
@@ -119,46 +133,40 @@
         button:hover {
             background-color: #e66300;
         }
-
-        /* Panel del Mapa (Izquierda) */
-        #map {
-            width: 65%;
-            height: 100%;
-            background-color: #e9ecef;
+        
+        /* Estilos para el tooltip y el marcador */
+        .leaflet-tooltip {
+            background-color: white;
+            border: 2px solid;
+            border-radius: 5px;
+            color: var(--color-texto);
+            font-weight: bold;
+            box-shadow: var(--sombra-card);
+        }
+        
+        .leaflet-div-icon {
+            transition: transform 0.2s ease-in-out;
+        }
+        .leaflet-div-icon:hover {
+            transform: scale(1.1);
         }
 
-        /* Estilos para el popup del mapa */
-        .leaflet-popup-content-wrapper {
-            border-radius: 8px;
-        }
-        .popup-content {
-            text-align: center;
-        }
-        .popup-content h3 {
-            margin: 0 0 10px 0;
-            color: var(--color-azul-oscuro);
-        }
-        .popup-content a {
-            color: var(--color-naranja);
-            text-decoration: none;
-            font-weight: 600;
-        }
 
-        /* Responsive */
         @media (max-width: 900px) {
             .main-container {
                 flex-direction: column;
             }
             #map {
                 width: 100%;
-                height: 50%;
+                height: 55%;
             }
             .info-panel {
                 width: 100%;
-                height: 50%;
+                height: 45%;
                 max-width: none;
                 min-width: 0;
                 box-sizing: border-box;
+                padding: 25px;
             }
         }
     </style>
@@ -167,18 +175,17 @@
 
     <div class="main-container">
         <div id="map"></div>
-
         <div class="info-panel">
             <div class="header">
                 <img src="logo_footer.png" alt="Logo Alcaldía de Medellín">
-                <h1>Reportes por comunas</h1>
+                <h1>Reportes por Comunas</h1>
                 <p>Corte al 11 de julio de 2025</p>
                 <p><strong>Secretaría de Infraestructura Física - Alcaldía de Medellín</strong><br>Distrito de Ciencia, Tecnología e Innovación</p>
             </div>
             
             <div class="filter-section">
-                <h2>Selecciona una comuna</h2>
-                <p>Puedes hacer clic sobre una de las comunas resaltadas en el mapa o usar el siguiente menú desplegable.</p>
+                <h2>Selecciona una Comuna</h2>
+                <p>Puedes hacer clic sobre uno de los puntos en el mapa o usar el siguiente menú desplegable para navegar.</p>
                 <label for="comuna-select">Filtrar por lista:</label>
                 <select id="comuna-select">
                     <option value="" disabled selected>-- Escoge una opción --</option>
@@ -192,84 +199,82 @@
     </div>
 
     <script>
-        // --- Lógica del selector desplegable ---
         function abrirReporte() {
             const select = document.getElementById('comuna-select');
             const comunaId = select.value;
             if (comunaId) {
                 const url = `comuna${comunaId}.html`;
-                window.open(url, '_blank'); // Abrir en una nueva pestaña
+                window.open(url, '_blank');
             } else {
                 alert('Por favor, selecciona una comuna.');
             }
         }
 
-        // --- Lógica del Mapa con Leaflet ---
-
-        // 1. Inicializar el mapa centrado en Medellín
         const map = L.map('map').setView([6.2518, -75.5636], 12);
 
-        // 2. Añadir una capa de mapa base (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // 3. Estilos para las capas GeoJSON
-        const estiloComuna = {
-            color: "var(--color-azul-medio)",
-            weight: 2,
-            opacity: 0.8,
-            fillColor: "var(--color-azul-medio)",
-            fillOpacity: 0.3
+        // Coordenadas y colores para cada comuna
+        const comunasInfo = {
+            "1": { name: "Popular", coords: [6.286, -75.553], color: 'var(--color-verde)' },
+            "4": { name: "Aranjuez", coords: [6.277, -75.558], color: 'var(--color-azul-medio)' },
+            "10": { name: "La Candelaria", coords: [6.246, -75.568], color: 'var(--color-rojo)' }
         };
 
-        const estiloHover = {
-            color: "var(--color-naranja)",
-            weight: 3,
-            fillColor: "var(--color-naranja)",
-            fillOpacity: 0.6
-        };
-        
-        // 4. Función para manejar la interacción con cada comuna
-        function onEachFeature(feature, layer) {
-            // Añadir tooltip con el nombre
-            const nombreComuna = feature.properties.NOMBRE;
-            layer.bindTooltip(nombreComuna, {
-                permanent: false, 
-                direction: 'center', 
-                className: 'leaflet-tooltip-own'
+        // Crear marcadores personalizados
+        for (const id in comunasInfo) {
+            const comuna = comunasInfo[id];
+            
+            // Icono SVG más grande y con sombra para mayor visibilidad
+            const svgIconHtml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="44" height="44">
+                <defs>
+                    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.4"/>
+                    </filter>
+                </defs>
+                <g filter="url(#shadow)">
+                    <path fill="${comuna.color}" stroke="white" stroke-width="1.5" d="M16 3.5C9.64 3.5 4.5 8.64 4.5 15c0 8.25 11.5 14.5 11.5 14.5s11.5-6.25 11.5-14.5C27.5 8.64 22.36 3.5 16 3.5z"/>
+                    <circle cx="16" cy="14" r="3.5" fill="white"/>
+                </g>
+            </svg>`;
+
+            const customIcon = L.divIcon({
+                html: svgIconHtml,
+                className: '',
+                iconSize: [44, 44],
+                iconAnchor: [22, 44], // La punta inferior del marcador
+                popupAnchor: [0, -44]
             });
 
-            // Añadir evento de clic
-            layer.on({
-                mouseover: (e) => e.target.setStyle(estiloHover),
-                mouseout: (e) => geojsonLayer.resetStyle(e.target),
-                click: (e) => {
-                    const comunaId = feature.properties.IDENTIFICACION;
-                    const url = `comuna${comunaId}.html`;
-                    window.open(url, '_blank'); // Abrir el reporte en una nueva pestaña
-                }
+            const marker = L.marker(comuna.coords, { icon: customIcon }).addTo(map);
+
+            marker.bindTooltip(`Comuna ${id} - ${comuna.name}`, { 
+                permanent: false, 
+                direction: 'top',
+                offset: L.point(0, -44)
+            });
+
+            marker.on('click', () => {
+                window.open(`comuna${id}.html`, '_blank');
             });
         }
-        
-        let geojsonLayer;
 
-        // 5. Cargar y dibujar el GeoJSON de las comunas
-        fetch('https://raw.githubusercontent.com/davideav/medellin-maps/master/comunas.geojson')
-            .then(response => response.json())
-            .then(data => {
-                geojsonLayer = L.geoJSON(data, {
-                    // Filtrar para mostrar solo las comunas 1, 4 y 10
-                    filter: function(feature, layer) {
-                        const comunasInteres = ['1', '4', '10'];
-                        return comunasInteres.includes(feature.properties.IDENTIFICACION);
-                    },
-                    style: estiloComuna,
-                    onEachFeature: onEachFeature
-                }).addTo(map);
-            })
-            .catch(error => console.error('Error al cargar el GeoJSON:', error));
+        // Sincronizar el selector con el mapa
+        const selectComuna = document.getElementById('comuna-select');
+        selectComuna.addEventListener('change', function() {
+            const comunaId = this.value;
+            if (comunaId && comunasInfo[comunaId]) {
+                map.flyTo(comunasInfo[comunaId].coords, 14);
+            }
+        });
 
+        // Ajustar el zoom inicial para mostrar todos los puntos
+        const bounds = L.latLngBounds(Object.values(comunasInfo).map(c => c.coords));
+        if (bounds.isValid()) {
+            map.fitBounds(bounds.pad(0.5));
+        }
     </script>
 </body>
 </html>
