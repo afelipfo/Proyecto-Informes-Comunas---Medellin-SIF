@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores: Proyectos Estratégicos de la Secretaría de Infraestructura - Alcaldía de Medellín</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap');
+
+        :root {
+            --primary-blue: #005A9C;
+            --primary-blue-dark: #003D6B;
+            --accent-orange: #F57C00;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #495057;
+            --text-color: #343a40;
+            --white: #ffffff;
+            --status-red: #d9534f;
+            --status-orange: #f0ad4e;
+            --status-green: #5cb85c;
+            --status-blue: #0275d8;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7f6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 2em;
+            font-weight: 300;
+        }
+
+        header {
+            background: linear-gradient(45deg, var(--primary-blue), var(--primary-blue-dark));
+            color: var(--white);
+            text-align: center;
+            padding: 3em 1.5em;
+            border-radius: 16px;
+            margin-bottom: 3.5em;
+            box-shadow: 0 8px 30px rgba(0, 90, 156, 0.25);
+        }
+
+        header h1 {
+            font-size: 2.6em;
+            font-weight: 900;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+        }
+
+        header p {
+            font-size: 1.25em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 0.5em;
+            font-weight: 400;
+        }
+
+        .chapter {
+            margin-bottom: 4em;
+        }
+
+        .chapter h2 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--primary-blue);
+            border-bottom: 3px solid var(--accent-orange);
+            padding-bottom: 0.5em;
+            margin-bottom: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 2.5em;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.07);
+            padding: 1.8em;
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid var(--accent-orange);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 0.5em;
+        }
+        
+        .card-header .icon {
+            font-size: 1.6em;
+            color: var(--primary-blue);
+            width: 40px;
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        .card-header h3 {
+            margin: 0;
+            color: var(--primary-blue);
+            font-size: 1.20em;
+            font-weight: 700;
+            flex-grow: 1;
+            line-height: 1.3;
+        }
+        
+        .indicator-meta {
+            text-align: right;
+        }
+
+        .indicator-id {
+            font-size: 0.8em;
+            color: #888;
+            font-weight: 400;
+        }
+        
+        .indicator-type-tag {
+            font-size: 0.75em;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background-color: var(--medium-gray);
+            color: var(--dark-gray);
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .card-body {
+            margin-top: 1em;
+            flex-grow: 1;
+        }
+        
+        .main-metric {
+            text-align: center;
+            margin-bottom: 1.5em;
+            padding: 1em;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+        }
+
+        .main-metric .value {
+            font-size: 2.8em;
+            font-weight: 900;
+            color: var(--text-color);
+            line-height: 1.1;
+        }
+
+        .main-metric .value.small-text {
+            font-size: 2.2em;
+        }
+        
+        .main-metric .value span.unit {
+            font-size: 0.4em;
+            font-weight: 400;
+            color: var(--dark-gray);
+            margin-left: 5px;
+        }
+        
+        .main-metric .label {
+            font-size: 0.95em;
+            color: var(--dark-gray);
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1em;
+            font-size: 0.9em;
+            margin-bottom: 1.5em;
+        }
+        
+        .details-grid div {
+            padding: 0.8em;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            border-left: 3px solid var(--medium-gray);
+        }
+        
+        .details-grid strong {
+            display: block;
+            color: var(--primary-blue);
+            margin-bottom: 0.3em;
+            font-weight: 700;
+        }
+
+        .progress-container {
+            margin-top: auto;
+            padding-top: 1em;
+        }
+        
+        .progress-container label {
+            font-size: 0.9em;
+            color: var(--dark-gray);
+            display: block;
+            margin-bottom: 0.7em;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .progress-bar {
+            background-color: var(--medium-gray);
+            border-radius: 25px;
+            height: 22px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 25px;
+            text-align: center;
+            color: white;
+            font-size: 0.85em;
+            line-height: 22px;
+            font-weight: bold;
+            transition: width 0.8s ease-in-out, background-color 0.5s ease;
+            background-color: var(--status-red); /* Default color */
+        }
+        
+        .progress-bar-fill.status-medium { background-color: var(--status-orange); }
+        .progress-bar-fill.status-high { background-color: var(--status-green); }
+        .progress-bar-fill.status-complete { background-color: var(--status-blue); }
+
+        footer {
+            text-align: center;
+            margin-top: 4em;
+            padding: 2em;
+            border-top: 1px solid #ddd;
+            color: #888;
+            font-size: 0.95em;
+        }
+        footer strong { color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Indicadores: Proyectos Estratégicos</h1>
+        <p>Secretaría de Infraestructura - Alcaldía de Medellín | Seguimiento a Julio 2025</p>
+    </header>
+
+    <main>
+         <section class="chapter">
+            <h2><i class="fa-solid fa-award"></i> Proyecto Estratégico: Medellín, Tacita de Plata</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-bridge-water"></i>
+                        <h3>Puentes vehiculares intervenidos</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.1.6</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">8<span class="unit">Número</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 0,00% <br/>(0 de 0)</div>
+                            <div><strong>2025:</strong> 40,0% <br/>(8 de 20)</div>
+                            <div><strong>2026:</strong> 29,6% <br/>(Meta 27)</div>
+                            <div><strong>2027:</strong> 25,8% <br/>(Meta 31)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 31)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 25.8%;">25,8%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-person-walking-luggage"></i>
+                        <h3>Puentes peatonales intervenidos</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.1.7</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">5<span class="unit">Número</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 0,00% <br/>(0 de 0)</div>
+                            <div><strong>2025:</strong> 250,0% <br/>(5 de 2)</div>
+                            <div><strong>2026:</strong> 17,2% <br/>(Meta 29)</div>
+                            <div><strong>2027:</strong> 12,5% <br/>(Meta 40)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 40)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 12.5%;">12,5%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-chart-line"></i>
+                        <h3>Estado de la malla vial</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.3</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">7,66<span class="unit">Índice</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 100,00% <br/>(7,66 de 7,66)</div>
+                            <div><strong>2025:</strong> 57,1% <br/>(7,66 de 7,72)</div>
+                            <div><strong>2026:</strong> 36,4% <br/>(Meta 7,80)</div>
+                            <div><strong>2027:</strong> 26,7% <br/>(Meta 7,88)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 7,88)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 26.7%;">26,7%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-compass-drafting"></i>
+                        <h3>Espacios públicos construidos y mejorados</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.4.2</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">12.380<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(2.922 de 2.922 m²)</div>
+                           <div><strong>2025:</strong> 18,4% <br/>(12.380 de 67.192 m²)</div>
+                           <div><strong>2026:</strong> 8,2% <br/>(Meta 150.664 m²)</div>
+                           <div><strong>2027:</strong> 5,8% <br/>(Meta 212.748 m²)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 212.748 m²)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 5.8%;">5,8%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-toolbox"></i>
+                        <h3>Espacios públicos mantenidos</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.4.3</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">403.298<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(373.511 de 373.511 m²)</div>
+                           <div><strong>2025:</strong> 100,8% <br/>(403.298 de 400.000 m²)</div>
+                           <div><strong>2026:</strong> 89,6% <br/>(Meta 450.000 m²)</div>
+                           <div><strong>2027:</strong> 80,7% <br/>(Meta 500.000 m²)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 500.000 m²)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 80.7%;">80,7%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-city"></i>
+                        <h3>Espacio público intervenido en el Centro</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.4.4</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">2.445<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 0,00% <br/>(0 de 0 m²)</div>
+                           <div><strong>2025:</strong> 74,4% <br/>(2.445 de 3.287 m²)</div>
+                           <div><strong>2026:</strong> 28,0% <br/>(Meta 8.734 m²)</div>
+                           <div><strong>2027:</strong> 7,5% <br/>(Meta 32.630 m²)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 32.630 m²)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 7.5%;">7,5%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-shoe-prints"></i>
+                        <h3>Andenes construidos y mejorados</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.3.1.1</span>
+                            <div class="indicator-type-tag">No Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">5.307<span class="unit">Metros</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(10.607 de 10.607 m)</div>
+                           <div><strong>2025:</strong> 72,1% <br/>(5.307 de 7.360 m)</div>
+                           <div><strong>2026:</strong> N.A. <br/>(Meta 7.360 m)</div>
+                           <div><strong>2027:</strong> N.A. <br/>(Meta 7.360 m)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 32.687,00 m)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 48.7%;">48,7%</div></div>
+                    </div>
+                </div>
+                 <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-person-walking-arrow-right"></i>
+                        <h3>Andenes mantenidos</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.3.1.2</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">2.167<span class="unit">Metros</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(100 de 100 m)</div>
+                           <div><strong>2025:</strong> 21,7% <br/>(2.167 de 10.000 m)</div>
+                           <div><strong>2026:</strong> 13,5% <br/>(Meta 16.000 m)</div>
+                           <div><strong>2027:</strong> 10,8% <br/>(Meta 20.000 m)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 20.000,00 m)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 10.8%;">10,8%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-bicycle"></i>
+                        <h3>Cicloinfraestructura urbana mantenida</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.3.5.2</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">3,67<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(1,00 de 1,00 Km)</div>
+                           <div><strong>2025:</strong> 8,2% <br/>(3,67 de 45,00 Km)</div>
+                           <div><strong>2026:</strong> 4,5% <br/>(Meta 81,00 Km)</div>
+                           <div><strong>2027:</strong> 3,2% <br/>(Meta 116,50 Km)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 116,50 Km)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 3.2%;">3,2%</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="chapter">
+            <h2><i class="fa-solid fa-train-tram"></i> Proyecto Estratégico: Metro de la 80</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-person-digging"></i>
+                        <h3>Obras ejecutadas en Metro de la 80</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.2.3</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">32,33%<span class="unit">Avance</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 100,00% <br/>(29,30% de 29,30%)</div>
+                            <div><strong>2025:</strong> 92,4% <br/>(32,33% de 35,00%)</div>
+                            <div><strong>2026:</strong> 71,8% <br/>(Meta 45,00%)</div>
+                            <div><strong>2027:</strong> 64,7% <br/>(Meta 50,00%)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 50,00%)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 64.7%;">64,7%</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="chapter">
+            <h2><i class="fa-solid fa-water"></i> Proyecto Estratégico: Parques del Río Norte</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-water"></i>
+                        <h3>Espacio público en Parques del Río Norte</h3>
+                        <div class="indicator-meta">
+                           <span class="indicator-id">4.1.4.6</span>
+                           <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">0<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 0,00% <br/>(0 de 0 m²)</div>
+                           <div><strong>2025:</strong> 0,0% <br/>(0 de 0 m²)</div>
+                           <div><strong>2026:</strong> 0,0% <br/>(Meta 28.000 m²)</div>
+                           <div><strong>2027:</strong> 0,0% <br/>(Meta 56.000 m²)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 56.000 m²)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 0%;">0,0%</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="chapter">
+            <h2><i class="fa-solid fa-leaf"></i> Proyecto Estratégico: Indicadores evaluados por Medio Ambiente</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-seedling"></i>
+                        <h3>Infraestructura verde alternativa</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">5.1.3.5</span>
+                            <div class="indicator-type-tag">No Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">1.738<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(2.500 de 2.500 m²)</div>
+                           <div><strong>2025:</strong> 64,4% <br/>(1.738 de 2.700 m²)</div>
+                           <div><strong>2026:</strong> N.A. <br/>(Meta 2.700 m²)</div>
+                           <div><strong>2027:</strong> N.A. <br/>(Meta 2.600 m²)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 10.500,00 m²)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 40.4%;">40,4%</div></div>
+                    </div>
+                </div>
+                 <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-tree"></i>
+                        <h3>Área verde de corredores conservadas</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">5.1.3.7</span>
+                            <div class="indicator-type-tag">Mantenimiento</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value small-text">1.153.474<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(2.000.000 m²)</div>
+                           <div><strong>2025:</strong> 57,7% <br/>(1.153.474 de 2.000.000 m²)</div>
+                           <div><strong>2026:</strong> N.A. <br/>(Meta 2.000.000 m²)</div>
+                           <div><strong>2027:</strong> N.A. <br/>(Meta 2.000.000 m²)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Indicador de Mantenimiento Anual (Meta 2.000.000 m²)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 57.7%;">57,7%</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="chapter">
+            <h2><i class="fa-solid fa-folder-open"></i> Proyecto Estratégico: Otros proyectos</h2>
+            <div class="cards-container">
+                 <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-road-circle-check"></i>
+                        <h3>Vías urbanas construidas y mejoradas</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.1.1</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">9,83<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 100,04% <br/>(9,39 de 9,39 Km)</div>
+                            <div><strong>2025:</strong> 80,9% <br/>(9,83 de 12,15 Km)</div>
+                            <div><strong>2026:</strong> 66,0% <br/>(Meta 14,91 Km)</div>
+                            <div><strong>2027:</strong> 55,6% <br/>(Meta 17,68 Km)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 17,68 Km)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 55.6%;">55,6%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-screwdriver-wrench"></i>
+                        <h3>Infraestructura vial urbana mantenida</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.1.2</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">45,50<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 100,00% <br/>(35,80 de 35,80 Km)</div>
+                            <div><strong>2025:</strong> 78,4% <br/>(45,50 de 58,00 Km)</div>
+                            <div><strong>2026:</strong> 51,7% <br/>(Meta 88,00 Km)</div>
+                            <div><strong>2027:</strong> 39,6% <br/>(Meta 115,00 Km)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 115,00 Km)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 39.6%;">39,6%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-tractor"></i>
+                        <h3>Infraestructura vial rural intervenida</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.1.3</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">7,77<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 100,00% <br/>(2,00 de 2,00 Km)</div>
+                            <div><strong>2025:</strong> 82,7% <br/>(7,77 de 9,40 Km)</div>
+                            <div><strong>2026:</strong> 47,7% <br/>(Meta 16,30 Km)</div>
+                            <div><strong>2027:</strong> 33,8% <br/>(Meta 23,00 Km)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 23,00 Km)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 33.8%;">33,8%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-mountain-city"></i>
+                        <h3>Obras para estabilización de taludes</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.1.4</span>
+                            <div class="indicator-type-tag">No Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">603,13<span class="unit">Metros</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 100,00% <br/>(220,50 de 220,50 m)</div>
+                            <div><strong>2025:</strong> 77,4% <br/>(603,13 de 779,50 m)</div>
+                            <div><strong>2026:</strong> N.A. <br/>(Meta 100,00 m)</div>
+                            <div><strong>2027:</strong> N.A. <br/>(Meta 100,00 m)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 1.200,00 m)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 68.6%;">68,6%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-money-bill-transfer"></i>
+                        <h3>Recursos para Autopistas de la Prosperidad</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.2.1</span>
+                            <div class="indicator-type-tag">No Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">0<span class="unit">Millones de pesos</span></div><div class="label">Desembolso en 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 113,01% <br/>(89.296,30 de 79.014,00)</div>
+                            <div><strong>2025:</strong> 0,0% <br/>(0 de 0)</div>
+                            <div><strong>2026:</strong> N.A. <br/>(Meta 0)</div>
+                            <div><strong>2027:</strong> N.A. <br/>(Meta 0)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 79.014,00)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 113%;">113,0%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-cable-car"></i>
+                        <h3>Sistema teleférico de Palmitas mantenido</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.2.2</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">1,30<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                            <div><strong>2024:</strong> 100,00% <br/>(1,30 de 1,30 Km)</div>
+                            <div><strong>2025:</strong> N.A. <br/>(1,30 de 0,00 Km)</div>
+                            <div><strong>2026:</strong> 50,0% <br/>(Meta 2,60 Km)</div>
+                            <div><strong>2027:</strong> 50,0% <br/>(Meta 2,60 Km)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 2,60 Km)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 50%;">50,0%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-road"></i>
+                        <h3>Vías intervenidas en Proyectos de Desarrollo</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.3.1</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">0,20<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(0,20 de 0,20 Km)</div>
+                           <div><strong>2025:</strong> 24,4% <br/>(0,20 de 0,82 Km)</div>
+                           <div><strong>2026:</strong> 17,2% <br/>(Meta 1,16 Km)</div>
+                           <div><strong>2027:</strong> 13,6% <br/>(Meta 1,47 Km)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 1,47 Km)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 13.6%;">13,6%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-ruler-combined"></i>
+                        <h3>Espacio público intervenido en desarrollo</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.3.2</span>
+                            <div class="indicator-type-tag">Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">5.096<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(2.922 de 2.922 m²)</div>
+                           <div><strong>2025:</strong> 29,6% <br/>(5.096 de 17.234 m²)</div>
+                           <div><strong>2026:</strong> 15,7% <br/>(Meta 32.561 m²)</div>
+                           <div><strong>2027:</strong> 10,6% <br/>(Meta 47.889 m²)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 47.889 m²)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 10.6%;">10,6%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-book-open-reader"></i>
+                        <h3>Parque Biblioteca Nororiental rehabilitado</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.3.4</span>
+                            <div class="indicator-type-tag">No Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">0,64%<span class="unit">Avance</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 100,00% <br/>(97,76% de 97,76%)</div>
+                           <div><strong>2025:</strong> 28,6% <br/>(0,64% de 2,24%)</div>
+                           <div><strong>2026:</strong> N.A. <br/>(Meta 0,00%)</div>
+                           <div><strong>2027:</strong> N.A. <br/>(Meta 0,00%)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 100,00%)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 98.4%;">98,4%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-magnifying-glass-chart"></i>
+                        <h3>Diagnóstico de espacios públicos</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.1.4.7</span>
+                            <div class="indicator-type-tag">No Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">0<span class="unit">Número</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 0,00% <br/>(0 de 0)</div>
+                           <div><strong>2025:</strong> 0,0% <br/>(0 de 0)</div>
+                           <div><strong>2026:</strong> N.A. <br/>(Meta 0,50)</div>
+                           <div><strong>2027:</strong> N.A. <br/>(Meta 0,50)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 1,00)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 0%;">0,0%</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="icon fa-solid fa-square-parking"></i>
+                        <h3>Cicloparqueaderos instalados</h3>
+                        <div class="indicator-meta">
+                            <span class="indicator-id">4.3.5.3</span>
+                            <div class="indicator-type-tag">No Acumulado</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="main-metric"><div class="value">8<span class="unit">Número</span></div><div class="label">Avance a 2025</div></div>
+                        <div class="details-grid">
+                           <div><strong>2024:</strong> 0,00% <br/>(0 de 0)</div>
+                           <div><strong>2025:</strong> 2,0% <br/>(8 de 400)</div>
+                           <div><strong>2026:</strong> N.A. <br/>(Meta 300)</div>
+                           <div><strong>2027:</strong> N.A. <br/>(Meta 300)</div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <label>Progreso Total (Meta 2024-2027: 1.000)</label>
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: 0.8%;">0,8%</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Informe generado a partir de los datos oficiales de la Secretaría de Infraestructura.</p>
+        <p><strong>Julio de 2025 | Alcaldía de Medellín</strong></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Animate cards on scroll ---
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+
+            // --- Apply dynamic styles ---
+            const allCards = document.querySelectorAll('.card');
+            allCards.forEach(card => {
+                // Color progress bars
+                const progressBarFill = card.querySelector('.progress-bar-fill');
+                if (progressBarFill) {
+                    const widthPercent = parseFloat(progressBarFill.style.width);
+                    if (widthPercent >= 100) {
+                        progressBarFill.classList.add('status-complete');
+                    } else if (widthPercent > 75) {
+                        progressBarFill.classList.add('status-high');
+                    } else if (widthPercent > 30) {
+                        progressBarFill.classList.add('status-medium');
+                    }
+                }
+
+                // Adjust font size for long numbers
+                const metricValue = card.querySelector('.main-metric .value');
+                if (metricValue && metricValue.textContent.length > 7) {
+                    metricValue.classList.add('small-text');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
