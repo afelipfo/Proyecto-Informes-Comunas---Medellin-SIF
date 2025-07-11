@@ -3,96 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte por Comunas</title>
+    <title>Reportes por Comunas - Alcaldía de Medellín</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <style>
+        :root {
+            --color-azul-oscuro: #0D47A1;
+            --color-azul-medio: #1976D2;
+            --color-naranja: #FF6F00;
+            --color-blanco: #FFFFFF;
+            --color-gris-claro: #f4f6f9;
+            --color-texto: #333333;
+            --sombra-card: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: var(--color-gris-claro);
+            color: var(--color-texto);
             margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
-        .container {
-            background-color: #ffffff;
+
+        .main-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Panel de Información (Derecha) */
+        .info-panel {
+            width: 35%;
+            max-width: 450px;
+            min-width: 400px;
+            background-color: var(--color-blanco);
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--sombra-card);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .header {
             text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
-        h1 {
-            color: #1c1e21;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 25px;
             margin-bottom: 25px;
-            font-size: 1.8em;
         }
+
+        .header img {
+            max-width: 250px;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--color-azul-oscuro);
+            margin: 0 0 10px 0;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+        .filter-section h2 {
+            font-size: 1.3em;
+            color: var(--color-texto);
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
         label {
             font-size: 1em;
-            color: #606770;
+            font-weight: 600;
+            color: var(--color-texto);
             display: block;
             margin-bottom: 10px;
+            text-align: left;
         }
+
         select {
             width: 100%;
             padding: 12px;
             font-size: 1em;
-            border: 1px solid #dddfe2;
-            border-radius: 6px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
             margin-bottom: 20px;
             cursor: pointer;
+            background-color: #f8f9fa;
         }
+
         button {
-            background-color: #007bff;
+            background-color: var(--color-naranja);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 14px 20px;
             font-size: 1.1em;
             font-weight: bold;
-            border-radius: 6px;
+            border-radius: 8px;
             width: 100%;
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         button:hover {
-            background-color: #0056b3;
+            background-color: #e66300;
+        }
+
+        /* Panel del Mapa (Izquierda) */
+        #map {
+            width: 65%;
+            height: 100%;
+            background-color: #e9ecef;
+        }
+
+        /* Estilos para el popup del mapa */
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+        }
+        .popup-content {
+            text-align: center;
+        }
+        .popup-content h3 {
+            margin: 0 0 10px 0;
+            color: var(--color-azul-oscuro);
+        }
+        .popup-content a {
+            color: var(--color-naranja);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+            #map {
+                width: 100%;
+                height: 50%;
+            }
+            .info-panel {
+                width: 100%;
+                height: 50%;
+                max-width: none;
+                min-width: 0;
+                box-sizing: border-box;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Reporte por comunas - Corte Julio</h1>
-        
-        <label for="comuna-select">Selecciona una comuna para ver el reporte:</label>
-        
-        <select id="comuna-select">
-            <option value="" disabled selected>-- Escoge una opción --</option>
-            <option value="1">Comuna 1 - Popular</option>
-            <option value="4">Comuna 4 - Aranjuez</option>
-            <option value="10">Comuna 10 - La Candelaria</option>
-        </select>
-        
-        <button onclick="abrirReporte()">Ver Reporte</button>
+    <div class="main-container">
+        <div id="map"></div>
+
+        <div class="info-panel">
+            <div class="header">
+                <img src="logo_footer.png" alt="Logo Alcaldía de Medellín">
+                <h1>Reportes por comunas</h1>
+                <p>Corte al 11 de julio de 2025</p>
+                <p><strong>Secretaría de Infraestructura Física - Alcaldía de Medellín</strong><br>Distrito de Ciencia, Tecnología e Innovación</p>
+            </div>
+            
+            <div class="filter-section">
+                <h2>Selecciona una comuna</h2>
+                <p>Puedes hacer clic sobre una de las comunas resaltadas en el mapa o usar el siguiente menú desplegable.</p>
+                <label for="comuna-select">Filtrar por lista:</label>
+                <select id="comuna-select">
+                    <option value="" disabled selected>-- Escoge una opción --</option>
+                    <option value="1">Comuna 1 - Popular</option>
+                    <option value="4">Comuna 4 - Aranjuez</option>
+                    <option value="10">Comuna 10 - La Candelaria</option>
+                </select>
+                <button onclick="abrirReporte()">Ver Reporte</button>
+            </div>
+        </div>
     </div>
 
     <script>
+        // --- Lógica del selector desplegable ---
         function abrirReporte() {
             const select = document.getElementById('comuna-select');
             const comunaId = select.value;
-
             if (comunaId) {
-                // Construye el nombre del archivo basado en la selección
                 const url = `comuna${comunaId}.html`;
-                // Redirige la ventana actual al archivo HTML correspondiente
-                window.location.href = url;
+                window.open(url, '_blank'); // Abrir en una nueva pestaña
             } else {
-                // Alerta si el usuario no ha seleccionado nada
                 alert('Por favor, selecciona una comuna.');
             }
         }
-    </script>
 
+        // --- Lógica del Mapa con Leaflet ---
+
+        // 1. Inicializar el mapa centrado en Medellín
+        const map = L.map('map').setView([6.2518, -75.5636], 12);
+
+        // 2. Añadir una capa de mapa base (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // 3. Estilos para las capas GeoJSON
+        const estiloComuna = {
+            color: "var(--color-azul-medio)",
+            weight: 2,
+            opacity: 0.8,
+            fillColor: "var(--color-azul-medio)",
+            fillOpacity: 0.3
+        };
+
+        const estiloHover = {
+            color: "var(--color-naranja)",
+            weight: 3,
+            fillColor: "var(--color-naranja)",
+            fillOpacity: 0.6
+        };
+        
+        // 4. Función para manejar la interacción con cada comuna
+        function onEachFeature(feature, layer) {
+            // Añadir tooltip con el nombre
+            const nombreComuna = feature.properties.NOMBRE;
+            layer.bindTooltip(nombreComuna, {
+                permanent: false, 
+                direction: 'center', 
+                className: 'leaflet-tooltip-own'
+            });
+
+            // Añadir evento de clic
+            layer.on({
+                mouseover: (e) => e.target.setStyle(estiloHover),
+                mouseout: (e) => geojsonLayer.resetStyle(e.target),
+                click: (e) => {
+                    const comunaId = feature.properties.IDENTIFICACION;
+                    const url = `comuna${comunaId}.html`;
+                    window.open(url, '_blank'); // Abrir el reporte en una nueva pestaña
+                }
+            });
+        }
+        
+        let geojsonLayer;
+
+        // 5. Cargar y dibujar el GeoJSON de las comunas
+        fetch('https://raw.githubusercontent.com/davideav/medellin-maps/master/comunas.geojson')
+            .then(response => response.json())
+            .then(data => {
+                geojsonLayer = L.geoJSON(data, {
+                    // Filtrar para mostrar solo las comunas 1, 4 y 10
+                    filter: function(feature, layer) {
+                        const comunasInteres = ['1', '4', '10'];
+                        return comunasInteres.includes(feature.properties.IDENTIFICACION);
+                    },
+                    style: estiloComuna,
+                    onEachFeature: onEachFeature
+                }).addTo(map);
+            })
+            .catch(error => console.error('Error al cargar el GeoJSON:', error));
+
+    </script>
 </body>
 </html>
