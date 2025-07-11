@@ -6,6 +6,10 @@
     <title>Reporte de Analítica de Datos Comuna 1 - Popular</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXrd3NBGQVJClubNFl4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <style>
         :root {
             --color-azul-oscuro: #0D47A1;
@@ -21,11 +25,60 @@
             background-color: var(--color-gris-claro);
             color: var(--color-texto);
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
+        
+        /* --- ESTILOS PARA LA BARRA DE ACCIONES FIJA --- */
+        .actions-bar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            background-color: var(--color-blanco);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+        .actions-bar a, .actions-bar button {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .actions-bar .back-button {
+            color: var(--color-azul-medio);
+            border-color: var(--color-azul-medio);
+        }
+        .actions-bar .back-button:hover {
+            background-color: var(--color-azul-medio);
+            color: var(--color-blanco);
+        }
+        .actions-bar .download-button {
+            color: var(--color-blanco);
+            background-color: var(--color-naranja);
+            border-color: var(--color-naranja);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .actions-bar .download-button:hover {
+            background-color: #e66300;
+            border-color: #e66300;
+        }
+        /* --- FIN DE ESTILOS DE LA BARRA --- */
+
         .container {
             max-width: 1400px;
             margin: auto;
+            padding: 20px; /* Padding para que el contenido no quede debajo de la barra fija */
         }
         .header {
             background: linear-gradient(135deg, var(--color-azul-oscuro), var(--color-azul-medio));
@@ -61,10 +114,16 @@
             margin-right: 15px;
             font-size: 1.2em;
         }
-        .grid-container {
+        .grid-container, .intervention-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
+        }
+        .grid-container {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .intervention-section {
+             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+             align-items: stretch;
         }
         .stat-card {
             background-color: var(--color-blanco);
@@ -131,12 +190,6 @@
         .summary-table tbody tr:hover {
             background-color: #e0e0e0;
         }
-        .intervention-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            align-items: stretch;
-        }
         .detail-list {
             background-color: var(--color-blanco);
             padding: 25px;
@@ -166,39 +219,18 @@
         .detail-list li strong {
             color: var(--color-texto);
         }
-        .pie-chart-container {
-            width: 100%;
-            max-width: 350px;
-            margin: 20px auto;
-        }
-
-        /* --- ESTILO AÑADIDO PARA EL BOTÓN DE VOLVER --- */
-        .footer-nav {
-            text-align: center;
-            margin-top: 50px;
-            padding-bottom: 20px;
-        }
-        .footer-nav a {
-            color: var(--color-azul-medio);
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 1.1em;
-            padding: 12px 25px;
-            border: 2px solid var(--color-azul-medio);
-            border-radius: 8px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .footer-nav a:hover {
-            background-color: var(--color-azul-medio);
-            color: var(--color-blanco);
-        }
-        /* --- FIN DEL ESTILO AÑADIDO --- */
-
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="actions-bar">
+        <a href="index.html" class="back-button">← Volver</a>
+        <button id="download-pdf" class="download-button">
+            <i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)
+        </button>
+    </div>
+
+    <div class="container" id="report-content">
         <header class="header">
             <h1>Reporte de Analítica de Datos Comuna 1 - Popular</h1>
             <p>Fecha de corte al 11 de julio de 2025</p>
@@ -548,11 +580,62 @@
                 </table>
             </div>
         </section>
+        
+    </div>
 
-        <div class="footer-nav">
-            <a href="index.html">← Volver al Selector Principal</a>
-        </div>
-        </div>
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function () {
+            const button = this;
+            const content = document.getElementById('report-content');
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+            button.disabled = true;
 
+            html2canvas(content, {
+                scale: 2,
+                useCORS: true
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+
+                const pdf = new jsPDF({
+                    orientation: 'p',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const canvasWidth = canvas.width;
+                const canvasHeight = canvas.height;
+                const ratio = canvasWidth / canvasHeight;
+
+                const imgHeight = pdfWidth / ratio;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                heightLeft -= pdfHeight;
+
+                while (heightLeft > 0) {
+                    position -= pdfHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                    heightLeft -= pdfHeight;
+                }
+
+                pdf.save('Reporte-Comuna-1-Popular.pdf');
+
+                button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                button.disabled = false;
+
+            }).catch(err => {
+                button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                button.disabled = false;
+                console.error("Error al generar el PDF:", err);
+                alert("Hubo un error al generar el PDF. Por favor, intenta de nuevo.");
+            });
+        });
+    </script>
 </body>
 </html>
