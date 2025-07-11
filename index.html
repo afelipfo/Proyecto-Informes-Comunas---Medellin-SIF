@@ -3,110 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes por Comunas - Alcaldía de Medellín</title>
-
+    <title>Informe de Gestión - Secretaría de Infraestructura Física</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
+    
     <style>
         :root {
-            --color-azul-oscuro: #0D47A1;
-            --color-azul-medio: #1976D2;
-            --color-naranja: #FF6F00;
-            --color-verde: #4CAF50; /* Color para Comuna 1 */
-            --color-rojo: #F44336;   /* Color para Comuna 10 */
-            --color-blanco: #FFFFFF;
-            --color-gris-claro: #f4f6f9;
-            --color-texto: #333333;
-            --sombra-card: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --primary-color: #0d47a1;
+            --secondary-color: #f57c00;
+            --text-color: #212121;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
         }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--color-gris-claro);
-            color: var(--color-texto);
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
-
-        .main-container {
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 5px solid var(--secondary-color);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.8em;
+            font-weight: 900;
+        }
+        header p {
+            margin: 10px 0 0;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        nav .container {
             display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 5px 20px;
+        }
+        nav a {
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 10px 15px;
+            font-weight: 700;
+            font-size: 0.9em;
+            transition: color 0.3s, background-color 0.3s;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            color: white;
+            background-color: var(--secondary-color);
+        }
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+        section h2 {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        .card h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            text-align: center;
+            justify-content: center;
+        }
+        .stat-number {
+            font-size: 3.5em;
+            font-weight: 900;
+            color: var(--primary-color);
+            line-height: 1.1;
+        }
+        .stat-label {
+            font-size: 1.1em;
+            font-weight: 400;
+            color: #555;
+        }
+        .bar-chart {
             width: 100%;
+            margin-top: 20px;
+        }
+        .bar-chart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        .bar-label {
+            width: 220px;
+            flex-shrink: 0;
+        }
+        .bar-container {
+            flex-grow: 1;
+            background: #e0e0e0;
+            border-radius: 5px;
+            height: 22px;
+        }
+        .bar {
+            background: linear-gradient(90deg, #ffb74d, var(--secondary-color));
             height: 100%;
+            border-radius: 5px;
+            text-align: right;
+            padding-right: 8px;
+            box-sizing: border-box;
+            color: white;
+            font-weight: 700;
+            line-height: 22px;
+            transition: width 1s ease-out;
+            font-size: 0.9em;
+        }
+        ul {
+            line-height: 1.8;
+            padding-left: 20px;
+            flex-grow: 1;
+        }
+        li::marker {
+            color: var(--secondary-color);
+        }
+        .highlight {
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+        footer {
+            background: #212121;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        .footer-date {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+        }
+        .footer-credits p {
+            margin: 4px 0;
+            font-weight: 300;
+            font-size: 0.9em;
+        }
+        .date-stamp {
+            font-weight: 400;
+            font-style: italic;
+            text-align: right;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #777;
         }
 
+        /* --- INICIO: ESTILOS DEL MAPA INTEGRADO --- */
+        .map-container-section {
+            display: flex;
+            flex-wrap: wrap;
+            height: 500px;
+            width: 100%;
+        }
         #map {
             width: 70%;
             height: 100%;
-            background-color: #e9ecef;
+            cursor: pointer;
         }
-
         .info-panel {
             width: 30%;
-            max-width: 400px;
-            min-width: 350px;
-            background-color: var(--color-blanco);
-            padding: 40px;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.08);
-            z-index: 1000;
+            padding: 30px;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            background: #fdfdff;
             overflow-y: auto;
         }
-
-        .header {
-            text-align: center;
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 25px;
-            margin-bottom: 25px;
+        .info-panel h3 {
+            font-size: 1.3em;
+            margin-top: 0;
+            color: var(--primary-color);
         }
-
-        .header img {
-            max-width: 220px;
-            margin-bottom: 15px;
-        }
-
-        .header h1 {
-            font-size: 1.6em;
-            font-weight: 700;
-            color: var(--color-azul-oscuro);
-            margin: 0 0 10px 0;
-        }
-
-        .header p {
-            font-size: 0.85em;
-            color: #6c757d;
-            margin: 0;
-            line-height: 1.4;
-        }
-        
-        .filter-section h2 {
-            font-size: 1.2em;
-            color: var(--color-texto);
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        
-        .filter-section p {
+        .info-panel p {
             font-size: 0.9em;
-            color: #6c757d;
-            margin-bottom: 20px;
+            color: #555;
             line-height: 1.5;
+            margin-bottom: 20px;
         }
-
-        label {
+        .info-panel label {
             font-size: 1em;
             font-weight: 600;
-            color: var(--color-texto);
+            color: var(--text-color);
             display: block;
             margin-bottom: 10px;
-            text-align: left;
         }
-
-        select {
+        .info-panel select {
             width: 100%;
             padding: 12px;
             font-size: 1em;
@@ -116,9 +251,8 @@
             cursor: pointer;
             background-color: #f8f9fa;
         }
-
-        button {
-            background-color: var(--color-naranja);
+        .info-panel button {
+            background-color: var(--secondary-color);
             color: white;
             border: none;
             padding: 14px 20px;
@@ -129,152 +263,636 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
-        button:hover {
+        .info-panel button:hover {
             background-color: #e66300;
         }
-        
-        /* Estilos para el tooltip y el marcador */
-        .leaflet-tooltip {
-            background-color: white;
-            border: 2px solid;
-            border-radius: 5px;
-            color: var(--color-texto);
-            font-weight: bold;
-            box-shadow: var(--sombra-card);
-        }
-        
-        .leaflet-div-icon {
-            transition: transform 0.2s ease-in-out;
-        }
-        .leaflet-div-icon:hover {
-            transform: scale(1.1);
-        }
-
-
         @media (max-width: 900px) {
-            .main-container {
+            .map-container-section {
                 flex-direction: column;
+                height: auto;
             }
             #map {
                 width: 100%;
-                height: 55%;
+                height: 400px;
             }
             .info-panel {
                 width: 100%;
-                height: 45%;
-                max-width: none;
-                min-width: 0;
-                box-sizing: border-box;
                 padding: 25px;
             }
+        }
+        /* --- FIN: ESTILOS DEL MAPA INTEGRADO --- */
+
+        /* --- ESTILOS DEL CHATBOT --- */
+        #chat-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+            transition: transform 0.3s;
+        }
+        #chat-fab:hover {
+            transform: scale(1.1);
+        }
+        #chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 400px;
+            max-width: 90vw;
+            height: 550px;
+            max-height: 80vh;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1002;
+            transform: scale(0.5);
+            transform-origin: bottom right;
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        #chat-window.visible {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .chat-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #chat-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-message {
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            line-height: 1.5;
+        }
+        .bot-message {
+            background: #e9e9f0;
+            color: var(--text-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .user-message {
+            background: var(--secondary-color);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .faq-button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .faq-button {
+            background-color: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.95em;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .faq-button:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .chat-input-form {
+            display: flex;
+            border-top: 1px solid #ddd;
+            padding: 10px;
+        }
+        #chat-input {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 1em;
+            outline: none;
+        }
+        #chat-input:focus {
+            border-color: var(--primary-color);
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <div id="map"></div>
-        <div class="info-panel">
-            <div class="header">
-                <img src="logo_footer.png" alt="Logo Alcaldía de Medellín">
-                <h1>Reportes por Comunas</h1>
-                <p>Corte al 11 de julio de 2025</p>
-                <p><strong>Secretaría de Infraestructura Física - Alcaldía de Medellín</strong><br>Distrito de Ciencia, Tecnología e Innovación</p>
+    <header>
+        <h1>Informe de Gestión Interactivo - Secretaría de Infraestructura Física</h1>
+        <p>Equipo de Comunicaciones</p>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="#malla-vial">Malla Vial</a>
+            <a href="#infra-verde">Infraestructura Verde</a>
+            <a href="#emergencias">Emergencias</a>
+            <a href="#espacios-publicos">Espacios Públicos</a>
+            <a href="#proyectos-estrategicos">Proyectos Estratégicos</a>
+            <a href="#futuro">Gestión Estratégica</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="malla-vial">
+            <h2>🛣️ Conectando la Ciudad: Recuperación de la Malla Vial</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Nuestra Gestión</h3>
+                    <p>Mediante intervenciones integrales que incluyen reparación de baches, rehabilitación de vías y obras complementarias, hemos logrado una importante recuperación de la malla vial. Estas labores, coordinadas con múltiples cuadrillas, mejoran la transitabilidad y seguridad vial para todos.</p>
+                </div>
+                <div class="card stat-box">
+                    <div class="stat-number">+13,822</div>
+                    <div class="stat-label">Huecos tapados en la ciudad y corregimientos</div>
+                </div>
             </div>
             
-            <div class="filter-section">
-                <h2>Selecciona una Comuna</h2>
-                <p>Puedes hacer clic sobre uno de los puntos en el mapa o usar el siguiente menú desplegable para navegar.</p>
-                <label for="comuna-select">Filtrar por lista:</label>
-                <select id="comuna-select">
-                    <option value="" disabled selected>-- Escoge una opción --</option>
-                    <option value="1">Comuna 1 - Popular</option>
-                    <option value="4">Comuna 4 - Aranjuez</option>
-                    <option value="10">Comuna 10 - La Candelaria</option>
-                </select>
-                <button onclick="abrirReporte()">Ver Reporte</button>
+            <div class="card" style="margin-top: 30px; padding: 0; overflow: hidden;">
+                <h3 style="padding: 30px 30px 0 30px; margin-bottom: 0;">🗺️ Geovisor de Impacto por Comuna</h3>
+                <div class="map-container-section">
+                    <div id="map"></div>
+                    <div class="info-panel">
+                        <h3>Filtros del Mapa</h3>
+                        <p>Puedes hacer clic sobre uno de los círculos en el mapa o usar el siguiente menú para navegar y ver el reporte detallado.</p>
+                        <label for="comuna-select">Filtrar por lista:</label>
+                        <select id="comuna-select">
+                            <option value="" disabled selected>-- Escoge una opción --</option>
+                        </select>
+                        <button onclick="abrirReporte()">Ver Reporte Detallado</button>
+                    </div>
+                </div>
+                <div class="date-stamp" style="padding: 15px 30px;">Corte: 1 de julio de 2025</div>
             </div>
+
+            <div class="card" style="margin-top: 30px;">
+                <h3>📊 Impacto Total por Comuna (Huecos Tapados)</h3>
+                <div class="bar-chart">
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 10 – La Candelaria</div><div class="bar-container"><div class="bar" style="width: 100%;">1178</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 7 – Robledo</div><div class="bar-container"><div class="bar" style="width: 93%;">1095</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 11 – Laureles</div><div class="bar-container"><div class="bar" style="width: 81.9%;">965</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 3 – Manrique</div><div class="bar-container"><div class="bar" style="width: 80.6%;">950</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 5 – Castilla</div><div class="bar-container"><div class="bar" style="width: 76%;">895</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 14 – El Poblado</div><div class="bar-container"><div class="bar" style="width: 74.6%;">879</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 16 – Belén/Estadio</div><div class="bar-container"><div class="bar" style="width: 74.4%;">877</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 15 – Guayabal</div><div class="bar-container"><div class="bar" style="width: 73.8%;">870</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 4 – Aranjuez</div><div class="bar-container"><div class="bar" style="width: 66.5%;">783</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 8 – Villa Hermosa</div><div class="bar-container"><div class="bar" style="width: 64.7%;">762</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 60 – San Cristóbal</div><div class="bar-container"><div class="bar" style="width: 52.2%;">615</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 12 – La América</div><div class="bar-container"><div class="bar" style="width: 51.7%;">609</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 13 – San Javier</div><div class="bar-container"><div class="bar" style="width: 48.6%;">573</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 6 – Doce de Octubre</div><div class="bar-container"><div class="bar" style="width: 46.1%;">543</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 1 – Popular</div><div class="bar-container"><div class="bar" style="width: 44.6%;">525</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 2 – Santa Cruz</div><div class="bar-container"><div class="bar" style="width: 40.6%;">478</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 9 – Buenos Aires</div><div class="bar-container"><div class="bar" style="width: 39.8%;">469</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 80 – San Antonio de Prado</div><div class="bar-container"><div class="bar" style="width: 31.8%;">374</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 90 – Santa Elena</div><div class="bar-container"><div class="bar" style="width: 18.7%;">220</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 70 – Altavista</div><div class="bar-container"><div class="bar" style="width: 11.6%;">137</div></div></div>
+                    <div class="bar-chart-item"><div class="bar-label">Comuna 50 – San Sebastián de Palmitas</div><div class="bar-container"><div class="bar" style="width: 2.1%;">25</div></div></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="infra-verde">
+            <h2>🌳 Infraestructura Verde</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Nuevos Espacios Verdes</h3>
+                    <ul>
+                        <li><span class="highlight">3</span> nuevos corredores verdes creados en 2024 (Manrique, Palmas, Av. 33 tramo 2).</li>
+                        <li><span class="highlight">3</span> nuevos puentes verdes para conectar cerros tutelares.</li>
+                        <li>Total: <span class="highlight">5,000 m²</span> de nuevos espacios verdes.</li>
+                        <li>Obras iniciadas en Av. Las Vegas y La 70 con inversión de <span class="highlight">$1.120 millones</span>.</li>
+                    </ul>
+                </div>
+                 <div class="card">
+                    <h3>Mantenimiento y Cuidado</h3>
+                    <ul>
+                        <li>A la fecha van <span class="highlight">540</span> jardineros desplegados en toda la ciudad.</li>
+                        <li><span class="highlight">5,084 m²</span> en conservación de zonas verdes, árboles y jardines.</li>
+                        <li><span class="highlight">13,136</span> individuos arbóreos juveniles en conservación.</li>
+                        <li><span class="highlight">15,012</span> plantas sembradas para el establecimiento de jardines.</li>
+                        <li>Inversión de <span class="highlight">$40.000 millones</span>.</li>
+                    </ul>
+                </div>
+                 <div class="card">
+                    <h3>Renovación Puente 4 Sur</h3>
+                    <p>Se intervinieron más de <span class="highlight">$1.330 millones</span> en la recuperación del urbanismo superior del puente, sembrando más de <span class="highlight">4.300 plantas</span> para embellecer este icónico entorno.</p>
+                     <ul>
+                         <li>749 metros de muros verdes ubicados a lo largo del puente.</li>
+                         <li>Se instalaron 86 metros de materas en madera inmunizada y 296 metros en madera plástica, materiales seleccionados cuidadosamente por su durabilidad y resistencia a las condiciones climáticas de la ciudad.</li>
+                         <li>Los trabajos realizados incluyeron un completo proceso de pintura de los pasamanos superiores, así como la aplicación de esta en aproximadamente 1.300 paneles del puente.</li>
+                     </ul>
+                     <div class="date-stamp" style="margin-top:auto;">Corte: 13 de junio de 2025</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="emergencias">
+            <h2>👷🏽‍♀️ Respuesta Inmediata: Gestión de Emergencias de Ciudad</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 40px;">Seguimos trabajando en la gestión del riesgo de desastres. En un trabajo articulado con el DAGRD, removemos material y habilitamos puntos críticos para garantizar la seguridad y la vida de los ciudadanos.</p>
+            <div class="grid">
+                 <div class="card stat-box">
+                    <div class="stat-number">>60,000 m³</div>
+                    <div class="stat-label">De material removido</div>
+                </div>
+                <div class="card stat-box">
+                    <div class="stat-number">>300</div>
+                    <div class="stat-label">Personas dedicadas a estas labores</div>
+                </div>
+                <div class="card">
+                    <h3>Zonas Atendidas</h3>
+                    <ul>
+                        <li><b>Corregimientos:</b> Altavista, San Antonio de Prado, Santa Elena, San Cristóbal.</li>
+                        <li><b>Zonas Urbanas:</b> Los Balsos, El Popular, El Poblado, Llanaditas, la Zona Industrial, Villatina, Picacho y Santo Domingo.</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="date-stamp">Corte: 1 de julio de 2025</div>
+        </section>
+
+        <section id="espacios-publicos">
+            <h2>🏞️ Espacios para la Gente: Renovación de Parques</h2>
+             <div class="grid">
+                <div class="card stat-box">
+                    <div class="stat-number">17</div>
+                    <div class="stat-label">Espacios públicos renovados</div>
+                </div>
+                <div class="card stat-box">
+                    <div class="stat-number">>11,890 m²</div>
+                    <div class="stat-label">De espacio público intervenido</div>
+                </div>
+                <div class="card">
+                    <h3>Parques finalizados</h3>
+                    <ul>
+                       <li><b>Santa Cruz:</b> Villa del Socorro I y II, Pablo VI.</li>
+                       <li><b>Manrique:</b> Oasis del Jardín.</li>
+                       <li><b>Aranjuez:</b> La Piñuela, Palermo.</li>
+                       <li><b>Doce de Octubre:</b> Parque de los Jubilados.</li>
+                       <li><b>Villa Hermosa:</b> Jardín Circunvalar.</li>
+                       <li><b>Buenos Aires:</b> La Pastora, Barrios de Jesús.</li>
+                       <li><b>El Poblado:</b> Finito.</li>
+                       <li><b>Guayabal:</b> El Rodeo, Cristo Rey.</li>
+                       <li><b>Santa Elena:</b> Piedras Gordas.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 30px;">
+                <h3>Proyectos en Curso y Futuros</h3>
+                <ul>
+                    <li><b>En San Antonio de Prado (Presupuesto Participativo):</b> Se avanza en 4 parques. 
+                        <span class="highlight">El Limonar II</span> y <span class="highlight">Rosaleda</span> ya están finalizados. 
+                        El parque <span class="highlight">Prado II</span> registra un avance del 60% y <span class="highlight">Corregiduría</span> un 40%.</li>
+                    <li><b>Próxima Gran Inversión (Licitación No. 0070007732):</b> Se destinarán más de <span class="highlight">$20.000 millones</span> para mejorar y construir <span class="highlight">29 parques con el programa Juguemos en el Parque</span>, impactando 13 comunas y un corregimiento. La presentación de ofertas cierra el 7 de julio de 2025.</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="proyectos-estrategicos">
+            <h2>🏗️ Proyectos Estratégicos que Transforman Territorios</h2>
+            <div class="grid">
+                 <div class="card">
+                    <h3>Proyectos Urbanos Integrales (PUI)</h3>
+                    <p>Entregamos <span class="highlight">4 PUI</span> que fortalecen el espacio público con una inversión de <span class="highlight">$16.000 millones</span>, beneficiando a <span class="highlight">209.000 habitantes</span>.</p>
+                    <ul>
+                        <li>Paseos Urbanos carreras 83 y 84 (PUI Noroccidental, Comuna 6).</li>
+                        <li>Parque Deportivo Fuente Clara (PUI Iguaná, Comuna 7).</li>
+                        <li>Conectividad Estación Cable Las Torres-Cerro Los Valores (PUI Centro Oriental).</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Presupuesto Participativo</h3>
+                     <p>Intervención de <span class="highlight">47 puntos</span> (20 vías y 27 andenes) en las comunas 1, 4, 16, 50 y 80, con un avance físico superior al <span class="highlight">90%</span>. Por buen desempeño, se adicionaron <span class="highlight">$4.590 millones</span> para 12 nuevos frentes (59 total), finalizando en el tercer trimestre de 2025.</p>
+                </div>
+                 <div class="card">
+                    <h3>Obras de Estabilización</h3>
+                    <p>Trabajamos en la contención y mitigación en <span class="highlight">40 puntos</span> de la ciudad, de los cuales ya se han intervenido <span class="highlight">34</span>.</p>
+                    <ul>
+                        <li><b>Proyección:</b> 1200 m de intervención.</li>
+                        <li><b>Inversión:</b> Más de $11.300 millones.</li>
+                        <li><b>Comunas:</b> Doce de Octubre, Popular, Manrique, Villa Hermosa, Buenos Aires, El Poblado, Guayabal, Belén, La América, San Javier, Robledo y San Cristóbal.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="futuro">
+            <h2>🚀 Gestión Estratégica</h2>
+             <div class="card">
+                <h3>Cuadrillas del Alcalde</h3>
+                <p>Contrato interadministrativo de <span class="highlight">$23.900 millones</span> para atender contingencias en el espacio público. A la fecha, se han atendido <span class="highlight">152 puntos</span>.</p>
+                <ul>
+                    <li>Verificación y reparación de defensas viais, barandas y pasamanos.</li>
+                    <li>Mantenimiento priorizado de parques y mobiliario urbano.</li>
+                    <li>Logística integral para lavado y pintura de estructuras viales.</li>
+                </ul>
+            </div>
+            <div class="card" style="margin-top: 30px;">
+                <h3>Contratos en Licitación</h3>
+                <p>Aseguramos la continuidad de las obras con <span class="highlight">12 procesos de licitación</span> actualmente activos.</p>
+                 <ul>
+                    <li>Malla vial</li>
+                    <li>Contención y mitigación</li>
+                    <li>Construcción y mejoramiento de parques</li>
+                    <li>Construcción y mejoramiento de andenes</li>
+                    <li>Plan vial rural</li>
+                    <li>Conservación de zonas verdes</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="chat-fab">
+        <span>💬</span>
+    </div>
+    <div id="chat-window">
+        <div class="chat-header">
+            <span>Asistente Virtual de FAQs</span>
+            <button id="chat-close-btn">✖</button>
         </div>
+        <div class="chat-messages" id="chat-messages">
+            </div>
+        <form class="chat-input-form" id="chat-form">
+            <input type="text" id="chat-input" placeholder="O busca por palabra clave...">
+        </form>
     </div>
 
+
+    <footer>
+        <p class="footer-date">Fecha de reporte: 01 de julio de 2025</p>
+        <div class="footer-credits">
+            <p>Elaboró:</p>
+            <p>María Posada Villa</p>
+            <p>Andrés Felipe Flórez Olivera</p>
+        </div>
+    </footer>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <script>
+        // Función para el botón del panel de filtros
         function abrirReporte() {
             const select = document.getElementById('comuna-select');
             const comunaId = select.value;
             if (comunaId) {
-                const url = `comuna${comunaId}.html`;
-                window.open(url, '_blank');
+                window.open(`comuna${comunaId}.html`, '_blank');
             } else {
                 alert('Por favor, selecciona una comuna.');
             }
         }
 
-        const map = L.map('map').setView([6.2518, -75.5636], 12);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        // Coordenadas y colores para cada comuna
-        const comunasInfo = {
-            "1": { name: "Popular", coords: [6.286, -75.553], color: 'var(--color-verde)' },
-            "4": { name: "Aranjuez", coords: [6.277, -75.558], color: 'var(--color-azul-medio)' },
-            "10": { name: "La Candelaria", coords: [6.246, -75.568], color: 'var(--color-rojo)' }
-        };
-
-        // Crear marcadores personalizados
-        for (const id in comunasInfo) {
-            const comuna = comunasInfo[id];
+        document.addEventListener('DOMContentLoaded', function () {
             
-            // Icono SVG más grande y con sombra para mayor visibilidad
-            const svgIconHtml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="44" height="44">
-                <defs>
-                    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.4"/>
-                    </filter>
-                </defs>
-                <g filter="url(#shadow)">
-                    <path fill="${comuna.color}" stroke="white" stroke-width="1.5" d="M16 3.5C9.64 3.5 4.5 8.64 4.5 15c0 8.25 11.5 14.5 11.5 14.5s11.5-6.25 11.5-14.5C27.5 8.64 22.36 3.5 16 3.5z"/>
-                    <circle cx="16" cy="14" r="3.5" fill="white"/>
-                </g>
-            </svg>`;
+            // --- LÓGICA DEL GEOVISOR (MAPA) CON FILTRO ---
+            const communeData = [
+                { name: 'Comuna 1 – Popular', potholes: 525, lat: 6.293, lng: -75.553 },
+                { name: 'Comuna 2 – Santa Cruz', potholes: 478, lat: 6.287, lng: -75.550 },
+                { name: 'Comuna 3 – Manrique', potholes: 950, lat: 6.275, lng: -75.549 },
+                { name: 'Comuna 4 – Aranjuez', potholes: 783, lat: 6.275, lng: -75.560 },
+                { name: 'Comuna 5 – Castilla', potholes: 895, lat: 6.279, lng: -75.578 },
+                { name: 'Comuna 6 – Doce de Octubre', potholes: 543, lat: 6.288, lng: -75.589 },
+                { name: 'Comuna 7 – Robledo', potholes: 1095, lat: 6.272, lng: -75.594 },
+                { name: 'Comuna 8 – Villa Hermosa', potholes: 762, lat: 6.252, lng: -75.547 },
+                { name: 'Comuna 9 – Buenos Aires', potholes: 469, lat: 6.237, lng: -75.551 },
+                { name: 'Comuna 10 – La Candelaria', potholes: 1178, lat: 6.246, lng: -75.569 },
+                { name: 'Comuna 11 – Laureles-Estadio', potholes: 965, lat: 6.248, lng: -75.588 },
+                { name: 'Comuna 12 – La América', potholes: 609, lat: 6.244, lng: -75.603 },
+                { name: 'Comuna 13 – San Javier', potholes: 573, lat: 6.252, lng: -75.619 },
+                { name: 'Comuna 14 – El Poblado', potholes: 879, lat: 6.209, lng: -75.566 },
+                { name: 'Comuna 15 – Guayabal', potholes: 870, lat: 6.213, lng: -75.589 },
+                { name: 'Comuna 16 – Belén', potholes: 877, lat: 6.225, lng: -75.604 },
+                { name: 'Comuna 50 – San Sebastián de Palmitas', potholes: 25, lat: 6.294, lng: -75.727 },
+                { name: 'Comuna 60 – San Cristóbal', potholes: 615, lat: 6.298, lng: -75.636 },
+                { name: 'Comuna 70 – Altavista', potholes: 137, lat: 6.213, lng: -75.626 },
+                { name: 'Comuna 80 – San Antonio de Prado', potholes: 374, lat: 6.168, lng: -75.643 },
+                { name: 'Comuna 90 – Santa Elena', potholes: 220, lat: 6.185, lng: -75.500 }
+            ];
+            const map = L.map('map').setView([6.2518, -75.5812], 11.5);
+            const selectComuna = document.getElementById('comuna-select');
 
-            const customIcon = L.divIcon({
-                html: svgIconHtml,
-                className: '',
-                iconSize: [44, 44],
-                iconAnchor: [22, 44], // La punta inferior del marcador
-                popupAnchor: [0, -44]
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            communeData.forEach(commune => {
+                let color;
+                if (commune.potholes > 800) color = '#d32f2f'; 
+                else if (commune.potholes >= 400) color = '#f57c00';
+                else color = '#388e3c';
+                const radius = Math.sqrt(commune.potholes) * 40;
+                
+                const circle = L.circle([commune.lat, commune.lng], {
+                    color: color, fillColor: color, fillOpacity: 0.6, weight: 1.5, radius: radius
+                }).addTo(map);
+                
+                circle.bindPopup(`<b>${commune.name}</b><br><span style="font-size:1.2em; font-weight:bold; color:${color};">${commune.potholes}</span> huecos tapados.`);
+
+                const communeIdMatch = commune.name.match(/^Comuna (\d+)/);
+                if (communeIdMatch && communeIdMatch[1]) {
+                    const communeId = communeIdMatch[1];
+                    circle.on('click', () => {
+                        window.open(`comuna${communeId}.html`, '_blank');
+                    });
+                    
+                    // Llena el menú desplegable
+                    const option = document.createElement('option');
+                    option.value = communeId;
+                    option.textContent = commune.name.replace(/–\s/g, '- '); // Formato para el dropdown
+                    selectComuna.appendChild(option);
+                }
             });
 
-            const marker = L.marker(comuna.coords, { icon: customIcon }).addTo(map);
-
-            marker.bindTooltip(`Comuna ${id} - ${comuna.name}`, { 
-                permanent: false, 
-                direction: 'top',
-                offset: L.point(0, -44)
+            // Sincroniza el menú desplegable con el mapa
+            selectComuna.addEventListener('change', function() {
+                const comunaId = this.value;
+                const selectedComuna = communeData.find(c => {
+                    const idMatch = c.name.match(/^Comuna (\d+)/);
+                    return idMatch && idMatch[1] === comunaId;
+                });
+                if (selectedComuna) {
+                    map.flyTo([selectedComuna.lat, selectedComuna.lng], 14);
+                }
             });
 
-            marker.on('click', () => {
-                window.open(`comuna${id}.html`, '_blank');
-            });
-        }
+            setTimeout(() => { map.invalidateSize(); }, 200);
 
-        // Sincronizar el selector con el mapa
-        const selectComuna = document.getElementById('comuna-select');
-        selectComuna.addEventListener('change', function() {
-            const comunaId = this.value;
-            if (comunaId && comunasInfo[comunaId]) {
-                map.flyTo(comunasInfo[comunaId].coords, 14);
-            }
+            // --- LÓGICA DEL CHATBOT DE FAQS ---
+            const faqData = {
+                'mallaVial': {
+                    displayName: '🛣️ Malla Vial',
+                    faqs: [
+                        { question: '¿Cuál es el total de huecos tapados?', answer: 'Se han tapado <strong>+13,822 huecos</strong> en toda la ciudad y corregimientos.' },
+                        { question: '¿Qué comuna tuvo la mayor intervención?', answer: 'La comuna con la <strong>mayor</strong> intervención fue <strong>La Candelaria (Comuna 10)</strong> con 1,178 huecos.' },
+                        { question: '¿Y la de menor intervención?', answer: 'La de <strong>menor</strong> intervención fue el corregimiento <strong>San Sebastián de Palmitas (Comuna 50)</strong> con 25 huecos.' }
+                    ]
+                },
+                'infraVerde': {
+                    displayName: '🌳 Infraestructura Verde',
+                    faqs: [
+                        { question: '¿Qué nuevos espacios verdes se crearon?', answer: 'En 2024 se crearon <strong>3 nuevos corredores verdes y 3 puentes verdes</strong>, que equivalen a 5,000 m².'},
+                        { question: '¿Cuántos jardineros tiene la ciudad?', answer: 'Contamos con <strong>540 jardineros</strong> en toda la ciudad.'},
+                        { question: '¿Qué se hizo en el puente de la 4 Sur?', answer: 'Se invirtieron más de <strong>$1,330 millones</strong> en la recuperación del urbanismo y se sembraron más de 4,300 plantas.'}
+                    ]
+                },
+                'parques': {
+                    displayName: '🏞️ Parques y Espacios Públicos',
+                    faqs: [
+                        { question: '¿Cuántos parques se han renovado?', answer: 'Se han renovado <strong>17 espacios públicos</strong>, interviniendo más de 11,890 m².'},
+                        { question: '¿Cuál es la próxima gran inversión en parques?', answer: 'Está abierta una licitación por más de <strong>$20.000 millones</strong> para construir y mejorar <strong>29 parques</strong> en la ciudad.'},
+                        { question: '¿Cómo van los parques de San Antonio de Prado?', answer: 'Los parques El Limonar II y Rosaleda ya finalizaron. Prado II tiene un avance del 60% y Corregiduría del 40%.'}
+                    ]
+                },
+                'proyectos': {
+                    displayName: '🏗️ Proyectos Estratégicos',
+                    faqs: [
+                        { question: '¿Cuál es el balance de los proyectos PUI?', answer: 'Se entregaron <strong>4 Proyectos Urbanos Integrales (PUI)</strong> con una inversión de <strong>$16.000 millones</strong>, beneficiando a 209,000 habitantes.'},
+                        { question: '¿Cómo va la ejecución de Presupuesto Participativo?', answer: 'Se han intervenido 47 puntos con un avance del 90%. Se adicionaron $4.590 millones para 12 nuevos frentes.'},
+                        { question: '¿Qué se ha hecho en obras de estabilización?', answer: 'Se han intervenido <strong>34 de 40 puntos</strong> críticos en la ciudad, con una inversión de más de <strong>$11.300 millones</strong>.'}
+                    ]
+                },
+                'gestion': {
+                    displayName: '🚀 Gestión y Futuro',
+                    faqs: [
+                        { question: '¿En qué consisten las Cuadrillas del Alcalde?', answer: 'Es un contrato de <strong>$23.900 millones</strong> para atender contingencias en el espacio público. Ya se han atendido 152 puntos.' },
+                        { question: '¿Cuántas licitaciones hay abiertas?', answer: 'Actualmente hay <strong>12 procesos de licitación</strong> que incluyen obras de malla vial, parques, andenes, entre otros.'}
+                    ]
+                }
+            };
+
+            const fab = document.getElementById('chat-fab');
+            const chatWindow = document.getElementById('chat-window');
+            const closeBtn = document.getElementById('chat-close-btn');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const messagesContainer = document.getElementById('chat-messages');
+
+            const addMessage = (text, type) => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chat-message ${type}-message`;
+                messageDiv.innerHTML = text;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            };
+
+            const showAnswer = (question, answer) => {
+                messagesContainer.innerHTML = '';
+                addMessage(question, 'user');
+                setTimeout(() => {
+                    addMessage(answer, 'bot');
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'faq-button-container';
+                    buttonContainer.innerHTML = '<button class="faq-button back-button">⬅️ Volver al menú principal</button>';
+                    messagesContainer.appendChild(buttonContainer);
+                    buttonContainer.querySelector('.back-button').addEventListener('click', showMainMenu);
+                }, 500);
+            };
+
+            const showFaqQuestionsFor = (categoryKey) => {
+                messagesContainer.innerHTML = '';
+                addMessage(`Has seleccionado <strong>${faqData[categoryKey].displayName}</strong>. ¿Qué te gustaría saber?`, 'bot');
+                
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'faq-button-container';
+
+                faqData[categoryKey].faqs.forEach(faq => {
+                    const button = document.createElement('button');
+                    button.className = 'faq-button';
+                    button.textContent = faq.question;
+                    button.addEventListener('click', () => showAnswer(faq.question, faq.answer));
+                    buttonContainer.appendChild(button);
+                });
+                
+                const backButton = document.createElement('button');
+                backButton.className = 'faq-button back-button';
+                backButton.innerHTML = '⬅️ Volver al menú principal';
+                backButton.addEventListener('click', showMainMenu);
+                buttonContainer.appendChild(backButton);
+
+                messagesContainer.appendChild(buttonContainer);
+            };
+
+            const showMainMenu = () => {
+                messagesContainer.innerHTML = '';
+                addMessage('¡Hola! Soy el asistente virtual. Por favor, selecciona un tema para ver las preguntas frecuentes.', 'bot');
+                
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'faq-button-container';
+
+                for (const key in faqData) {
+                    const button = document.createElement('button');
+                    button.className = 'faq-button';
+                    button.textContent = faqData[key].displayName;
+                    button.addEventListener('click', () => showFaqQuestionsFor(key));
+                    buttonContainer.appendChild(button);
+                }
+                messagesContainer.appendChild(buttonContainer);
+            };
+            
+            const handleKeywordSearch = (e) => {
+                e.preventDefault();
+                const query = chatInput.value.trim().toLowerCase();
+                if (!query) return;
+
+                for (const key in faqData) {
+                    for (const faq of faqData[key].faqs) {
+                        if (faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query)) {
+                            showAnswer(faq.question, faq.answer);
+                            chatInput.value = '';
+                            return;
+                        }
+                    }
+                }
+                
+                addMessage(`No encontré resultados para "${chatInput.value}". Por favor, usa el menú interactivo.`, 'bot');
+                chatInput.value = '';
+                setTimeout(showMainMenu, 2000);
+            };
+
+            fab.addEventListener('click', () => {
+                chatWindow.classList.toggle('visible');
+                if (chatWindow.classList.contains('visible')) {
+                    showMainMenu();
+                }
+            });
+            closeBtn.addEventListener('click', () => chatWindow.classList.remove('visible'));
+            chatForm.addEventListener('submit', handleKeywordSearch);
         });
-
-        // Ajustar el zoom inicial para mostrar todos los puntos
-        const bounds = L.latLngBounds(Object.values(comunasInfo).map(c => c.coords));
-        if (bounds.isValid()) {
-            map.fitBounds(bounds.pad(0.5));
-        }
     </script>
 </body>
 </html>
