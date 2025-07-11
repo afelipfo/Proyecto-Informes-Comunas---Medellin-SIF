@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe de Gestión - Secretaría de Infraestructura Física</title>
+    <title>Gestión 2025 - Secretaría de Infraestructura Física</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
     <style>
         :root {
             --primary-color: #0d47a1;
+            --primary-color-dark: #003D6B;
             --secondary-color: #f57c00;
             --text-color: #212121;
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
+            --light-gray: #e9ecef;
         }
         body {
             font-family: 'Roboto', sans-serif;
@@ -32,21 +35,39 @@
             padding: 20px;
         }
         header {
-            background: var(--primary-color);
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-color-dark));
             color: white;
             text-align: center;
-            padding: 40px 20px;
+            padding: 40px 20px 50px 20px;
             border-bottom: 5px solid var(--secondary-color);
+        }
+        .header-logo {
+            max-width: 280px;
+            margin-bottom: 25px;
+            animation: fadeInDown 1s ease-in-out;
         }
         header h1 {
             margin: 0;
-            font-size: 2.8em;
+            font-size: 2.6em;
             font-weight: 900;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease-in-out;
         }
-        header p {
-            margin: 10px 0 0;
+        header p.subheading {
             font-size: 1.2em;
+            margin: 10px 0 0 0;
             font-weight: 300;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-in-out 0.2s;
+            animation-fill-mode: backwards;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         nav {
             position: sticky;
@@ -81,7 +102,7 @@
             padding: 60px 0;
             border-bottom: 1px solid #e0e0e0;
         }
-        section:last-of-type {
+        .container section:last-of-type {
             border-bottom: none;
         }
         section h2 {
@@ -177,22 +198,6 @@
             color: var(--secondary-color);
             font-weight: 700;
         }
-        footer {
-            background: #212121;
-            color: white;
-            text-align: center;
-            padding: 30px;
-        }
-        .footer-date {
-            font-size: 1.1em;
-            font-weight: 700;
-            margin: 0 0 20px 0;
-        }
-        .footer-credits p {
-            margin: 4px 0;
-            font-weight: 300;
-            font-size: 0.9em;
-        }
         .date-stamp {
             font-weight: 400;
             font-style: italic;
@@ -201,8 +206,6 @@
             font-size: 0.9em;
             color: #777;
         }
-
-        /* --- INICIO: ESTILOS DEL MAPA INTEGRADO --- */
         .map-container-section {
             display: flex;
             flex-wrap: wrap;
@@ -249,7 +252,7 @@
             border-radius: 8px;
             margin-bottom: 20px;
             cursor: pointer;
-            background-color: #f8f9fa;
+            background-color: var(--bg-color);
         }
         .info-panel button {
             background-color: var(--secondary-color);
@@ -280,9 +283,46 @@
                 padding: 25px;
             }
         }
-        /* --- FIN: ESTILOS DEL MAPA INTEGRADO --- */
-
-        /* --- ESTILOS DEL CHATBOT --- */
+        
+        #indicadores-cta {
+            background-color: var(--light-gray);
+            text-align: center;
+            padding: 50px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        #indicadores-cta h2 {
+            font-size: 2em;
+            border-bottom: none;
+            color: var(--primary-color-dark);
+        }
+        #indicadores-cta p {
+            font-size: 1.1em;
+            max-width: 650px;
+            margin: -15px auto 30px auto;
+            color: #555;
+            line-height: 1.6;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--secondary-color), #ff8f00);
+            color: white;
+            text-decoration: none;
+            padding: 18px 40px;
+            font-size: 1.2em;
+            font-weight: 700;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(245, 124, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(245, 124, 0, 0.4);
+        }
+        .cta-button .fa-solid {
+            margin-right: 10px;
+            font-size: 1em;
+        }
+        
         #chat-fab {
             position: fixed;
             bottom: 30px;
@@ -409,15 +449,42 @@
         #chat-input:focus {
             border-color: var(--primary-color);
         }
+        footer {
+            background: #212121;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        .footer-date {
+            font-size: 1.1em;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+        }
+        .footer-credits p {
+            margin: 4px 0;
+            font-weight: 300;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Informe de Gestión Interactivo - Secretaría de Infraestructura Física</h1>
-        <p>Equipo de Comunicaciones</p>
+        <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="header-logo">
+        <h1>Gestión 2025 - Secretaría de Infraestructura Física</h1>
+        <p class="subheading">Alcaldía de Medellín - Distrito Especial de Ciencia, Tecnología e Innovación.</p>
     </header>
 
+    <section id="indicadores-cta">
+        <div class="container">
+            <h2><i class="fa-solid fa-chart-line"></i> Indicadores - SIF</h2>
+            <p>Explore los datos detallados y el progreso de nuestros proyectos estratégicos. Acceda a las métricas clave y siga en tiempo real el avance de las metas que transforman a Medellín.</p>
+            <a href="indicadores.html" class="cta-button" target="_blank" rel="noopener noreferrer">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>Ver Tablero de Indicadores
+            </a>
+        </div>
+    </section>
+    
     <nav>
         <div class="container">
             <a href="#malla-vial">Malla Vial</a>
@@ -515,8 +582,8 @@
                     <p>Se intervinieron más de <span class="highlight">$1.330 millones</span> en la recuperación del urbanismo superior del puente, sembrando más de <span class="highlight">4.300 plantas</span> para embellecer este icónico entorno.</p>
                      <ul>
                          <li>749 metros de muros verdes ubicados a lo largo del puente.</li>
-                         <li>Se instalaron 86 metros de materas en madera inmunizada y 296 metros en madera plástica, materiales seleccionados cuidadosamente por su durabilidad y resistencia a las condiciones climáticas de la ciudad.</li>
-                         <li>Los trabajos realizados incluyeron un completo proceso de pintura de los pasamanos superiores, así como la aplicación de esta en aproximadamente 1.300 paneles del puente.</li>
+                         <li>Se instalaron 86 metros de materas en madera inmunizada y 296 metros en madera plástica.</li>
+                         <li>Los trabajos realizados incluyeron un completo proceso de pintura de los pasamanos superiores y en 1.300 paneles del puente.</li>
                      </ul>
                      <div class="date-stamp" style="margin-top:auto;">Corte: 13 de junio de 2025</div>
                 </div>
@@ -524,8 +591,8 @@
         </section>
 
         <section id="emergencias">
-            <h2>👷🏽‍♀️ Respuesta Inmediata: Gestión de Emergencias de Ciudad</h2>
-            <p style="text-align: center; max-width: 800px; margin: 0 auto 40px;">Seguimos trabajando en la gestión del riesgo de desastres. En un trabajo articulado con el DAGRD, removemos material y habilitamos puntos críticos para garantizar la seguridad y la vida de los ciudadanos.</p>
+            <h2>👷🏽‍♀️ Respuesta Inmediata: Gestión de Emergencias</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 40px;">En articulación con el DAGRD, removemos material y habilitamos puntos críticos para garantizar la seguridad de los ciudadanos.</p>
             <div class="grid">
                  <div class="card stat-box">
                     <div class="stat-number">>60,000 m³</div>
@@ -578,7 +645,7 @@
                     <li><b>En San Antonio de Prado (Presupuesto Participativo):</b> Se avanza en 4 parques. 
                         <span class="highlight">El Limonar II</span> y <span class="highlight">Rosaleda</span> ya están finalizados. 
                         El parque <span class="highlight">Prado II</span> registra un avance del 60% y <span class="highlight">Corregiduría</span> un 40%.</li>
-                    <li><b>Próxima Gran Inversión (Licitación No. 0070007732):</b> Se destinarán más de <span class="highlight">$20.000 millones</span> para mejorar y construir <span class="highlight">29 parques con el programa Juguemos en el Parque</span>, impactando 13 comunas y un corregimiento. La presentación de ofertas cierra el 7 de julio de 2025.</li>
+                    <li><b>Próxima Gran Inversión (Licitación No. 0070007732):</b> Se destinarán más de <span class="highlight">$20.000 millones</span> para mejorar y construir <span class="highlight">29 parques con el programa Juguemos en el Parque</span>, impactando 13 comunas y un corregimiento.</li>
                 </ul>
             </div>
         </section>
@@ -597,7 +664,7 @@
                 </div>
                 <div class="card">
                     <h3>Presupuesto Participativo</h3>
-                     <p>Intervención de <span class="highlight">47 puntos</span> (20 vías y 27 andenes) en las comunas 1, 4, 16, 50 y 80, con un avance físico superior al <span class="highlight">90%</span>. Por buen desempeño, se adicionaron <span class="highlight">$4.590 millones</span> para 12 nuevos frentes (59 total), finalizando en el tercer trimestre de 2025.</p>
+                     <p>Intervención de <span class="highlight">47 puntos</span> (20 vías y 27 andenes) en las comunas 1, 4, 16, 50 y 80, con un avance físico superior al <span class="highlight">90%</span>. Por buen desempeño, se adicionaron <span class="highlight">$4.590 millones</span> para 12 nuevos frentes (59 total).</p>
                 </div>
                  <div class="card">
                     <h3>Obras de Estabilización</h3>
@@ -617,7 +684,7 @@
                 <h3>Cuadrillas del Alcalde</h3>
                 <p>Contrato interadministrativo de <span class="highlight">$23.900 millones</span> para atender contingencias en el espacio público. A la fecha, se han atendido <span class="highlight">152 puntos</span>.</p>
                 <ul>
-                    <li>Verificación y reparación de defensas viais, barandas y pasamanos.</li>
+                    <li>Verificación y reparación de defensas viales, barandas y pasamanos.</li>
                     <li>Mantenimiento priorizado de parques y mobiliario urbano.</li>
                     <li>Logística integral para lavado y pintura de estructuras viales.</li>
                 </ul>
@@ -635,9 +702,8 @@
                 </ul>
             </div>
         </section>
-
     </main>
-
+    
     <div id="chat-fab">
         <span>💬</span>
     </div>
@@ -653,20 +719,18 @@
         </form>
     </div>
 
-
     <footer>
-        <p class="footer-date">Fecha de reporte: 01 de julio de 2025</p>
+        <p class="footer-date">Fecha de reporte: 11 de julio de 2025</p>
         <div class="footer-credits">
             <p>Elaboró:</p>
-            <p>María Posada Villa</p>
             <p>Andrés Felipe Flórez Olivera</p>
+            <p>María Posada Villa</p>
         </div>
     </footer>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-        // Función para el botón del panel de filtros
         function abrirReporte() {
             const select = document.getElementById('comuna-select');
             const comunaId = select.value;
@@ -679,7 +743,6 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             
-            // --- LÓGICA DEL GEOVISOR (MAPA) CON FILTRO ---
             const communeData = [
                 { name: 'Comuna 1 – Popular', potholes: 525, lat: 6.293, lng: -75.553 },
                 { name: 'Comuna 2 – Santa Cruz', potholes: 478, lat: 6.287, lng: -75.550 },
@@ -730,15 +793,13 @@
                         window.open(`comuna${communeId}.html`, '_blank');
                     });
                     
-                    // Llena el menú desplegable
                     const option = document.createElement('option');
                     option.value = communeId;
-                    option.textContent = commune.name.replace(/–\s/g, '- '); // Formato para el dropdown
+                    option.textContent = commune.name.replace(/–\s/g, '- ');
                     selectComuna.appendChild(option);
                 }
             });
 
-            // Sincroniza el menú desplegable con el mapa
             selectComuna.addEventListener('change', function() {
                 const comunaId = this.value;
                 const selectedComuna = communeData.find(c => {
@@ -752,21 +813,18 @@
 
             setTimeout(() => { map.invalidateSize(); }, 200);
 
-            // --- LÓGICA DEL CHATBOT DE FAQS ---
             const faqData = {
                 'mallaVial': {
                     displayName: '🛣️ Malla Vial',
                     faqs: [
                         { question: '¿Cuál es el total de huecos tapados?', answer: 'Se han tapado <strong>+13,822 huecos</strong> en toda la ciudad y corregimientos.' },
                         { question: '¿Qué comuna tuvo la mayor intervención?', answer: 'La comuna con la <strong>mayor</strong> intervención fue <strong>La Candelaria (Comuna 10)</strong> con 1,178 huecos.' },
-                        { question: '¿Y la de menor intervención?', answer: 'La de <strong>menor</strong> intervención fue el corregimiento <strong>San Sebastián de Palmitas (Comuna 50)</strong> con 25 huecos.' }
                     ]
                 },
                 'infraVerde': {
                     displayName: '🌳 Infraestructura Verde',
                     faqs: [
                         { question: '¿Qué nuevos espacios verdes se crearon?', answer: 'En 2024 se crearon <strong>3 nuevos corredores verdes y 3 puentes verdes</strong>, que equivalen a 5,000 m².'},
-                        { question: '¿Cuántos jardineros tiene la ciudad?', answer: 'Contamos con <strong>540 jardineros</strong> en toda la ciudad.'},
                         { question: '¿Qué se hizo en el puente de la 4 Sur?', answer: 'Se invirtieron más de <strong>$1,330 millones</strong> en la recuperación del urbanismo y se sembraron más de 4,300 plantas.'}
                     ]
                 },
@@ -775,7 +833,6 @@
                     faqs: [
                         { question: '¿Cuántos parques se han renovado?', answer: 'Se han renovado <strong>17 espacios públicos</strong>, interviniendo más de 11,890 m².'},
                         { question: '¿Cuál es la próxima gran inversión en parques?', answer: 'Está abierta una licitación por más de <strong>$20.000 millones</strong> para construir y mejorar <strong>29 parques</strong> en la ciudad.'},
-                        { question: '¿Cómo van los parques de San Antonio de Prado?', answer: 'Los parques El Limonar II y Rosaleda ya finalizaron. Prado II tiene un avance del 60% y Corregiduría del 40%.'}
                     ]
                 },
                 'proyectos': {
@@ -783,7 +840,6 @@
                     faqs: [
                         { question: '¿Cuál es el balance de los proyectos PUI?', answer: 'Se entregaron <strong>4 Proyectos Urbanos Integrales (PUI)</strong> con una inversión de <strong>$16.000 millones</strong>, beneficiando a 209,000 habitantes.'},
                         { question: '¿Cómo va la ejecución de Presupuesto Participativo?', answer: 'Se han intervenido 47 puntos con un avance del 90%. Se adicionaron $4.590 millones para 12 nuevos frentes.'},
-                        { question: '¿Qué se ha hecho en obras de estabilización?', answer: 'Se han intervenido <strong>34 de 40 puntos</strong> críticos en la ciudad, con una inversión de más de <strong>$11.300 millones</strong>.'}
                     ]
                 },
                 'gestion': {
