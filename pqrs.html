@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Integral de PQRS - Secretaría de Infraestructura Física</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #005A9C, #003D6B);
+            color: #FFFFFF;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid #F27405;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.8em;
+            font-weight: 300;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 1.3em;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        
+        .section-card {
+            background-color: #FFFFFF;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #005A9C;
+            border-bottom: 4px solid #F27405;
+            padding-bottom: 15px;
+            font-size: 2em;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+        
+        h3 {
+            color: #005A9C;
+            font-size: 1.6em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .summary-card {
+            background-color: #fdfdfd;
+            border-left: 5px solid #F27405;
+            padding: 25px;
+            margin: 20px 0 30px 0;
+            border-radius: 5px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .finding-item {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid #005A9C;
+        }
+        
+        .finding-item h4 {
+            color: #005A9C;
+            font-size: 1.2em;
+            margin-top: 0;
+        }
+
+        .highlight {
+            color: #F27405;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #005A9C;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        table tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .recommendations ol {
+            list-style-type: none;
+            padding-left: 0;
+            counter-reset: recommendation-counter;
+        }
+
+        .recommendations ol li {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 15px 20px 15px 50px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            position: relative;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .recommendations ol li::before {
+            counter-increment: recommendation-counter;
+            content: counter(recommendation-counter);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #fff;
+            color: #44a08d;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Styles for Maintenance Unit Section */
+        .unit-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+        }
+        
+        .unit-header h3 {
+            color: white;
+            font-size: 2.2em;
+            margin: 0;
+        }
+
+        .unit-header .period {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px 0;
+        }
+
+        .metric-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .metric-icon { font-size: 2.5em; margin-bottom: 10px; display: block; }
+        .metric-value { font-size: 2.2em; font-weight: 700; margin-bottom: 5px; }
+        .metric-label { color: #7f8c8d; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .success { color: #27ae60; }
+        .warning { color: #f39c12; }
+        .danger { color: #e74c3c; }
+        .info { color: #3498db; }
+        .primary { color: #9b59b6; }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-title { font-size: 1.3em; font-weight: 600; margin-bottom: 20px; color: #2c3e50; text-align: center; }
+        .chart-canvas { max-height: 300px; }
+        
+        .map-container { margin-bottom: 30px; }
+        #mapaMedellin { height: 500px; width: 100%; border-radius: 10px; border: 2px solid #ecf0f1; }
+        .map-legend { background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 8px; margin-top: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        .legend-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.9em; }
+        .legend-color { width: 20px; height: 20px; border-radius: 50%; margin-right: 10px; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); }
+        
+        .alerts-section { margin-bottom: 25px; }
+        .alert { padding: 15px; border-radius: 10px; margin-bottom: 15px; font-weight: 500; color: white; }
+        .alert-critical { background: linear-gradient(45deg, #ff6b6b, #ee5a52); }
+        .alert-important { background: linear-gradient(45deg, #ffa726, #ff9800); }
+        
+        .strengths-weaknesses { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
+        .strengths, .weaknesses { padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); }
+        .strengths { border-left: 5px solid #27ae60; }
+        .weaknesses { border-left: 5px solid #e74c3c; }
+        .section-title { font-size: 1.4em; font-weight: 600; margin-bottom: 20px; color: #2c3e50; text-align: center; }
+        .item-list { list-style: none; padding: 0; }
+        .item-list li { padding: 12px; margin-bottom: 10px; border-radius: 8px; font-weight: 500; color: white; }
+        .strength-item { background: linear-gradient(45deg, #2ecc71, #27ae60); }
+        .weakness-item { background: linear-gradient(45deg, #e74c3c, #c0392b); }
+
+        .footer { text-align: center; padding: 20px; margin-top: 40px; font-style: italic; color: #666; border-top: 1px solid #ddd;}
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Análisis Integral de PQRS SIF</h1>
+        <p>Secretaría de Infraestructura Física - Alcaldía de Medellín</p>
+        <p>Corte de Datos: 07 de julio de 2025</p>
+    </div>
+
+    <div class="container">
+        <div class="section-card" id="general-analysis">
+            <h2>Resumen Ejecutivo General</h2>
+            <div class="summary-card">
+                <p>
+                    Este informe presenta un análisis completo del histórico de Peticiones, Quejas, Reclamos y Sugerencias (PQRS), basado en <strong>8,928 registros</strong>. El objetivo es identificar patrones clave, deficiencias en la calidad de los datos y oportunidades de mejora en la gestión global de la Secretaría de Infraestructura Física. Los hallazgos se centran en el estado de resolución, tipología, distribución geográfica y tiempos de respuesta, culminando con un análisis detallado de la Unidad de Mantenimiento.
+                </p>
+            </div>
+
+            <h2>Hallazgos Clave de la Secretaría</h2>
+
+            <div class="findings-grid">
+                <div class="finding-item">
+                    <h4>1. Calidad de Datos Crítica</h4>
+                    <p>La capacidad de análisis se ve afectada por valores faltantes:</p>
+                    <ul>
+                        <li><span class="highlight">Comuna Reporte:</span> 853 valores ausentes.</li>
+                        <li><span class="highlight">Comuna Hecho:</span> 661 valores ausentes.</li>
+                        <li><span class="highlight">Fecha de Respuesta:</span> 1,476 casos sin fecha, impidiendo medir tiempos.</li>
+                        <li><span class="highlight">Identificación:</span> 6,102 registros sin segundo nombre.</li>
+                    </ul>
+                </div>
+                 <div class="finding-item">
+                    <h4>2. Tipología de Solicitudes</h4>
+                    <p>La demanda de servicios está claramente definida:</p>
+                    <ul>
+                        <li><span class="highlight">Interés Particular:</span> 5,160 casos (57.8%).</li>
+                        <li><span class="highlight">Trámites:</span> 1,918 casos (21.5%).</li>
+                        <li><span class="highlight">Interés General:</span> 1,233 casos (13.8%).</li>
+                        <li><span class="highlight">Casos sensibles:</span> 76 tutelas y 4 demandas.</li>
+                    </ul>
+                </div>
+                <div class="finding-item">
+                    <h4>3. Tiempos de Gestión</h4>
+                     <p>Existen inconsistencias significativas en el registro de fechas:</p>
+                    <ul>
+                        <li><span class="highlight">Errores de Registro:</span> Fechas de ingreso al sistema SIF anteriores a la fecha del radicado (mínimo -361 días).</li>
+                        <li><span class="highlight">Alta Variabilidad:</span> Desviación estándar de 98.4 días en el tiempo de registro, indicando falta de estandarización.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Estado General de Resolución de PQRS</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estado de la Solicitud</th>
+                        <th>Cantidad de Casos</th>
+                        <th>Porcentaje del Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>EVACUADO</td><td>7,320</td><td>82.0%</td></tr>
+                    <tr><td class="highlight">SIN RESPUESTA</td><td class="highlight">694</td><td class="highlight">7.8%</td></tr>
+                    <tr><td>EVACUADA - RESPUESTA ENVIADA POR CORREO</td><td>443</td><td>5.0%</td></tr>
+                    <tr><td>DEVOLUCION BACK OFFICE</td><td>289</td><td>3.2%</td></tr>
+                    <tr><td>OTROS</td><td>182</td><td>2.0%</td></tr>
+                </tbody>
+            </table>
+            <p>Aunque el 82% de los casos están cerrados, los <span class="highlight">694 casos 'SIN RESPUESTA'</span> representan el principal foco de riesgo en la oportunidad de la gestión y el cumplimiento de los términos legales.</p>
+            
+            <div class="recommendations">
+                <h2>Recomendaciones Estratégicas Generales</h2>
+                <ol>
+                    <li><strong>Mejorar Calidad del Dato:</strong> Implementar controles y capacitaciones para la correcta digitación de fechas y comunas.</li>
+                    <li><strong>Gestionar Casos Pendientes:</strong> Crear un plan de acción inmediato para los <span class="highlight">694 casos 'SIN RESPUESTA'</span>.</li>
+                    <li><strong>Optimizar Procesos por Tipología:</strong> Analizar el flujo de trabajo de las 'SOLICITUD-INTERÉS PARTICULAR' para identificar mejoras.</li>
+                    <li><strong>Fortalecer Análisis Territorial:</strong> Usar datos geográficos para coordinar acciones preventivas, reduciendo registros sin comuna.</li>
+                    <li><strong>Auditar Registro de Fechas:</strong> Investigar inconsistencias en las fechas para garantizar la fiabilidad de los KPIs de gestión.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="section-card" id="maintenance-unit-analysis">
+            <div class="unit-header">
+                <h3>📊 Análisis Profundo: Unidad de Mantenimiento</h3>
+                <div class="period">📅 Período: 01/07/2024 - 10/06/2025</div>
+            </div>
+            
+            <div style="padding: 20px;">
+                <h3 style="text-align:left; color: #2c3e50; border-bottom: 2px solid #667eea; padding-bottom:10px;">Métricas de Rendimiento</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card"><span class="metric-icon primary">📊</span><div class="metric-value primary">892</div><div class="metric-label">Total Casos</div></div>
+                    <div class="metric-card"><span class="metric-icon success">✅</span><div class="metric-value success">87.8%</div><div class="metric-label">Tasa de Resolución</div></div>
+                    <div class="metric-card"><span class="metric-icon warning">⏱️</span><div class="metric-value warning">28.4</div><div class="metric-label">Días Promedio</div></div>
+                    <div class="metric-card"><span class="metric-icon danger">📅</span><div class="metric-value danger">42.0%</div><div class="metric-label">Tasa de Prórroga</div></div>
+                    <div class="metric-card"><span class="metric-icon info">🔄</span><div class="metric-value info">88</div><div class="metric-label">Casos Abiertos</div></div>
+                </div>
+
+                <div class="alerts-section">
+                    <h3 class="section-title">🚨 Alertas Clave de la Unidad</h3>
+                    <div class="alert alert-critical">🔥 <strong>CRÍTICO:</strong> Tasa de prórroga muy alta: 42.0%</div>
+                    <div class="alert alert-important">⚠️ <strong>IMPORTANTE:</strong> Tiempo promedio de gestión elevado: 28.4 días.</div>
+                    <div class="alert alert-critical">🔥 <strong>CRÍTICO:</strong> 1 caso sin respuesta con más de 30 días.</div>
+                </div>
+
+                <div class="strengths-weaknesses">
+                    <div class="strengths">
+                        <h3 class="section-title">🏆 Fortalezas</h3>
+                        <ul class="item-list">
+                            <li class="strength-item">✅ Excelente tasa de resolución (87.8%)</li>
+                            <li class="strength-item">🎯 Alto volumen de casos gestionados (892)</li>
+                            <li class="strength-item">📊 Cobertura amplia de sectores (245)</li>
+                        </ul>
+                    </div>
+                    <div class="weaknesses">
+                        <h3 class="section-title">⚠️ Áreas de Mejora</h3>
+                        <ul class="item-list">
+                            <li class="weakness-item">🔴 Alta tasa de prórrogas (42.0%)</li>
+                            <li class="weakness-item">🔴 Tiempo promedio elevado (28.4 días)</li>
+                            <li class="weakness-item">🔴 Número considerable de casos abiertos (88)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3 class="section-title">💡 Recomendaciones para la Unidad de Mantenimiento</h3>
+                <div class="recommendations">
+                    <ol>
+                        <li>Optimizar procesos para reducir tiempos de respuesta.</li>
+                        <li>Revisar causas de prórrogas y establecer medidas preventivas.</li>
+                        <li>Implementar sistema de seguimiento automatizado para casos abiertos.</li>
+                        <li>Desarrollar dashboard en tiempo real para monitoreo continuo.</li>
+                        <li>Establecer metas específicas por unidad y sector.</li>
+                    </ol>
+                </div>
+
+                <h3 class="section-title">Visualización de Datos de la Unidad</h3>
+                <div class="charts-grid">
+                    <div class="chart-container"><h4 class="chart-title">📋 Distribución por Estado</h4><canvas id="estadoChart" class="chart-canvas"></canvas></div>
+                    <div class="chart-container"><h4 class="chart-title">🏘️ Top 10 Sectores</h4><canvas id="sectoresChart" class="chart-canvas"></canvas></div>
+                    <div class="chart-container"><h4 class="chart-title">🏙️ Top 10 Comunas</h4><canvas id="comunasChart" class="chart-canvas"></canvas></div>
+                    <div class="chart-container"><h4 class="chart-title">🏢 Análisis por Unidad (Casos Asignados)</h4><canvas id="unidadesChart" class="chart-canvas"></canvas></div>
+                </div>
+                
+                <div class="map-container">
+                    <h3 class="section-title">🗺️ Mapa de Calor de PQRS por Sectores en Medellín</h3>
+                    <div id="mapaMedellin"></div>
+                    <div class="map-legend">
+                        <h4 style="margin-bottom: 10px; color: #2c3e50;">📊 Leyenda de Intensidad</h4>
+                        <div class="legend-item"><div class="legend-color" style="background: #e74c3c;"></div><span><strong>Alto:</strong> >20 casos</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #f39c12;"></div><span><strong>Medio:</strong> 10-20 casos</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #3498db;"></div><span><strong>Bajo:</strong> 5-9 casos</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #2ecc71;"></div><span><strong>Muy Bajo:</strong> &lt;5 casos</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Reporte Integrado generado el 12/06/2025</strong></p>
+            <p>Análisis General por Felipe Flórez | Sistema de Gestión PQRS</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuración global para Chart.js
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+        // Gráfico de Estados
+        const estadoCtx = document.getElementById('estadoChart').getContext('2d');
+        new Chart(estadoCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Cerrados', 'Abiertos', 'En Proceso'],
+                datasets: [{
+                    data: [783, 88, 18],
+                    backgroundColor: ['#27ae60', '#e74c3c', '#f39c12'],
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom', labels: { padding: 20, font: { size: 12, weight: 'bold' } } } } }
+        });
+
+        // Gráfico de Sectores
+        const sectoresCtx = document.getElementById('sectoresChart').getContext('2d');
+        new Chart(sectoresCtx, {
+            type: 'bar',
+            data: {
+                labels: ['El Poblado', 'San Antonio P.C.', 'Laureles', 'Santa Cruz', 'Aures Nº 1', 'La Mota', 'Campo Valdés Nº 2', 'Guayabal', 'No Aplica', 'Belén'],
+                datasets: [{
+                    label: 'Casos',
+                    data: [28, 27, 15, 13, 12, 11, 11, 10, 10, 10],
+                    backgroundColor: ['#e74c3c', '#e67e22', '#f39c12', '#f1c40f', '#27ae60', '#2ecc71', '#16a085', '#3498db', '#2980b9', '#9b59b6'],
+                    borderWidth: 0
+                }]
+            },
+            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true }, y: { ticks: { font: { size: 10 } } } } }
+        });
+
+        // Gráfico de Comunas
+        const comunasCtx = document.getElementById('comunasChart').getContext('2d');
+        new Chart(comunasCtx, {
+            type: 'bar',
+            data: {
+                labels: ['14-El Poblado', '16-Belén', '11-Laureles', '12-La América', '3-Manrique', '8-Villa Hermosa', '9-Buenos Aires', '7-Robledo', '10-La Candelaria', '13-San Javier'],
+                datasets: [{
+                    label: 'Casos',
+                    data: [111, 83, 67, 66, 56, 49, 49, 44, 38, 38],
+                    backgroundColor: ['#e74c3c', '#e67e22', '#f39c12', '#f1c40f', '#27ae60', '#2ecc71', '#16a085', '#3498db', '#2980b9', '#9b59b6'],
+                    borderWidth: 0
+                }]
+            },
+            options: { plugins: { legend: { display: false } }, scales: { x: { ticks: { maxRotation: 45, font: { size: 9 } } }, y: { beginAtZero: true } } }
+        });
+
+        // Gráfico de Unidades
+        const unidadesCtx = document.getElementById('unidadesChart').getContext('2d');
+        new Chart(unidadesCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Mantenimiento', 'Entes de Control', 'Estudios y Diseños', 'Otros'],
+                datasets: [{
+                    data: [864, 7, 2, 19],
+                    backgroundColor: ['#3498db', '#e67e22', '#9b59b6', '#95a5a6'],
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom', labels: { padding: 20, font: { size: 11, weight: 'bold' } } } } }
+        });
+
+        // MAPA DE MEDELLÍN
+        function initMap() {
+            try {
+                if (typeof L === 'undefined') {
+                    console.error('Leaflet no está cargado');
+                    return;
+                }
+                const medellinCenter = [6.2442, -75.5812];
+                const map = L.map('mapaMedellin').setView(medellinCenter, 11);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors | Análisis SIF',
+                    maxZoom: 18
+                }).addTo(map);
+
+                const sectoresData = [
+                    { nombre: 'EL POBLADO', lat: 6.2077, lng: -75.5669, casos: 28 },
+                    { nombre: 'SAN ANTONIO PARTE CENTRAL', lat: 6.1951, lng: -75.6397, casos: 27 },
+                    { nombre: 'LAURELES', lat: 6.2518, lng: -75.5906, casos: 15 },
+                    { nombre: 'SANTA CRUZ', lat: 6.2889, lng: -75.5494, casos: 13 },
+                    { nombre: 'AURES Nº 1', lat: 6.2742, lng: -75.5369, casos: 12 },
+                    { nombre: 'LA MOTA', lat: 6.2156, lng: -75.6078, casos: 11 },
+                    { nombre: 'CAMPO VALDES Nº 2', lat: 6.2889, lng: -75.5494, casos: 11 },
+                    { nombre: 'GUAYABAL', lat: 6.2300, lng: -75.5800, casos: 10 },
+                    { nombre: 'BELEN', lat: 6.2300, lng: -75.6200, casos: 10 },
+                    { nombre: 'LA CANDELARIA', lat: 6.2518, lng: -75.5743, casos: 8 },
+                    { nombre: 'ROBLEDO', lat: 6.2800, lng: -75.6200, casos: 7 },
+                    { nombre: 'VILLA HERMOSA', lat: 6.2600, lng: -75.5400, casos: 6 },
+                    { nombre: 'BUENOS AIRES', lat: 6.2400, lng: -75.5600, casos: 5 },
+                    { nombre: 'SAN JAVIER', lat: 6.2200, lng: -75.6400, casos: 4 }
+                ];
+
+                function getColor(d) {
+                    return d > 20 ? '#e74c3c' :
+                           d > 9 ? '#f39c12' :
+                           d > 4  ? '#3498db' : '#2ecc71';
+                }
+
+                sectoresData.forEach(sector => {
+                    L.circleMarker([sector.lat, sector.lng], {
+                        radius: 5 + Math.log(sector.casos) * 2,
+                        fillColor: getColor(sector.casos),
+                        color: '#fff',
+                        weight: 1.5,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    }).addTo(map)
+                    .bindPopup(`<b>${sector.nombre}</b><br>${sector.casos} casos reportados`);
+                });
+                
+                const group = new L.featureGroup(sectoresData.map(s => L.marker([s.lat, s.lng])));
+                map.fitBounds(group.getBounds().pad(0.2));
+
+            } catch (error) {
+                console.error('Error al inicializar el mapa:', error);
+                document.getElementById('mapaMedellin').innerHTML = '<p style="text-align:center;color:red;">Error al cargar el mapa. Verifique la conexión.</p>';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
+</body>
+</html>
