@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Analítica de Datos Comuna 4 - Aranjuez</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --color-azul-oscuro: #0D47A1;
+            --color-azul-medio: #1976D2;
+            --color-naranja: #FF6F00;
+            --color-blanco: #FFFFFF;
+            --color-gris-claro: #F5F5F5;
+            --color-texto: #333333;
+            --sombra-card: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--color-gris-claro);
+            color: var(--color-texto);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: auto;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--color-azul-oscuro), var(--color-azul-medio));
+            color: var(--color-blanco);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--sombra-card);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 5px 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: var(--color-azul-oscuro);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--color-naranja);
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .stat-card {
+            background-color: var(--color-blanco);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+            text-align: center;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card .icon {
+            font-size: 3em;
+            color: var(--color-naranja);
+            margin-bottom: 15px;
+        }
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--color-azul-medio);
+        }
+        .stat-card .label {
+            font-size: 0.9em;
+            color: var(--color-texto);
+            margin-top: 5px;
+            line-height: 1.3;
+        }
+        .chart-container {
+            background: var(--color-blanco);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+            margin-top: 30px;
+        }
+        .summary-table-container {
+            width: 100%;
+            overflow-x: auto;
+         }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: var(--color-blanco);
+            box-shadow: var(--sombra-card);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .summary-table th, .summary-table td {
+            padding: 15px;
+            text-align: left;
+        }
+        .summary-table thead {
+            background-color: var(--color-azul-medio);
+            color: var(--color-blanco);
+            font-weight: 600;
+        }
+        .summary-table tbody tr:nth-child(even) {
+            background-color: var(--color-gris-claro);
+        }
+        .summary-table tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+        .intervention-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            align-items: stretch;
+        }
+        .detail-list {
+            background-color: var(--color-blanco);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+        }
+        .detail-list h3 {
+             margin-top: 0;
+             color: var(--color-azul-oscuro);
+             border-bottom: 2px solid var(--color-gris-claro);
+             padding-bottom: 10px;
+        }
+        .detail-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .detail-list li {
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--color-gris-claro);
+        }
+        .detail-list li:last-child {
+            border-bottom: none;
+        }
+        .detail-list li strong {
+            color: var(--color-texto);
+        }
+
+        /* --- ESTILO AÑADIDO PARA EL BOTÓN DE VOLVER --- */
+        .footer-nav {
+            text-align: center;
+            margin-top: 50px;
+            padding-bottom: 20px;
+        }
+        .footer-nav a {
+            color: var(--color-azul-medio);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 12px 25px;
+            border: 2px solid var(--color-azul-medio);
+            border-radius: 8px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .footer-nav a:hover {
+            background-color: var(--color-azul-medio);
+            color: var(--color-blanco);
+        }
+        /* --- FIN DEL ESTILO AÑADIDO --- */
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1>Reporte de Analítica de Datos Comuna 4 - Aranjuez</h1>
+            <p>Fecha de corte al 11 de julio de 2025</p>
+        </header>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-tree"></i>Parques</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="stat-card"><div class="value">4</div><div class="label">Parques intervenidos en Comuna 04 - Aranjuez</div></div>
+                <div class="stat-card"><div class="value">11.381 m²</div><div class="label">Área total intervenida</div></div>
+                <div class="stat-card"><div class="value">8.431</div><div class="label">Niños sisbenizados beneficiados</div></div>
+                <div class="stat-card"><div class="value">10.877 m²</div><div class="label">Mejoramientos Puntuales</div></div>
+                <div class="stat-card"><div class="value">504 m²</div><div class="label">Transformación Total</div></div>
+            </div>
+             <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por parque intervenido</h3>
+                 <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Dirección</th>
+                                <th>Ubicación Parque</th>
+                                <th>Tipo de Intervención</th>
+                                <th>Niños Sisbenizados</th>
+                                <th>Área de Intervención (m²)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Calle 80C con Carrera 55 - 352</td><td>Parque Recreativo Estación Metro Caribe</td><td>Mejoramientos Puntuales</td><td>4.406</td><td>5.880</td></tr>
+                            <tr><td>Calle 88 con Carrera 50C</td><td>Zona Verde Recreacional Ana Frank</td><td>Mejoramientos Puntuales</td><td>435</td><td>4.997</td></tr>
+                            <tr><td>Calle 98 Carrera 45</td><td>Parque Recreativo - Las Esmeraldas</td><td>Transformación Total</td><td>625</td><td>294</td></tr>
+                            <tr><td>Carrera 51D 81C - 18</td><td>Parque Recreativo Infantil Miranda</td><td>Transformación Total</td><td>2.965</td><td>210</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-couch"></i>Mantenimiento Mobiliario</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card"><div class="value">33</div><div class="label">Cantidad Total</div></div>
+                <div class="stat-card"><div class="value">5</div><div class="label">Cantidad Intervenida</div></div>
+                <div class="stat-card"><div class="value">15.2%</div><div class="label">% de Intervención</div></div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-tools"></i></div>
+                    <div class="value">733</div>
+                    <div class="label">Total de baches ejecutados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="value">$1.377.086.045</div>
+                    <div class="label">Costo total ejecutado</div>
+                </div>
+            </div>
+             <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por barrio</h3>
+                 <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Barrio</th>
+                                <th>No. Baches</th>
+                                <th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Aranjuez</td><td>53</td><td>$78.031.153</td></tr>
+                            <tr><td>Berlín</td><td>80</td><td>$118.293.944</td></tr>
+                            <tr><td>Bermejal-Los Álamos</td><td>59</td><td>$135.548.896</td></tr>
+                            <tr><td>Brasilia</td><td>89</td><td>$190.499.222</td></tr>
+                            <tr><td>Campo Valdés No.1</td><td>39</td><td>$53.148.053</td></tr>
+                            <tr><td>Jardín Botánico</td><td>4</td><td>$5.733.894</td></tr>
+                            <tr><td>La Piñuela</td><td>56</td><td>$82.800.251</td></tr>
+                            <tr><td>Las Esmeraldas</td><td>15</td><td>$20.453.522</td></tr>
+                            <tr><td>Manrique Central No.1</td><td>54</td><td>$67.104.548</td></tr>
+                            <tr><td>Miranda</td><td>25</td><td>$44.842.121</td></tr>
+                            <tr><td>Moravia</td><td>28</td><td>$49.256.096</td></tr>
+                            <tr><td>Palermo</td><td>36</td><td>$102.652.672</td></tr>
+                            <tr><td>Parque Norte</td><td>2</td><td>$308.207</td></tr>
+                            <tr><td>San Isidro</td><td>106</td><td>$212.240.511</td></tr>
+                            <tr><td>San Pedro</td><td>58</td><td>$193.783.078</td></tr>
+                            <tr><td>Sevilla</td><td>27</td><td>$21.951.818</td></tr>
+                            <tr><td>Universidad de Antioquia</td><td>2</td><td>$438.060</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-file-signature"></i>Seguimiento a Contratos de Obra</h2>
+             <div class="summary-table-container">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Cantidad Acumulada</th>
+                            <th>Unidad de Medida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>ANDÉN CONSTRUIDO</td><td>1606</td><td>m</td></tr>
+                        <tr><td>ANDÉN MANTENIDO</td><td>2958</td><td>m</td></tr>
+                        <tr><td>ANDENES CONSTRUIDOS Y MEJORADOS</td><td>705</td><td>m</td></tr>
+                        <tr><td>ANDENES MANTENIDOS</td><td>0</td><td>m</td></tr>
+                        <tr><td>ÁRBOL SEMBRADO</td><td>0</td><td>un</td></tr>
+                        <tr><td>BARANDAS Y PASAMANOS</td><td>18</td><td>m</td></tr>
+                        <tr><td>BORDILLOS-CUNETAS</td><td>7778</td><td>m</td></tr>
+                        <tr><td>CICLOPARQUEADEROS INSTALADOS</td><td>30</td><td>un</td></tr>
+                        <tr><td>CICLORRUTA CONSTRUIDA</td><td>785</td><td>m</td></tr>
+                        <tr><td>CICLORRUTA MANTENIDA</td><td>90</td><td>m</td></tr>
+                        <tr><td>DEFENSA VIAL</td><td>0</td><td>m</td></tr>
+                        <tr><td>DISEÑO</td><td>89</td><td>%</td></tr>
+                        <tr><td>GESTIÓN PREDIAL</td><td>89</td><td>%</td></tr>
+                        <tr><td>HUECOS TAPADOS (UND)</td><td>791</td><td>un</td></tr>
+                        <tr><td>JARDÍN SEMBRADO</td><td>837</td><td>m²</td></tr>
+                        <tr><td>JUEGO INFANTIL O ELEMENTO DE GIMNASIO MANTENIDO</td><td>0</td><td>un</td></tr>
+                        <tr><td>OBRA DE ESTABILIZACIÓN</td><td>1210</td><td>m</td></tr>
+                        <tr><td>OBRA DE ESTABILIZACIÓN (unidades)</td><td>0</td><td>un</td></tr>
+                        <tr><td>OBRAS DE ESTABILIZACIÓN (otras unidades)</td><td>0</td><td>un</td></tr>
+                        <tr><td>PARCHEO DE HUECOS</td><td>0</td><td>un</td></tr>
+                        <tr><td>VÍA ASFALTO MANTENIDA (Fallos y Repav.)</td><td>12106</td><td>m²</td></tr>
+                        <tr><td>VÍA CONSTRUIDA</td><td>1197</td><td>m²</td></tr>
+                        <tr><td>VÍAS URBANAS CONSTRUIDAS Y MEJORADAS</td><td>0</td><td>KM</td></tr>
+                        <tr><td>VÍAS URBANAS MANTENIDAS</td><td>0</td><td>KM</td></tr>
+                        <tr><td>ZONA VERDE MANTENIDA</td><td>0</td><td>m²</td></tr>
+                        <tr><td>ZONA VERDE SEMBRADA</td><td>0</td><td>m²</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-leaf"></i>Establecimiento de Jardines</h2>
+            <div class="grid-container" style="grid-template-columns: 1fr;">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-seedling"></i></div>
+                    <div class="value">6.465</div>
+                    <div class="label">Total de plantas establecidas</div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle de Establecimiento de Jardines</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Año</th>
+                                <th>Mes</th>
+                                <th>Contrato</th>
+                                <th>Actividad</th>
+                                <th>Unidad</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2024</td><td>Febrero</td><td>4600097551</td><td>Establecimiento de jardines</td><td>Plantas</td><td>229,00</td></tr>
+                            <tr><td>2025</td><td>Marzo</td><td>4600104350</td><td>Establecimiento de jardines</td><td>Plantas</td><td>248,00</td></tr>
+                            <tr><td>2025</td><td>Mayo</td><td>4600104350</td><td>Establecimiento de jardines (Resiembra)</td><td>Plantas</td><td>10,00</td></tr>
+                            <tr><td>2024</td><td>Septiembre</td><td>4600102026</td><td>Establecimiento de jardines</td><td>Plantas</td><td>700,00</td></tr>
+                            <tr><td>2024</td><td>Octubre</td><td>4600102026</td><td>Establecimiento de jardines</td><td>Plantas</td><td>5.216,00</td></tr>
+                            <tr><td>2024</td><td>Noviembre</td><td>4600102026</td><td>Establecimiento de jardines</td><td>Plantas</td><td>62,00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Resumen General de Intervenciones Año 2024</h2>
+             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card"><div class="value">20</div><div class="label">Cantidad Total de Intervenciones</div></div>
+                <div class="stat-card"><div class="value">$51.293.126</div><div class="label">Costo Total de las Obras</div></div>
+                <div class="stat-card"><div class="value">20</div><div class="label">Solicitudes Gestionadas</div></div>
+            </div>
+            <div class="intervention-section" style="margin-top: 25px;">
+                <div class="detail-list">
+                    <h3>Distribución por Grupo de Obra</h3>
+                    <ul>
+                        <li><span>Parques y Cerrajería (65%)</span> <strong>13 Intervenciones / $28 millones</strong></li>
+                        <li><span>Obras Civiles Menores (25%)</span> <strong>5 Intervenciones / $23 millones</strong></li>
+                        <li><span>EPM (10%)</span> <strong>2 Intervenciones / Costo no especificado</strong></li>
+                    </ul>
+                </div>
+                <div class="detail-list">
+                    <h3>Distribución por Tipo de Intervención</h3>
+                    <ul>
+                        <li><span>Mantenimiento de parques</span> <strong>7</strong></li>
+                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>6</strong></li>
+                        <li><span>Andenes y cordones</span> <strong>3</strong></li>
+                        <li><span>Limpieza de vías</span> <strong>2</strong></li>
+                        <li><span>Mantenimiento en vías urbanas</span> <strong>2</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle de Intervenciones por Dirección (2024)</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr><th>Dirección</th><th>Barrio</th><th>No. Intervenciones</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Calles de Aranjuez</td><td>-</td><td>1</td></tr>
+                            <tr><td>CL 95 CR 48</td><td>Berlín</td><td>1</td></tr>
+                            <tr><td>CL 67 CR 37</td><td>Manrique</td><td>1</td></tr>
+                            <tr><td>CL 67 CR 54</td><td>-</td><td>1</td></tr>
+                            <tr><td>CL 69 CR 45</td><td>Manrique Central</td><td>1</td></tr>
+                            <tr><td>CL 70A CR 40</td><td>Manrique</td><td>1</td></tr>
+                            <tr><td>CL 71A CR 39</td><td>Manrique</td><td>1</td></tr>
+                            <tr><td>CL 82 CR 50C</td><td>Miranda</td><td>1</td></tr>
+                            <tr><td>CL 84 CR 46</td><td>Campo Valdés</td><td>1</td></tr>
+                            <tr><td>CL 88 CR 50</td><td>-</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-calendar-alt"></i>Resumen General - Año 2025</h2>
+             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card"><div class="value">12</div><div class="label">Cantidad Total de Intervenciones</div></div>
+                <div class="stat-card"><div class="value">$23.232.830</div><div class="label">Costo Total de las Obras</div></div>
+                <div class="stat-card"><div class="value">12</div><div class="label">Solicitudes Gestionadas</div></div>
+            </div>
+            <div class="intervention-section" style="margin-top: 25px;">
+                 <div class="detail-list">
+                    <h3>Distribución por Grupo de Obra</h3>
+                    <ul>
+                        <li><span>Parques y Cerrajería (67%)</span> <strong>8 Intervenciones / $19.4 millones</strong></li>
+                        <li><span>Obras Civiles Menores (25%)</span> <strong>3 Intervenciones / $3.9 millones</strong></li>
+                        <li><span>Pavimentos (8%)</span> <strong>1 Intervención / Costo no especificado</strong></li>
+                    </ul>
+                </div>
+                 <div class="detail-list">
+                    <h3>Distribución por Tipo de Intervención</h3>
+                    <ul>
+                        <li><span>Espacios públicos mantenidos</span> <strong>4</strong></li>
+                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>4</strong></li>
+                        <li><span>Infraestructura vial urbana mantenida</span> <strong>2</strong></li>
+                        <li><span>Andenes mantenidos</span> <strong>1</strong></li>
+                        <li><span>Limpieza de vías</span> <strong>1</strong></li>
+                    </ul>
+                </div>
+                 <div class="detail-list">
+                    <h3>Estado de las Obras (2025)</h3>
+                    <ul>
+                        <li><span>Por iniciar</span> <strong>10 (83%)</strong></li>
+                        <li><span>Terminada</span> <strong>2 (17%)</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle de Intervenciones por Dirección (2025)</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr><th>Dirección</th><th>Barrio</th><th>No. Intervenciones</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>CL 85 CR 49</td><td>Campo Valdés No.1</td><td>1</td></tr>
+                            <tr><td>CL 88 CR 45</td><td>Las Esmeraldas</td><td>2</td></tr>
+                            <tr><td>CL 88 CR 50 C</td><td>Aranjuez</td><td>1</td></tr>
+                            <tr><td>CL 89 CR 49</td><td>La Piñuela</td><td>1</td></tr>
+                            <tr><td>CL 90 CR 49 B</td><td>Campo Valdés No.1</td><td>2</td></tr>
+                            <tr><td>CL 94A CR 54</td><td>-</td><td>1</td></tr>
+                            <tr><td>CR 48A CL 108, cancha La Herrera</td><td>Aranjuez</td><td>2</td></tr>
+                            <tr><td>CR 51 # 92 - 53</td><td>San Isidro</td><td>1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2 class="section-title"><i class="fas fa-exchange-alt"></i>Comparativo por Vigencia y Tipo de Obra</h2>
+            <div class="summary-table-container">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Vigencia</th>
+                            <th>EPM</th>
+                            <th>Obras Civiles Menores</th>
+                            <th>Parques y Cerrajería</th>
+                            <th>Pavimentos</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>2024</strong></td><td>2</td><td>5</td><td>13</td><td>0</td><td><strong>20</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>2025</strong></td><td>0</td><td>3</td><td>8</td><td>1</td><td><strong>12</strong></td>
+                        </tr>
+                        <tr style="background-color: var(--color-azul-oscuro); color: var(--color-blanco); font-weight: bold;">
+                            <td>Total General</td><td>2</td><td>8</td><td>21</td><td>1</td><td><strong>32</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="footer-nav">
+            <a href="index.html">← Volver al Selector Principal</a>
+        </div>
+        </div>
+
+</body>
+</html>

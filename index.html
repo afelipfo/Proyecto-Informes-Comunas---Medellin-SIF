@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte por Comunas</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            color: #1c1e21;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        label {
+            font-size: 1em;
+            color: #606770;
+            display: block;
+            margin-bottom: 10px;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 6px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Reporte por comunas - Corte Julio</h1>
+        
+        <label for="comuna-select">Selecciona una comuna para ver el reporte:</label>
+        
+        <select id="comuna-select">
+            <option value="" disabled selected>-- Escoge una opción --</option>
+            <option value="1">Comuna 1 - Popular</option>
+            <option value="4">Comuna 4 - Aranjuez</option>
+            <option value="10">Comuna 10 - La Candelaria</option>
+        </select>
+        
+        <button onclick="abrirReporte()">Ver Reporte</button>
+    </div>
+
+    <script>
+        function abrirReporte() {
+            const select = document.getElementById('comuna-select');
+            const comunaId = select.value;
+
+            if (comunaId) {
+                // Construye el nombre del archivo basado en la selección
+                const url = `comuna${comunaId}.html`;
+                // Redirige la ventana actual al archivo HTML correspondiente
+                window.location.href = url;
+            } else {
+                // Alerta si el usuario no ha seleccionado nada
+                alert('Por favor, selecciona una comuna.');
+            }
+        }
+    </script>
+
+</body>
+</html>
