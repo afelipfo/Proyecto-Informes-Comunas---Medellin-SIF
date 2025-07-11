@@ -26,42 +26,23 @@
             background-color: var(--color-gris-claro);
             color: var(--color-texto);
             margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1400px;
-            margin: auto;
-        }
-        .header {
-            background: linear-gradient(135deg, var(--color-azul-oscuro), var(--color-azul-medio));
-            color: var(--color-blanco);
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: var(--sombra-card);
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            font-weight: 700;
-        }
-        .header p {
-            margin: 5px 0 0;
-            font-size: 1.2em;
-            opacity: 0.9;
+            padding: 0;
         }
         
-        /* Estilos para la nueva barra de acciones */
+        /* --- ESTILOS PARA LA BARRA DE ACCIONES FIJA --- */
         .actions-bar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 25px;
+            padding: 12px 5%;
             background-color: var(--color-blanco);
-            border-radius: 10px;
-            box-shadow: var(--sombra-card);
-            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            box-sizing: border-box;
         }
         .actions-bar a, .actions-bar button {
             text-decoration: none;
@@ -93,7 +74,32 @@
             background-color: #e66300;
             border-color: #e66300;
         }
+        /* --- FIN DE ESTILOS DE LA BARRA --- */
 
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--color-azul-oscuro), var(--color-azul-medio));
+            color: var(--color-blanco);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--sombra-card);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 5px 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
         .section-title {
             font-size: 1.8em;
             font-weight: 600;
@@ -109,10 +115,16 @@
             margin-right: 15px;
             font-size: 1.2em;
         }
-        .grid-container {
+        .grid-container, .intervention-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
+        }
+        .grid-container {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .intervention-section {
+             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+             align-items: stretch;
         }
         .stat-card {
             background-color: var(--color-blanco);
@@ -314,19 +326,19 @@
 </head>
 <body>
 
+    <div class="actions-bar">
+        <a href="index.html" class="back-button">← Volver</a>
+        <button id="download-pdf" class="download-button">
+            <i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)
+        </button>
+    </div>
+
     <div class="container" id="report-content">
         <header class="header">
             <h1>Reporte de Analítica de Datos Comuna 10 - La Candelaria</h1>
             <p>Fecha de corte al 11 de julio de 2025</p>
         </header>
-
-        <div class="actions-bar">
-            <a href="index.html" class="back-button">← Volver al Selector</a>
-            <button id="download-pdf" class="download-button">
-                <i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)
-            </button>
-        </div>
-
+        
         <section>
             <h2 class="section-title"><i class="fas fa-leaf"></i>Indicadores Jardín Botánico</h2>
             <div class="stat-card inversion">
