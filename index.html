@@ -467,98 +467,64 @@
         }
 
         /* --- ESTILOS PARA EL POP-UP DE AUDITORÍA PQRS --- */
-        #pqrs-popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            z-index: 1010;
-            display: none; /* Oculto por defecto */
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
-        }
-        #pqrs-popup-overlay.visible {
-            display: flex;
-            opacity: 1;
-        }
-        .pqrs-popup-content {
-            background: var(--card-bg);
-            padding: 0;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            width: 90%;
-            max-width: 550px;
+        #pqrs-banner {
+            background-color: var(--primary-color-dark);
+            color: white;
+            padding: 10px 0;
             text-align: center;
-            transform: scale(0.8);
-            transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-        }
-        #pqrs-popup-overlay.visible .pqrs-popup-content {
-            transform: scale(1);
-        }
-        .pqrs-popup-header {
-            background: linear-gradient(45deg, var(--primary-color), var(--primary-color-dark));
-            color: white;
-            padding: 20px;
-            border-radius: 15px 15px 0 0;
+            font-size: 0.9em;
+            animation: slideDown 0.5s ease-out;
             position: relative;
+            z-index: 1000; /* Ensure it's above other content but below sticky nav */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
         }
-        .pqrs-popup-header h2 {
-            color: white;
-            font-size: 1.8em;
+
+        #pqrs-banner p {
             margin: 0;
-            border: none;
         }
-        .pqrs-popup-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
+
+        #pqrs-banner a {
             color: white;
-            cursor: pointer;
-            background: none;
-            border: none;
-            opacity: 0.8;
+            text-decoration: underline;
+            font-weight: bold;
             transition: opacity 0.2s;
         }
-        .pqrs-popup-close:hover {
-            opacity: 1;
+
+        #pqrs-banner a:hover {
+            opacity: 0.8;
         }
-        .pqrs-popup-body {
-            padding: 30px;
+
+        #pqrs-banner .fa-solid {
+            margin-right: 5px;
         }
-        .pqrs-popup-body p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            color: #555;
-            margin: 0 0 25px 0;
-        }
-        .pqrs-popup-cta {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--secondary-color), #ff8f00);
+
+        #pqrs-close-banner {
+            background: none;
+            border: none;
             color: white;
-            text-decoration: none;
-            padding: 15px 35px;
-            font-size: 1.1em;
-            font-weight: 700;
-            border-radius: 50px;
-            box-shadow: 0 6px 15px rgba(245, 124, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-left: 20px;
         }
-        .pqrs-popup-cta:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(245, 124, 0, 0.4);
-        }
-        .pqrs-popup-cta .fa-solid {
-            margin-right: 8px;
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
         }
     </style>
 </head>
 <body>
+
+    <div id="pqrs-banner">
+        <p><i class="fa-solid fa-file-signature"></i> ¡Nuevo informe disponible! Auditoría #1 PQRS.</p>
+        <a href="pqrs.html" target="_blank" rel="noopener noreferrer">
+            Ver Informe de Auditoría <i class="fa-solid fa-chart-pie"></i>
+        </a>
+        <button id="pqrs-close-banner">&times;</button>
+    </div>
 
     <header>
         <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="header-logo">
@@ -584,6 +550,7 @@
             <a href="#espacios-publicos">Espacios Públicos</a>
             <a href="#proyectos-estrategicos">Proyectos Estratégicos</a>
             <a href="#futuro">Gestión Estratégica</a>
+            <a href="pp.html" target="_blank" rel="noopener noreferrer">Presupuesto Participativo</a>
         </div>
     </nav>
 
@@ -810,22 +777,6 @@
         </form>
     </div>
 
-    <div id="pqrs-popup-overlay">
-        <div class="pqrs-popup-content">
-            <div class="pqrs-popup-header">
-                <h2><i class="fa-solid fa-file-signature"></i> Auditoría #1 PQRS</h2>
-                <button class="pqrs-popup-close" id="pqrs-popup-close-btn">&times;</button>
-            </div>
-            <div class="pqrs-popup-body">
-                <p>¡Nuevo informe disponible! Hemos completado un análisis integral del sistema PQRS para optimizar nuestros tiempos de respuesta y gestión. Consulta los hallazgos y recomendaciones.</p>
-                <a href="pqrs.html" target="_blank" rel="noopener noreferrer" class="pqrs-popup-cta">
-                    <i class="fa-solid fa-chart-pie"></i>Ver Informe de Auditoría
-                </a>
-            </div>
-        </div>
-    </div>
-
-
     <footer>
         <p class="footer-date">Fecha de reporte: 11 de julio de 2025</p>
         <div class="footer-credits">
@@ -850,31 +801,18 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             
-            // --- LÓGICA DEL POP-UP DE AUDITORÍA PQRS ---
-            const pqrsPopupOverlay = document.getElementById('pqrs-popup-overlay');
-            const pqrsPopupCloseBtn = document.getElementById('pqrs-popup-close-btn');
+            // --- LÓGICA DEL BANNER DE AUDITORÍA PQRS ---
+            const pqrsBanner = document.getElementById('pqrs-banner');
+            const pqrsCloseBannerBtn = document.getElementById('pqrs-close-banner');
 
-            // Función para mostrar el popup
-            function showPqrsPopup() {
-                pqrsPopupOverlay.classList.add('visible');
-            }
+            // Show the banner after 2 seconds
+            setTimeout(() => {
+                pqrsBanner.style.display = 'flex'; // Make sure it's visible with flex for proper alignment
+            }, 2000);
 
-            // Función para ocultar el popup
-            function hidePqrsPopup() {
-                pqrsPopupOverlay.classList.remove('visible');
-            }
-
-            // Mostrar el popup después de 2 segundos de carga de la página
-            setTimeout(showPqrsPopup, 2000);
-
-            // Event listener para el botón de cerrar
-            pqrsPopupCloseBtn.addEventListener('click', hidePqrsPopup);
-
-            // Event listener para cerrar haciendo clic en el overlay
-            pqrsPopupOverlay.addEventListener('click', function(event) {
-                if (event.target === pqrsPopupOverlay) {
-                    hidePqrsPopup();
-                }
+            // Close banner when close button is clicked
+            pqrsCloseBannerBtn.addEventListener('click', () => {
+                pqrsBanner.style.display = 'none';
             });
 
 
