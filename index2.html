@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Integral de PQRS - Secretaría de Infraestructura Física</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" rel="stylesheet"/>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #005A9C, #003D6B);
+            color: #FFFFFF;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid #F27405;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.8em;
+            font-weight: 300;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 1.3em;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #005A9C;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #F27405;
+            color: white;
+        }
+        
+        .section-card {
+            background-color: #FFFFFF;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #005A9C;
+            border-bottom: 4px solid #F27405;
+            padding-bottom: 15px;
+            font-size: 2em;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+        
+        h3 {
+            color: #005A9C;
+            font-size: 1.6em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .summary-card {
+            background-color: #fdfdfd;
+            border-left: 5px solid #F27405;
+            padding: 25px;
+            margin: 20px 0 30px 0;
+            border-radius: 5px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .finding-item {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid #005A9C;
+        }
+        
+        .finding-item h4 {
+            color: #005A9C;
+            font-size: 1.2em;
+            margin-top: 0;
+        }
+
+        .highlight {
+            color: #F27405;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #005A9C;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        table tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .recommendations ol {
+            list-style-type: none;
+            padding-left: 0;
+            counter-reset: recommendation-counter;
+        }
+
+        .recommendations ol li {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 15px 20px 15px 50px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            position: relative;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .recommendations ol li::before {
+            counter-increment: recommendation-counter;
+            content: counter(recommendation-counter);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #fff;
+            color: #44a08d;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .unit-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+        }
+        
+        .unit-header h3 {
+            color: white;
+            font-size: 2.2em;
+            margin: 0;
+        }
+
+        .unit-header .period {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px 0;
+        }
+
+        .metric-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .metric-icon { font-size: 2.5em; margin-bottom: 10px; display: block; }
+        .metric-value { font-size: 2.2em; font-weight: 700; margin-bottom: 5px; }
+        .metric-label { color: #7f8c8d; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .success { color: #27ae60; }
+        .warning { color: #f39c12; }
+        .danger { color: #e74c3c; }
+        .info { color: #3498db; }
+        .primary { color: #9b59b6; }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-title { font-size: 1.3em; font-weight: 600; margin-bottom: 20px; color: #2c3e50; text-align: center; }
+        .chart-canvas { max-height: 300px; }
+        
+        .map-container, .chart-full-width-container { margin-bottom: 30px; text-align: center; }
+        #mapaMedellin, .folium-map { height: 500px; width: 100%; border-radius: 10px; border: 2px solid #ecf0f1; }
+        .map-legend { background: rgba(255, 255, 255, 0.95); padding: 15px; border-radius: 8px; margin-top: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: inline-block; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.9em; }
+        .legend-color { width: 20px; height: 20px; border-radius: 50%; margin-right: 10px; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); }
+        
+        .alerts-section { margin-bottom: 25px; }
+        .alert { padding: 15px; border-radius: 10px; margin-bottom: 15px; font-weight: 500; color: white; }
+        .alert-critical { background: linear-gradient(45deg, #ff6b6b, #ee5a52); }
+        .alert-important { background: linear-gradient(45deg, #ffa726, #ff9800); }
+        
+        .strengths-weaknesses { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
+        .strengths, .weaknesses { padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); }
+        .strengths { border-left: 5px solid #27ae60; }
+        .weaknesses { border-left: 5px solid #e74c3c; }
+        .section-title { font-size: 1.4em; font-weight: 600; margin-bottom: 20px; color: #2c3e50; text-align: center; }
+        .item-list { list-style: none; padding: 0; }
+        .item-list li { padding: 12px; margin-bottom: 10px; border-radius: 8px; font-weight: 500; color: white; }
+        .strength-item { background: linear-gradient(45deg, #2ecc71, #27ae60); }
+        .weakness-item { background: linear-gradient(45deg, #e74c3c, #c0392b); }
+
+        .footer { text-align: center; padding: 20px; margin-top: 40px; font-style: italic; color: #666; border-top: 1px solid #ddd;}
+        
+        img { max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-button">← Volver</a>
+    
+        <div class="header">
+            <h1>Análisis Integral de PQRS SIF</h1>
+            <p>Secretaría de Infraestructura Física - Alcaldía de Medellín</p>
+            <p>Corte de Datos: 07 de julio de 2025</p>
+        </div>
+
+        <div class="section-card" id="general-analysis">
+            <h2>Resumen Ejecutivo General</h2>
+            <div class="summary-card">
+                <p>
+                    Este informe presenta un análisis completo del histórico de Peticiones, Quejas, Reclamos y Sugerencias (PQRS), basado en <strong>8,928 registros</strong>. El objetivo es identificar patrones clave, deficiencias en la calidad de los datos y oportunidades de mejora en la gestión global de la Secretaría de Infraestructura Física. Los hallazgos se centran en el estado de resolución, tipología, distribución geográfica y tiempos de respuesta, culminando con un análisis detallado de la Unidad de Mantenimiento.
+                </p>
+            </div>
+
+            <h2>Hallazgos Clave de la Secretaría</h2>
+
+            <div class="findings-grid">
+                <div class="finding-item">
+                    <h4>1. Calidad de Datos Crítica</h4>
+                    <p>La capacidad de análisis se ve afectada por valores faltantes:</p>
+                    <ul>
+                        <li><span class="highlight">Comuna Reporte:</span> 853 valores ausentes.</li>
+                        <li><span class="highlight">Comuna Hecho:</span> 661 valores ausentes.</li>
+                        <li><span class="highlight">Fecha de Respuesta:</span> 1,476 casos sin fecha, impidiendo medir tiempos.</li>
+                        <li><span class="highlight">Identificación:</span> 6,102 registros sin segundo nombre.</li>
+                    </ul>
+                </div>
+                 <div class="finding-item">
+                    <h4>2. Tipología de Solicitudes</h4>
+                    <p>La demanda de servicios está claramente definida:</p>
+                    <ul>
+                        <li><span class="highlight">Interés Particular:</span> 5,160 casos (57.8%).</li>
+                        <li><span class="highlight">Trámites:</span> 1,918 casos (21.5%).</li>
+                        <li><span class="highlight">Interés General:</span> 1,233 casos (13.8%).</li>
+                        <li><span class="highlight">Casos sensibles:</span> 76 tutelas y 4 demandas.</li>
+                    </ul>
+                </div>
+                <div class="finding-item">
+                    <h4>3. Tiempos de Gestión</h4>
+                     <p>Existen inconsistencias significativas en el registro de fechas:</p>
+                    <ul>
+                        <li><span class="highlight">Errores de Registro:</span> Fechas de ingreso al sistema SIF anteriores a la fecha del radicado (mínimo -361 días).</li>
+                        <li><span class="highlight">Alta Variabilidad:</span> Desviación estándar de 98.4 días en el tiempo de registro, indicando falta de estandarización.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Estado General de Resolución de PQRS</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estado de la Solicitud</th>
+                        <th>Cantidad de Casos</th>
+                        <th>Porcentaje del Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>EVACUADO</td><td>7,320</td><td>82.0%</td></tr>
+                    <tr><td class="highlight">SIN RESPUESTA</td><td class="highlight">694</td><td class="highlight">7.8%</td></tr>
+                    <tr><td>EVACUADA - RESPUESTA ENVIADA POR CORREO</td><td>443</td><td>5.0%</td></tr>
+                    <tr><td>DEVOLUCION BACK OFFICE</td><td>289</td><td>3.2%</td></tr>
+                    <tr><td>OTROS</td><td>182</td><td>2.0%</td></tr>
+                </tbody>
+            </table>
+            <p>Aunque el 82% de los casos están cerrados, los <span class="highlight">694 casos 'SIN RESPUESTA'</span> representan el principal foco de riesgo en la oportunidad de la gestión y el cumplimiento de los términos legales.</p>
+            
+            <div class="recommendations">
+                <h2>Recomendaciones Estratégicas Generales</h2>
+                <ol>
+                    <li><strong>Mejorar Calidad del Dato:</strong> Implementar controles y capacitaciones para la correcta digitación de fechas y comunas.</li>
+                    <li><strong>Gestionar Casos Pendientes:</strong> Crear un plan de acción inmediato para los <span class="highlight">694 casos 'SIN RESPUESTA'</span>.</li>
+                    <li><strong>Optimizar Procesos por Tipología:</strong> Analizar el flujo de trabajo de las 'SOLICITUD-INTERÉS PARTICULAR' para identificar mejoras.</li>
+                    <li><strong>Fortalecer Análisis Territorial:</strong> Usar datos geográficos para coordinar acciones preventivas, reduciendo registros sin comuna.</li>
+                    <li><strong>Auditar Registro de Fechas:</strong> Investigar inconsistencias en las fechas para garantizar la fiabilidad de los KPIs de gestión.</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="section-card" id="analytical-report">
+            <h2>Informe Analítico de Datos - Reportes Ciudadanos</h2>
+            
+            <h3>1. Geovisor de Solicitudes SIN RESPUESTA</h3>
+            <div class="map-container">
+                <div class="folium-map" id="map_39f91526ff988a04f0816af04a8b2908"></div>
+            </div>
+            
+            <h3>2. Evolución Temporal de Radicaciones</h3>
+            <div class="chart-full-width-container">
+                 <img src="data:image/png;base64,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6SV98803Qz6/fv36NGrUKP3hD3+I6P49Ho8++eQTvffee1qyZImj12/fvr369++v448/Pq6ftQEAACSK3QAAAIihYcOGKTMzU+Xl5ZLqO4gWLlwYUXG2gf+XxCNGjAhZ6PZ4PPrXv/6lV1991bLItqfa2lr98MMP+uGHH9S/f3898sgjIb8sdqpPPvlETzzxhEpLS8O6/rp16zR58mRNnjw54gJ2OIqLi3X77beH9SVpWVmZPvroI02fPl2jRo3SZZddFvXj1tbW6oknntBbb70V8nqVlZV64403NGvWLE2YMEFdunSJ+jHtNG/ePD300EMhiyUNSkpK9PLLL+uDDz7Q/fffryOPPDLqx50xY4buvfdeyy/zG+zYsUMTJ07U/Pnz9eSTT6p58+aS6t+/Tz31lF5//fWQBdbi4mLdddddWrZsmW666aao17pixQpdf/31IQs/dXV1WrhwoS677DJdeOGF+utf/xrRgTs7d+7U3XffrTlz5jR63YqKCn3xxReaOXOmzjzzTN10001RF/Zqamr02GOP6b333ovodnfccYc+//zzsK9fWVmpzz77TJ999pkuueQSXXXVVUpNNfNMaVVVVbrjjjsafS02bdqkJ598Ul988YWeeOKJvXrMbdu2aezYsfr6668bve7u3bs1Z84czZ07V2eddZZuvvnmuE22iAWrQlrDezmUuXPn6oYbbwx6kJM/j8ejFStW6J577tFbb72lxx57LOIJJFu3btXNN98c9CCnBmvXrtV9992nmTNn6uGHH47oMfZWTU2NnnnmGb311ltBD4jZU11dnZYvX67ly5dr3rx5evbZZy2vV1paqpNPPjlkodlfUVGR/vWvf+mtt97SuHHjdOihh4Z92wbr16/XPffc0+jvvEF5eblmzpypmTNnauzYsTr55JMjfsxQ7Px8+O233+pvf/ubtm/fHnJ9CxYs0KWXXqq//e1vOu200yJ6jKqqKj3yyCP69NNPQ/79lOqf38KFC7Vw4UIdc8wxuv/++8OaKlFaWqobb7wx7NdUqv988dlnn+nrr7/WV199FfbtAAAAomHm/xMFAACAI2VkZOj444/32RZpZ5NUPwJ51qxZPttCde/U1NTozjvv1EsvvWT5RWbTpk0tO9EkaeHChbr00kuDdns5kcfj0RNPPKF77703aKG7WbNmat26dcKKU2vWrNGll14atNCdmZlpeTBDdXW1Jk6cqPvvvz/sAom/hx56KKDQ3aRJE7Vu3dqyeLl+/Xpdd911ERUITDFlyhTdcMMNloXu1NRUtW7dWs2aNQv4WVlZmW688UZ9+umnUT3urFmzdOedd/oUutPS0tSmTRvLfWzhwoW6//77vZd/8Y9/6LXXXvP5or5Zs2ZBOwvffPNNvfvuu1Gtde3atbrmmmsCCt3B9kGPx6PXX39d48aNa7SQ0KCkpESXXXZZ0OJqixYtLF+Hhg7Um266Ker976GHHgoodDeMQA71fg/WCZiSkqLMzEy1bt06aAH2pZde0oMPPhjVeuOtqqpK119/fUSvxZIlS3Tddddp9+7dUT3mL7/8opEjRwYtdDdv3txy3/Z4PHr33Xd18803q6amJqrHTgSrzvhwJnA0jM220qxZM7Vp08byfSFJy5cv18iRI1VSUhL2Ordt26Yrr7wyaIGuZcuWAe/52bNn64477gj7vb63tm/frjFjxui1114LWujOzMwM+hkm1DpramqC5kh6erratGmjFi1aWP5869atuuqqqzR//vxGnoGvBQsW6OKLLw76O2/4u9C0aVPLn8f6927n58PvvvtON9xwg0+hOyUlRa1bt7Z8/rW1tXrggQf07bffhv0YJSUlGj16tD755BPL313DZz2rzzpffvmlrrjiikanMuzevTvk+ygjI0NZWVlhHfACAAAQL3R2AwAAIKZOO+00ffDBB97LX375pW677bagX6hamT59uk+R4YADDgg5JvfZZ5/Vf/7zH59trVq10siRIzV8+HDvl/Dl5eX65ptv9Morr2jFihXe665fv14333yzXn311aBfwDrJc889pzfeeMNnW1pamk488UQdd9xx6tevn/fLXY/Ho/Xr12vZsmWaNWuW5s6dG3KsbDQqKyt10003BRRgDz74YF100UUaOHCgWrRoIY/How0bNujzzz/Xyy+/7J0QIElTp05Vly5ddOmll0b02B988IH3C9qOHTvqL3/5iwYPHqzOnTtLqv8Sd8GCBZo4caKWL1/uvd3atWv10ksv6aqrror2aSfcjBkzNG7cOJ9tHTp00Nlnn62jjjpKvXr18hY7N2/erDlz5uiVV17Rhg0bJNV/0f7ggw+qV69eOuCAA8J+3JKSEo0dO1a1tbVq1qyZzj//fJ1wwgnavn27pKSmqrrq6up0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"/>
+        </div>
+
+        <div class="section-card" id="maintenance-unit-analysis">
+            <div class="unit-header">
+                <h3>📊 Análisis Profundo: Unidad de Mantenimiento</h3>
+                <div class="period">📅 Período: 01/07/2024 - 10/06/2025</div>
+            </div>
+            
+            <div style="padding: 20px;">
+                <h3 style="text-align:left; color: #2c3e50; border-bottom: 2px solid #667eea; padding-bottom:10px;">Métricas de Rendimiento</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card"><span class="metric-icon primary">📊</span><div class="metric-value primary">892</div><div class="metric-label">Total Casos</div></div>
+                    <div class="metric-card"><span class="metric-icon success">✅</span><div class="metric-value success">87.8%</div><div class="metric-label">Tasa de Resolución</div></div>
+                    <div class="metric-card"><span class="metric-icon warning">⏱️</span><div class="metric-value warning">28.4</div><div class="metric-label">Días Promedio</div></div>
+                    <div class="metric-card"><span class="metric-icon danger">📅</span><div class="metric-value danger">42.0%</div><div class="metric-label">Tasa de Prórroga</div></div>
+                    <div class="metric-card"><span class="metric-icon info">🔄</span><div class="metric-value info">88</div><div class="metric-label">Casos Abiertos</div></div>
+                </div>
+
+                <div class="alerts-section">
+                    <h3 class="section-title">🚨 Alertas Clave de la Unidad</h3>
+                    <div class="alert alert-critical">🔥 <strong>CRÍTICO:</strong> Tasa de prórroga muy alta: 42.0%</div>
+                    <div class="alert alert-important">⚠️ <strong>IMPORTANTE:</strong> Tiempo promedio de gestión elevado: 28.4 días.</div>
+                    <div class="alert alert-critical">🔥 <strong>CRÍTICO:</strong> 1 caso sin respuesta con más de 30 días.</div>
+                </div>
+
+                <div class="strengths-weaknesses">
+                    <div class="strengths">
+                        <h3 class="section-title">🏆 Fortalezas</h3>
+                        <ul class="item-list">
+                            <li class="strength-item">✅ Excelente tasa de resolución (87.8%)</li>
+                            <li class="strength-item">🎯 Alto volumen de casos gestionados (892)</li>
+                            <li class="strength-item">📊 Cobertura amplia de sectores (245)</li>
+                        </ul>
+                    </div>
+                    <div class="weaknesses">
+                        <h3 class="section-title">⚠️ Áreas de Mejora</h3>
+                        <ul class="item-list">
+                            <li class="weakness-item">🔴 Alta tasa de prórrogas (42.0%)</li>
+                            <li class="weakness-item">🔴 Tiempo promedio elevado (28.4 días)</li>
+                            <li class="weakness-item">🔴 Número considerable de casos abiertos (88)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3 class="section-title">💡 Recomendaciones para la Unidad de Mantenimiento</h3>
+                <div class="recommendations">
+                    <ol>
+                        <li>Optimizar procesos para reducir tiempos de respuesta.</li>
+                        <li>Revisar causas de prórrogas y establecer medidas preventivas.</li>
+                        <li>Implementar sistema de seguimiento automatizado para casos abiertos.</li>
+                        <li>Desarrollar dashboard en tiempo real para monitoreo continuo.</li>
+                        <li>Establecer metas específicas por unidad y sector.</li>
+                    </ol>
+                </div>
+
+                <h3 class="section-title">Visualización de Datos de la Unidad</h3>
+                <div class="charts-grid">
+                    <div class="chart-container"><h4 class="chart-title">📋 Distribución por Estado</h4><canvas id="estadoChart" class="chart-canvas"></canvas></div>
+                    <div class="chart-container"><h4 class="chart-title">🏘️ Top 10 Sectores</h4><canvas id="sectoresChart" class="chart-canvas"></canvas></div>
+                    <div class="chart-container"><h4 class="chart-title">🏙️ Top 10 Comunas</h4><canvas id="comunasChart" class="chart-canvas"></canvas></div>
+                    <div class="chart-container"><h4 class="chart-title">🏢 Análisis por Unidad (Casos Asignados)</h4><canvas id="unidadesChart" class="chart-canvas"></canvas></div>
+                </div>
+                
+                <div class="map-container">
+                    <h3 class="section-title">🗺️ Mapa de Calor de PQRS por Sectores en Medellín</h3>
+                    <div id="mapaMedellin"></div>
+                    <div class="map-legend">
+                        <h4 style="margin-bottom: 10px; color: #2c3e50;">📊 Leyenda de Intensidad</h4>
+                        <div class="legend-item"><div class="legend-color" style="background: #e74c3c;"></div><span><strong>Alto:</strong> >20 casos</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #f39c12;"></div><span><strong>Medio:</strong> 10-20 casos</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #3498db;"></div><span><strong>Bajo:</strong> 5-9 casos</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background: #2ecc71;"></div><span><strong>Muy Bajo:</strong> &lt;5 casos</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Reporte Integrado generado el 12/06/2025</strong></p>
+            <p>Análisis General por Felipe Flórez | Sistema de Gestión PQRS</p>
+        </div>
+    </div>
+    
+    <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+    <script src="https://cdn.plot.ly/plotly-2.4.1.min.js"></script>
+    <script type="text/javascript">
+        // Configuración global para Chart.js
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+        // Gráfico de Estados (Unidad de Mantenimiento)
+        const estadoCtx = document.getElementById('estadoChart').getContext('2d');
+        new Chart(estadoCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Cerrados', 'Abiertos', 'En Proceso'],
+                datasets: [{
+                    data: [783, 88, 18],
+                    backgroundColor: ['#27ae60', '#e74c3c', '#f39c12'],
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom', labels: { padding: 20, font: { size: 12, weight: 'bold' } } } } }
+        });
+
+        // Gráfico de Sectores (Unidad de Mantenimiento)
+        const sectoresCtx = document.getElementById('sectoresChart').getContext('2d');
+        new Chart(sectoresCtx, {
+            type: 'bar',
+            data: {
+                labels: ['El Poblado', 'San Antonio P.C.', 'Laureles', 'Santa Cruz', 'Aures Nº 1', 'La Mota', 'Campo Valdés Nº 2', 'Guayabal', 'No Aplica', 'Belén'],
+                datasets: [{
+                    label: 'Casos',
+                    data: [28, 27, 15, 13, 12, 11, 11, 10, 10, 10],
+                    backgroundColor: ['#e74c3c', '#e67e22', '#f39c12', '#f1c40f', '#27ae60', '#2ecc71', '#16a085', '#3498db', '#2980b9', '#9b59b6'],
+                    borderWidth: 0
+                }]
+            },
+            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true }, y: { ticks: { font: { size: 10 } } } } }
+        });
+
+        // Gráfico de Comunas (Unidad de Mantenimiento)
+        const comunasCtx = document.getElementById('comunasChart').getContext('2d');
+        new Chart(comunasCtx, {
+            type: 'bar',
+            data: {
+                labels: ['14-El Poblado', '16-Belén', '11-Laureles', '12-La América', '3-Manrique', '8-Villa Hermosa', '9-Buenos Aires', '7-Robledo', '10-La Candelaria', '13-San Javier'],
+                datasets: [{
+                    label: 'Casos',
+                    data: [111, 83, 67, 66, 56, 49, 49, 44, 38, 38],
+                    backgroundColor: ['#e74c3c', '#e67e22', '#f39c12', '#f1c40f', '#27ae60', '#2ecc71', '#16a085', '#3498db', '#2980b9', '#9b59b6'],
+                    borderWidth: 0
+                }]
+            },
+            options: { plugins: { legend: { display: false } }, scales: { x: { ticks: { maxRotation: 45, font: { size: 9 } } }, y: { beginAtZero: true } } }
+        });
+
+        // Gráfico de Unidades (Unidad de Mantenimiento)
+        const unidadesCtx = document.getElementById('unidadesChart').getContext('2d');
+        new Chart(unidadesCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Mantenimiento', 'Entes de Control', 'Estudios y Diseños', 'Otros'],
+                datasets: [{
+                    data: [864, 7, 2, 19],
+                    backgroundColor: ['#3498db', '#e67e22', '#9b59b6', '#95a5a6'],
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom', labels: { padding: 20, font: { size: 11, weight: 'bold' } } } } }
+        });
+
+        // MAPA DE MEDELLÍN (Unidad de Mantenimiento)
+        function initMap() {
+            try {
+                if (typeof L === 'undefined') {
+                    console.error('Leaflet no está cargado');
+                    return;
+                }
+                const medellinCenter = [6.2442, -75.5812];
+                const map = L.map('mapaMedellin').setView(medellinCenter, 11);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors | Análisis SIF',
+                    maxZoom: 18
+                }).addTo(map);
+
+                const sectoresData = [
+                    { nombre: 'EL POBLADO', lat: 6.2077, lng: -75.5669, casos: 28 },
+                    { nombre: 'SAN ANTONIO PARTE CENTRAL', lat: 6.1951, lng: -75.6397, casos: 27 },
+                    { nombre: 'LAURELES', lat: 6.2518, lng: -75.5906, casos: 15 },
+                    { nombre: 'SANTA CRUZ', lat: 6.2889, lng: -75.5494, casos: 13 },
+                    { nombre: 'AURES Nº 1', lat: 6.2742, lng: -75.5369, casos: 12 },
+                    { nombre: 'LA MOTA', lat: 6.2156, lng: -75.6078, casos: 11 },
+                    { nombre: 'CAMPO VALDES Nº 2', lat: 6.2889, lng: -75.5494, casos: 11 },
+                    { nombre: 'GUAYABAL', lat: 6.2300, lng: -75.5800, casos: 10 },
+                    { nombre: 'BELEN', lat: 6.2300, lng: -75.6200, casos: 10 },
+                    { nombre: 'LA CANDELARIA', lat: 6.2518, lng: -75.5743, casos: 8 },
+                    { nombre: 'ROBLEDO', lat: 6.2800, lng: -75.6200, casos: 7 },
+                    { nombre: 'VILLA HERMOSA', lat: 6.2600, lng: -75.5400, casos: 6 },
+                    { nombre: 'BUENOS AIRES', lat: 6.2400, lng: -75.5600, casos: 5 },
+                    { nombre: 'SAN JAVIER', lat: 6.2200, lng: -75.6400, casos: 4 }
+                ];
+
+                function getColor(d) {
+                    return d > 20 ? '#e74c3c' :
+                           d > 9 ? '#f39c12' :
+                           d > 4  ? '#3498db' : '#2ecc71';
+                }
+
+                sectoresData.forEach(sector => {
+                    L.circleMarker([sector.lat, sector.lng], {
+                        radius: 5 + Math.log(sector.casos) * 2,
+                        fillColor: getColor(sector.casos),
+                        color: '#fff',
+                        weight: 1.5,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    }).addTo(map)
+                    .bindPopup(`<b>${sector.nombre}</b><br>${sector.casos} reportados`);
+                });
+                
+                const group = new L.featureGroup(sectoresData.map(s => L.marker([s.lat, s.lng])));
+                map.fitBounds(group.getBounds().pad(0.2));
+
+            } catch (error) {
+                console.error('Error al inicializar el mapa:', error);
+                document.getElementById('mapaMedellin').innerHTML = '<p style="text-align:center;color:red;">Error al cargar el mapa. Verifique la conexión.</p>';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initMap);
+
+        // Scripts del reporte2.html
+        var map_39f91526ff988a04f0816af04a8b2908 = L.map(
+            "map_39f91526ff988a04f0816af04a8b2908",
+            {
+                center: [6.2442, -75.5812],
+                crs: L.CRS.EPSG3857,
+                zoom: 12,
+                zoomControl: true,
+                preferCanvas: false,
+            }
+        );
+
+        var tile_layer_4f17b4138691c833644e14f635fd31ce = L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+        ).addTo(map_39f91526ff988a04f0816af04a8b2908);
+    
+        var circle_bbb207e55b793cc157ace5ee8d1d9558 = L.circle(
+            [6.21, -75.57],
+            {"bubblingMouseEvents": true, "color": "#fee08b", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fee08b", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 360, "stroke": true, "weight": 3}
+        ).addTo(map_39f91526ff988a04f0816af04a8b2908);
+    
+        var popup_eea80bd844d26ca8b58c2575ff88023d = L.popup({"maxWidth": 300});
+        var html_975f6af40af04c87c31d2d63c85e7bba = $(`<div id="html_975f6af40af04c87c31d2d63c85e7bba" style="width: 100.0%; height: 100.0%;">     <div style='font-family: Arial; font-size: 13px;'>         <strong style='font-size: 18px;'>Solicitudes SIN RESPUESTA: 18</strong><br>         <b>Comuna 14</b><br>         <em>El Poblado – Zona de mayor desarrollo económico y comercial.</em>     </div>     </div>`)[0];
+        popup_eea80bd844d26ca8b58c2575ff88023d.setContent(html_975f6af40af04c87c31d2d63c85e7bba);
+        circle_bbb207e55b793cc157ace5ee8d1d9558.bindPopup(popup_eea80bd844d26ca8b58c2575ff88023d);
+
+        var circle_ff47fe660d26e395d1cc5a2702f26467 = L.circle(
+            [6.235, -75.583],
+            {"bubblingMouseEvents": true, "color": "#91cf60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#91cf60", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 180, "stroke": true, "weight": 3}
+        ).addTo(map_39f91526ff988a04f0816af04a8b2908);
+    
+        var popup_05b94a68de006907bc969198b478e626 = L.popup({"maxWidth": 300});
+        var html_4be356b6dea04e56f1c9161de5f3eae4 = $(`<div id="html_4be356b6dea04e56f1c9161de5f3eae4" style="width: 100.0%; height: 100.0%;">     <div style='font-family: Arial; font-size: 13px;'>         <strong style='font-size: 18px;'>Solicitudes SIN RESPUESTA: 9</strong><br>         <b>Comuna 11</b><br>         <em>Laureles-Estadio – Comuna de clase media con infraestructura deportiva.</em>     </div>     </div>`)[0];
+        popup_05b94a68de006907bc969198b478e626.setContent(html_4be356b6dea04e56f1c9161de5f3eae4);
+        circle_ff47fe660d26e395d1cc5a2702f26467.bindPopup(popup_05b94a68de006907bc969198b478e626);
+        
+        var circle_cb675b651892d0f6a5f5c1dafb074819 = L.circle(
+            [6.247, -75.567],
+            {"bubblingMouseEvents": true, "color": "#91cf60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#91cf60", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 120, "stroke": true, "weight": 3}
+        ).addTo(map_39f91526ff988a04f0816af04a8b2908);
+    
+        var popup_04841ffae5f968ab2e512c9ac2365e01 = L.popup({"maxWidth": 300});
+        var html_52190a395558072ced2463d0371ef9c2 = $(`<div id="html_52190a395558072ced2463d0371ef9c2" style="width: 100.0%; height: 100.0%;">     <div style='font-family: Arial; font-size: 13px;'>         <strong style='font-size: 18px;'>Solicitudes SIN RESPUESTA: 6</strong><br>         <b>Comuna 9</b><br>         <em>Buenos Aires – Comuna de tradición histórica y calles empinadas.</em>     </div>     </div>`)[0];
+        popup_04841ffae5f968ab2e512c9ac2365e01.setContent(html_52190a395558072ced2463d0371ef9c2);
+        circle_cb675b651892d0f6a5f5c1dafb074819.bindPopup(popup_04841ffae5f968ab2e512c9ac2365e01);
+
+        // ... [resto de los círculos del mapa] ...
+
+        var circle_27d4668a71a48202da9abe36ce712d28 = L.circle(
+            [6.232, -75.608],
+            {"bubblingMouseEvents": true, "color": "#91cf60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#91cf60", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20, "stroke": true, "weight": 3}
+        ).addTo(map_39f91526ff988a04f0816af04a8b2908);
+    
+        var popup_3069dc7e7867eafb0ac06b08b294d772 = L.popup({"maxWidth": 300});
+        var html_875e5ce0e8e01eb630645bc67f4c92e0 = $(`<div id="html_875e5ce0e8e01eb630645bc67f4c92e0" style="width: 100.0%; height: 100.0%;">     <div style='font-family: Arial; font-size: 13px;'>         <strong style='font-size: 18px;'>Solicitudes SIN RESPUESTA: 1</strong><br>         <b>Comuna 13</b><br>         <em>San Javier – Comuna occidental con acceso al metro cable.</em>     </div>     </div>`)[0];
+        popup_3069dc7e7867eafb0ac06b08b294d772.setContent(html_875e5ce0e8e01eb630645bc67f4c92e0);
+        circle_27d4668a71a48202da9abe36ce712d28.bindPopup(popup_3069dc7e7867eafb0ac06b08b294d772);
+
+
+        // Script de Plotly
+        if (document.getElementById("1c3f7879-ae8a-4ed3-8cbb-22dd5d8cf5b6")) {
+            Plotly.newPlot(
+                "1c3f7879-ae8a-4ed3-8cbb-22dd5d8cf5b6",
+                [{"alignmentgroup":"True","hovertemplate":"%{x}<br>Solicitudes: %{y}","legendgroup":"","marker":{"color":"indianred","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"v","showlegend":false,"textposition":"auto","type":"bar","x":["14 - EL POBLADO","16 - BELEN","11 - LAURELES","12 - LA AMERICA","3 - MANRIQUE","9 - BUENOS AIRES","8 - VILLA HERMOSA","7 - ROBLEDO","10 - LA CANDELARIA","13 - SAN JAVIER","1 - POPULAR","60 - CORREG SAN CRISTOBAL","80 - CORREG SAN ANTONIO DE PRADO","6 - DOCE DE OCTUBRE","4 - ARANJUEZ","15 - GUAYABAL","2 - SANTA CRUZ","5 - CASTILLA","90 - CORREG SANTA ELENA","70 - CORREG ALTAVISTA","NO APLICA","NO APORTA","50 - CORREG PALMITAS","DIRECCIÓN ERRADA","21 - FUERA DE ANTIOQUIA","20 - FUERA DE MEDELLIN","PENDIENTE"],"xaxis":"x","y":[114,86,69,67,58,51,50,44,41,38,36,36,35,35,30,29,23,19,18,13,10,9,4,2,1,1,1],"yaxis":"y"}],
+                {"barmode":"relative","font":{"size":14},"height":500,"legend":{"tracegroupgap":0},"template":{"data":{"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"#C8D4E3","linecolor":"#C8D4E3","minorgridcolor":"#C8D4E3","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"heatmapgl":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmapgl"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"#C8D4E3"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""},"bgcolor":"white","radialaxis":{"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"yaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"},"zaxis":{"backgroundcolor":"white","gridcolor":"#DFE8F3","gridwidth":2,"linecolor":"#EBF0F8","showbackground":true,"ticks":"","zerolinecolor":"#EBF0F8"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"baxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""},"bgcolor":"white","caxis":{"gridcolor":"#DFE8F3","linecolor":"#A2B1C6","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#EBF0F8","linecolor":"#EBF0F8","ticks":"","title":{"standoff":15},"zerolinecolor":"#EBF0F8","zerolinewidth":2}}},"title":{"text":"Cantidad de Solicitudes por Comuna"},"xaxis":{"anchor":"y","domain":[0.0,1.0],"tickangle":-45,"title":{"text":"Comuna"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Cantidad"}}},
+                {"responsive": true}
+            );
+        };
+    </script>
+</body>
+</html>
