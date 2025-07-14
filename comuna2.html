@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Analítica de Datos Comuna 2 - Santa Cruz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXrd3NBGQVJClubNFl4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        :root {
+            --color-azul-oscuro: #0D47A1;
+            --color-azul-medio: #1976D2;
+            --color-naranja: #FF6F00;
+            --color-blanco: #FFFFFF;
+            --color-gris-claro: #F5F5F5;
+            --color-texto: #333333;
+            --sombra-card: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--color-gris-claro);
+            color: var(--color-texto);
+            margin: 0;
+            padding: 0;
+        }
+        .actions-bar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            background-color: var(--color-blanco);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+        .actions-bar a, .actions-bar button {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .actions-bar .back-button {
+            color: var(--color-azul-medio);
+            border-color: var(--color-azul-medio);
+        }
+        .actions-bar .back-button:hover {
+            background-color: var(--color-azul-medio);
+            color: var(--color-blanco);
+        }
+        .actions-bar .download-button {
+            color: var(--color-blanco);
+            background-color: var(--color-naranja);
+            border-color: var(--color-naranja);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .actions-bar .download-button:hover {
+            background-color: #e66300;
+            border-color: #e66300;
+        }
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--color-azul-oscuro), var(--color-azul-medio));
+            color: var(--color-blanco);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--sombra-card);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 5px 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: var(--color-azul-oscuro);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--color-naranja);
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+        .grid-container, .intervention-section {
+            display: grid;
+            gap: 25px;
+        }
+        .grid-container {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .intervention-section {
+             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+             align-items: stretch;
+        }
+        .stat-card {
+            background-color: var(--color-blanco);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+            text-align: center;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card .icon {
+            font-size: 3em;
+            color: var(--color-naranja);
+            margin-bottom: 15px;
+        }
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--color-azul-medio);
+        }
+        .stat-card .label {
+            font-size: 0.9em;
+            color: var(--color-texto);
+            margin-top: 5px;
+            line-height: 1.3;
+        }
+        .summary-table-container {
+            width: 100%;
+            overflow-x: auto;
+         }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: var(--color-blanco);
+            box-shadow: var(--sombra-card);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .summary-table th, .summary-table td {
+            padding: 15px;
+            text-align: left;
+        }
+        .summary-table thead {
+            background-color: var(--color-azul-medio);
+            color: var(--color-blanco);
+            font-weight: 600;
+        }
+        .summary-table tbody tr:nth-child(even) {
+            background-color: var(--color-gris-claro);
+        }
+        .summary-table tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+        .summary-table tfoot td {
+            font-weight: bold;
+            background-color: #e0e0e0;
+        }
+        .intervention-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            align-items: stretch;
+        }
+        .detail-list {
+            background-color: var(--color-blanco);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+        }
+        .detail-list h3 {
+             margin-top: 0;
+             color: var(--color-azul-oscuro);
+             border-bottom: 2px solid var(--color-gris-claro);
+             padding-bottom: 10px;
+        }
+        .detail-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .detail-list li {
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--color-gris-claro);
+        }
+        .detail-list li:last-child {
+            border-bottom: none;
+        }
+        .detail-list li strong {
+            color: var(--color-texto);
+        }
+        .chart-container {
+            background: var(--color-blanco);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="actions-bar">
+        <a href="index.html" class="back-button">← Volver</a>
+        <button id="download-pdf" class="download-button">
+            <i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)
+        </button>
+    </div>
+
+    <div class="container" id="report-content">
+        <header class="header">
+            <h1>Reporte de Analítica de Datos Comuna 2 - Santa Cruz</h1>
+            <p>Fecha de corte al 11 de julio de 2025</p>
+        </header>
+        
+        <section>
+            <h2 class="section-title"><i class="fas fa-home"></i>Parques Tejiendo Hogares</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="stat-card"><div class="value">1</div><div class="label">Parques intervenidos</div></div>
+                <div class="stat-card"><div class="value">1.678 m²</div><div class="label">Área total intervenida</div></div>
+                <div class="stat-card"><div class="value">1.989</div><div class="label">Niños sisbenizados</div></div>
+                <div class="stat-card"><div class="value">Mejoras Puntuales</div><div class="label">Tipo de intervención</div></div>
+            </div>
+            <div class="detail-list" style="margin-top: 25px;">
+                <h3>Detalles del Parque Intervenido: Parque La Isla</h3>
+                <ul>
+                    <li><span>Comuna:</span> <strong>02 - Santa Cruz</strong></li>
+                    <li><span>Dirección:</span> <strong>Carrera 46 con Calle 116 - 16</strong></li>
+                    <li><span>Actividad:</span> <strong>Parques Mejorados</strong></li>
+                    <li><span>Área de Intervención:</span> <strong>1.678 m²</strong></li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-tools"></i></div>
+                    <div class="value">488</div>
+                    <div class="label">Baches Intervenidos en la Comuna</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="value">$1.156.734.306</div>
+                    <div class="label">Costo Total de Intervención</div>
+                </div>
+            </div>
+             <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Desglose por Barrio</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Barrio</th>
+                                <th>Número de Baches</th>
+                                <th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Andalucía</td><td>21</td><td>$43.865.832</td></tr>
+                            <tr><td>La Francia</td><td>99</td><td>$284.769.688</td></tr>
+                            <tr><td>La Frontera</td><td>80</td><td>$140.105.076</td></tr>
+                            <tr><td>La Isla</td><td>38</td><td>$163.557.016</td></tr>
+                            <tr><td>La Rosa</td><td>26</td><td>$70.074.977</td></tr>
+                            <tr><td>Moscú No.1</td><td>32</td><td>$85.601.919</td></tr>
+                            <tr><td>Pablo VI</td><td>4</td><td>$6.683.555</td></tr>
+                            <tr><td>Playón de Los Comuneros</td><td>73</td><td>$122.364.609</td></tr>
+                            <tr><td>Santa Cruz</td><td>50</td><td>$103.771.161</td></tr>
+                            <tr><td>Villa del Socorro</td><td>30</td><td>$56.592.174</td></tr>
+                            <tr><td>Villa Niza</td><td>35</td><td>$79.348.299</td></tr>
+                        </tbody>
+                        <tfoot>
+                            <tr><td>Total</td><td>488</td><td>$1.156.734.306</td></tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas SIF - Vigencia 2024</h2>
+             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="value">23</div>
+                    <div class="label">Solicitudes Gestionadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-wallet"></i></div>
+                    <div class="value">$101.380.141</div>
+                    <div class="label">Costo Total de Obras</div>
+                </div>
+            </div>
+             <div class="intervention-section" style="margin-top: 25px;">
+                <div class="detail-list">
+                    <h3>Costo por Grupo de Obra</h3>
+                    <ul>
+                        <li><span>Obras Civiles Menores</span> <strong>~$54.4M</strong></li>
+                        <li><span>Parques y Cerramientos</span> <strong>~$46.8M</strong></li>
+                    </ul>
+                </div>
+                <div class="detail-list">
+                    <h3>Distribución por Indicador</h3>
+                    <ul>
+                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>8</strong></li>
+                        <li><span>Mantenimiento de parques</span> <strong>7</strong></li>
+                        <li><span>Mantenimiento de zonas verdes</span> <strong>5</strong></li>
+                        <li><span>Limpieza de vías y cunetas</span> <strong>2</strong></li>
+                        <li><span>Andenes y contenciones</span> <strong>1</strong></li>
+                    </ul>
+                </div>
+             </div>
+             <div class="intervention-section" style="margin-top: 25px;">
+                <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra (2024)</h3>
+                    <canvas id="distribucionGrupo2024Chart"></canvas>
+                </div>
+                 <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado Actual de Obras (2024)</h3>
+                    <canvas id="estadoObra2024Chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-calendar-alt"></i>Intervenciones Directas SIF - Vigencia 2025</h2>
+             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="value">11</div>
+                    <div class="label">Solicitudes Gestionadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-wallet"></i></div>
+                    <div class="value">$107.223.905</div>
+                    <div class="label">Costo Total de Obras</div>
+                </div>
+            </div>
+            <div class="intervention-section" style="margin-top: 25px;">
+                 <div class="detail-list">
+                    <h3>Costo por Grupo de Obra</h3>
+                    <ul>
+                        <li><span>Pavimentos</span> <strong>~$83 millones</strong></li>
+                        <li><span>Parques y Cerrajería</span> <strong>~$24 millones</strong></li>
+                    </ul>
+                </div>
+                 <div class="detail-list">
+                    <h3>Distribución por Indicador</h3>
+                    <ul>
+                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>5</strong></li>
+                        <li><span>Espacios públicos mantenidos</span> <strong>3</strong></li>
+                        <li><span>Andenes mantenidos</span> <strong>1</strong></li>
+                        <li><span>Apoyo a otras entidades</span> <strong>1</strong></li>
+                        <li><span>Infraestructura vial urbana mantenida</span> <strong>1</strong></li>
+                    </ul>
+                </div>
+            </div>
+             <div class="intervention-section" style="margin-top: 25px;">
+                <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra (2025)</h3>
+                    <canvas id="distribucionGrupo2025Chart"></canvas>
+                </div>
+                 <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado Actual de Obras (2025)</h3>
+                    <canvas id="estadoObra2025Chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle de Intervenciones (2025)</h3>
+                <div class="summary-table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Dirección</th>
+                                <th>Barrio</th>
+                                <th>No. Intervenciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>CL 103 B CR 45 A</td><td>Villa del Socorro</td><td>1</td></tr>
+                            <tr><td>CL 104 B CR 42 A</td><td>Villa del Socorro</td><td>1</td></tr>
+                            <tr><td>CL 107 CR 47</td><td>Andalucía</td><td>1</td></tr>
+                            <tr><td>CL 113 CR 51</td><td>Santa Cruz</td><td>1</td></tr>
+                            <tr><td>CL 115 CR 46</td><td>La Isla</td><td>2</td></tr>
+                            <tr><td>CL 93 CR 39</td><td>Andalucía</td><td>1</td></tr>
+                            <tr><td>Bajos puente Av Guayabal...</td><td>-</td><td>1</td></tr>
+                            <tr><td>CL 97 A CR 48</td><td>Santa Cruz</td><td>1</td></tr>
+                            <tr><td>CR 48 B CL 107 y 107-118</td><td>Andalucía</td><td>1</td></tr>
+                        </tbody>
+                        <tfoot>
+                            <tr><td>Total</td><td></td><td>11</td></tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2 class="section-title"><i class="fas fa-exchange-alt"></i>Comparativo de Intervenciones por Vigencia</h2>
+            <div class="summary-table-container">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Vigencia</th>
+                            <th>Apoyo a Otras Entidades</th>
+                            <th>Obras Civiles Menores</th>
+                            <th>Parques y Cerrajería</th>
+                            <th>Pavimentos</th>
+                            <th>EPM</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>2024</strong></td><td>2</td><td>7</td><td>14</td><td>-</td><td>-</td><td><strong>23</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>2025</strong></td><td>1</td><td>1</td><td>8</td><td>1</td><td>-</td><td><strong>11</strong></td>
+                        </tr>
+                        <tr style="background-color: var(--color-azul-oscuro); color: var(--color-blanco); font-weight: bold;">
+                            <td>Total General</td><td>3</td><td>8</td><td>22</td><td>1</td><td>-</td><td><strong>34</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-file-signature"></i>Seguimiento a Contratos de Obra</h2>
+            <div class="summary-table-container">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Cantidad Acumulada</th>
+                            <th>Unidad de Medida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>ANDEN CONSTRUIDO</td><td>0</td><td>m</td></tr>
+                        <tr><td>ANDENES CONSTRUIDOS Y MEJORADOS</td><td>0</td><td>m</td></tr>
+                        <tr><td>ANDENES MANTENIDOS</td><td>0</td><td>m</td></tr>
+                        <tr><td>ARBOL MANTENIDO</td><td>0</td><td>un</td></tr>
+                        <tr><td>ARBOL SEMBRADO</td><td>0</td><td>un</td></tr>
+                        <tr><td>BARANDAS Y PASAMANOS</td><td>0</td><td>m</td></tr>
+                        <tr><td>BORDILLOS-CUNETAS</td><td>0</td><td>m</td></tr>
+                        <tr><td>CICLOPARQUEADEROS INSTALADOS</td><td>11</td><td>un</td></tr>
+                        <tr><td>CICLORUTA CONSTRUIDA</td><td>0</td><td>m</td></tr>
+                        <tr><td>DISEÑO</td><td>182</td><td>%</td></tr>
+                        <tr><td>GESTION PREDIAL</td><td>100</td><td>%</td></tr>
+                        <tr><td>HUECOS TAPADOS (UND)</td><td>486</td><td>un</td></tr>
+                        <tr><td>JARDIN SEMBRADO</td><td>0</td><td>m2</td></tr>
+                        <tr><td>JUEGO INFANTIL O ELEMENTO DE GIMNASIO NUEVO</td><td>0</td><td>un</td></tr>
+                        <tr><td>OBRA DE ESTABILIZACION</td><td>0</td><td>m</td></tr>
+                        <tr><td>PASAMANOS Y DEFENSAS INSTALADOS</td><td>506</td><td>m</td></tr>
+                        <tr><td>PUENTE CONSTRUIDO</td><td>0</td><td>un</td></tr>
+                        <tr><td>VIA ASFALTO MANTENIDA (Fallos y Repav.)</td><td>1668</td><td>m2</td></tr>
+                        <tr><td>VÍAS URBANAS MANTENIDAS</td><td>0</td><td>KM</td></tr>
+                        <tr><td>ZONA VERDE SEMBRADA</td><td>0</td><td>m2</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section>
+            <h2 class="section-title"><i class="fas fa-leaf"></i>Actividades Jardín Botánico</h2>
+            <div class="chart-container">
+                 <h3 style="text-align: center; color: var(--color-azul-oscuro);">Conservación</h3>
+                 <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Año</th><th>Mes</th><th>#Contrato</th><th>Actividad</th><th>Unidad</th><th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2024</td><td>febrero</td><td>4600097551</td><td>Conservación de jardines</td><td>m2</td><td>1.004,30</td></tr>
+                            <tr><td>2024</td><td>julio</td><td>4600102026</td><td>Área de conservación de pisos duros</td><td>m2</td><td>3,00</td></tr>
+                            <tr><td>2024</td><td>julio</td><td>4600102026</td><td>Conservación de jardines</td><td>m2</td><td>1.084,30</td></tr>
+                            <tr><td>2024</td><td>septiembre</td><td>4600102026</td><td>Conservación de jardines</td><td>m2</td><td>195,00</td></tr>
+                            <tr><td>2024</td><td>octubre</td><td>4600102026</td><td>Conservación de jardines</td><td>m2</td><td>1.004,30</td></tr>
+                            <tr><td>2025</td><td>marzo</td><td>4600104350</td><td>Área verde fortalecida</td><td>m2</td><td>20,00</td></tr>
+                            <tr><td>2025</td><td>abril</td><td>4600104350</td><td>Área verde fortalecida</td><td>m2</td><td>2.894,36</td></tr>
+                            <tr><td>2025</td><td>abril</td><td>4600104350</td><td>Conservación de jardines</td><td>m2</td><td>1.185,66</td></tr>
+                            <tr><td>2025</td><td>mayo</td><td>4600104350</td><td>Levantamiento de piso duro</td><td>m2</td><td>1,00</td></tr>
+                        </tbody>
+                        <tfoot>
+                           <tr><td colspan="5">Total</td><td><strong>7.391,92</strong></td></tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="intervention-section" style="margin-top:25px;">
+                <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Individuos Arbóreos - 2024</h3>
+                     <table class="summary-table">
+                        <thead><tr><th>Actividad</th><th>Cantidad</th></tr></thead>
+                        <tbody>
+                            <tr><td>Poda de árboles</td><td>1</td></tr>
+                            <tr><td>Tala de árboles</td><td>10</td></tr>
+                            <tr><td>Aplicación de tratamientos especiales</td><td>1</td></tr>
+                            <tr><td>Conservación de individuos arbóreos juveniles</td><td>23</td></tr>
+                        </tbody>
+                        <tfoot><tr><td>Total</td><td><strong>35</strong></td></tr></tfoot>
+                     </table>
+                </div>
+                <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Individuos Arbóreos - 2025</h3>
+                     <table class="summary-table">
+                        <thead><tr><th>Actividad</th><th>Cantidad</th></tr></thead>
+                        <tbody>
+                            <tr><td>Tala de árboles</td><td>14</td></tr>
+                            <tr><td>Conservación de individuos arbóreos juveniles</td><td>42</td></tr>
+                            <tr><td>Cicatrización de heridas en árboles</td><td>1</td></tr>
+                            <tr><td>Conservación de árboles adultos comunes</td><td>3</td></tr>
+                            <tr><td>Poda fitosanitaria de árboles</td><td>2</td></tr>
+                            <tr><td>Retiro de cuerpos extraños en árboles</td><td>2</td></tr>
+                        </tbody>
+                        <tfoot><tr><td>Total</td><td><strong>64</strong></td></tr></tfoot>
+                     </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-couch"></i>Mantenimiento Mobiliario</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card"><div class="value">3</div><div class="label">Cantidad Total</div></div>
+                <div class="stat-card"><div class="value">1</div><div class="label">Cantidad Intervenida</div></div>
+                <div class="stat-card"><div class="value">33.3%</div><div class="label">% de Intervención</div></div>
+            </div>
+        </section>
+
+    </div>
+
+<script>
+    // Configuración de colores para Chart.js
+    const chartColors = {
+        blue: 'rgba(25, 118, 210, 0.85)',
+        orange: 'rgba(255, 111, 0, 0.85)',
+        blueDark: 'rgba(13, 71, 161, 0.85)',
+        orangeDark: 'rgba(239, 108, 0, 0.85)',
+        teal: 'rgba(0, 150, 136, 0.85)',
+        red: 'rgba(211, 47, 47, 0.85)',
+        purple: 'rgba(123, 31, 162, 0.85)',
+        green: 'rgba(56, 142, 60, 0.85)',
+        grey: 'rgba(158, 158, 158, 0.85)'
+    };
+    
+    // Gráficas Intervenciones 2024
+    const distGrupo2024Ctx = document.getElementById('distribucionGrupo2024Chart').getContext('2d');
+    new Chart(distGrupo2024Ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Parques y Cerramientos (61%)', 'Obras Civiles Menores (30%)', 'Apoyo a Otras Entidades (9%)'],
+            datasets: [{
+                data: [14, 7, 2],
+                backgroundColor: [chartColors.blue, chartColors.orange, chartColors.green]
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const estadoObra2024Ctx = document.getElementById('estadoObra2024Chart').getContext('2d');
+    new Chart(estadoObra2024Ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Terminado (91%)', 'Ejecutado/En Proceso (9%)'],
+            datasets: [{
+                data: [21, 2],
+                backgroundColor: [chartColors.green, chartColors.blue]
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // Gráficas Intervenciones 2025
+    const distGrupo2025Ctx = document.getElementById('distribucionGrupo2025Chart').getContext('2d');
+    new Chart(distGrupo2025Ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Parques y Cerrajería (73%)', 'Pavimentos (9%)', 'Apoyo a Otras Entidades (9%)', 'Obras Civiles Menores (9%)'],
+            datasets: [{
+                data: [8, 1, 1, 1],
+                backgroundColor: [chartColors.blue, chartColors.orange, chartColors.green, chartColors.red]
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const estadoObra2025Ctx = document.getElementById('estadoObra2025Chart').getContext('2d');
+    new Chart(estadoObra2025Ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Terminado (91%)', 'Por iniciar (9%)'],
+            datasets: [{
+                data: [10, 1],
+                backgroundColor: [chartColors.green, chartColors.grey]
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // Script para generar PDF
+    document.getElementById('download-pdf').addEventListener('click', function () {
+        const content = document.getElementById('report-content');
+        
+        const button = this;
+        button.innerText = 'Generando PDF...';
+        button.disabled = true;
+
+        html2canvas(content, {
+            scale: 2,
+            useCORS: true,
+            windowWidth: content.scrollWidth,
+            windowHeight: content.scrollHeight
+        }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+
+            const pdf = new jsPDF({
+                orientation: 'p',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const ratio = canvasWidth / canvasHeight;
+
+            const imgHeight = pdfWidth / ratio;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+            heightLeft -= pdfHeight;
+
+            while (heightLeft > 0) {
+                position -= pdfHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                heightLeft -= pdfHeight;
+            }
+
+            pdf.save('Reporte-Comuna-02-Santa-Cruz.pdf');
+
+            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+            button.disabled = false;
+
+        }).catch(err => {
+            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+            button.disabled = false;
+            console.error("Error al generar el PDF:", err);
+            alert("Hubo un error al generar el PDF. Por favor, intenta de nuevo.");
+        });
+    });
+</script>
+
+</body>
+</html>
