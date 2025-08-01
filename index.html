@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión 2025 - Secretaría de Infraestructura Física (Diseño Original + Mejoras)</title>
+    <title>Gestión 2025 - Secretaría de Infraestructura Física (Versión Reorganizada)</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -106,7 +106,10 @@
             padding: 60px 0;
             border-bottom: 1px solid #e0e0e0;
         }
-        .container section:last-of-type {
+        main > section:first-of-type {
+            padding-top: 40px; /* Ajuste para el primer elemento */
+        }
+        main > section:last-of-type {
             border-bottom: none;
         }
         section h2 {
@@ -268,7 +271,6 @@
             background-color: var(--light-gray);
             text-align: center;
             padding: 50px 20px;
-            border-bottom: 1px solid #ddd;
         }
         #indicadores-cta h2 {
             font-size: 2em;
@@ -303,6 +305,50 @@
             font-size: 1em;
         }
         
+        /* MEJORA: Estilos para las pestañas de Gestión Estratégica */
+        .tabs-container {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .tabs-nav {
+            display: flex;
+            background-color: var(--light-gray);
+        }
+        .tab-link {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--primary-color);
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tab-link:hover {
+            background-color: #e0e6ef;
+        }
+        .tab-link.active {
+            color: var(--primary-color-dark);
+            border-bottom-color: var(--secondary-color);
+        }
+        .tab-pane {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         #chat-fab {
             position: fixed;
             bottom: 30px;
@@ -368,7 +414,6 @@
             cursor: pointer;
         }
         
-        /* Estilos para el nuevo contenido del chat */
         .chat-body {
             font-family: 'Inter', sans-serif;
             flex-grow: 1;
@@ -403,16 +448,6 @@
         <h1>Gestión 2025 - Secretaría de Infraestructura Física</h1>
         <p class="subheading">Alcaldía de Medellín - Distrito Especial de Ciencia, Tecnología e Innovación.</p>
     </header>
-
-    <section id="indicadores-cta">
-        <div class="container">
-            <h2><i class="fa-solid fa-chart-line"></i> Indicadores - SIF</h2>
-            <p>Explore los datos detallados y el progreso de nuestros proyectos estratégicos. Acceda a las métricas clave y siga en tiempo real el avance de las metas que transforman a Medellín.</p>
-            <a href="indicadores.html" class="cta-button" target="_blank" rel="noopener noreferrer">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>Ver Tablero de Indicadores
-            </a>
-        </div>
-    </section>
     
     <nav>
         <div class="container">
@@ -428,20 +463,9 @@
     </nav>
 
     <main class="container">
-        <section id="malla-vial">
-            <h2>🛣️ Conectando la Ciudad: Recuperación de la Malla Vial</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Nuestra Gestión</h3>
-                    <p>Mediante intervenciones integrales que incluyen reparación de baches, rehabilitación de vías y obras complementarias, hemos logrado una importante recuperación de la malla vial. Estas labores, coordinadas con múltiples cuadrillas, mejoran la transitabilidad y seguridad vial para todos.</p>
-                </div>
-                <div class="card stat-box">
-                    <div class="stat-number">+<span id="stat-huecos"></span></div>
-                    <div class="stat-label">Huecos tapados en la ciudad y corregimientos</div>
-                </div>
-            </div>
-            
-            <div class="card" style="margin-top: 30px; padding: 0; overflow: hidden;">
+
+        <section id="consulta-comuna">
+            <div class="card" style="padding: 0; overflow: hidden;">
                 <h3 style="padding: 30px 30px 0 30px; margin-bottom: 0;">🔎 Consulta Detallada por Comuna</h3>
                 <div class="consulta-comuna-container">
                     <h3>Filtros de Consulta</h3>
@@ -456,7 +480,29 @@
                 </div>
                 <div class="date-stamp" style="padding: 15px 30px;">Corte: <span id="date-malla-vial"></span></div>
             </div>
+        </section>
 
+        <section id="indicadores-cta">
+            <h2><i class="fa-solid fa-chart-line"></i> Indicadores - SIF</h2>
+            <p>Explore los datos detallados y el progreso de nuestros proyectos estratégicos. Acceda a las métricas clave y siga en tiempo real el avance de las metas que transforman a Medellín.</p>
+            <a href="indicadores.html" class="cta-button" target="_blank" rel="noopener noreferrer">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>Ver Tablero de Indicadores
+            </a>
+        </section>
+
+        <section id="malla-vial">
+            <h2>🛣️ Conectando la Ciudad: Recuperación de la Malla Vial</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Nuestra Gestión</h3>
+                    <p>Mediante intervenciones integrales que incluyen reparación de baches, rehabilitación de vías y obras complementarias, hemos logrado una importante recuperación de la malla vial. Estas labores, coordinadas con múltiples cuadrillas, mejoran la transitabilidad y seguridad vial para todos.</p>
+                </div>
+                <div class="card stat-box">
+                    <div class="stat-number">+<span id="stat-huecos"></span></div>
+                    <div class="stat-label">Huecos tapados en la ciudad y corregimientos</div>
+                </div>
+            </div>
+            
             <div class="card" style="margin-top: 30px;">
                 <h3>📊 Impacto Total por Comuna (Huecos Tapados)</h3>
                 <div class="bar-chart" id="barChartContainer">
@@ -536,7 +582,7 @@
                 <div class="card">
                     <h3>Parques finalizados</h3>
                     <ul id="parques-finalizados-lista">
-                       </ul>
+                    </ul>
                 </div>
             </div>
             <div class="card" style="margin-top: 30px;">
@@ -580,20 +626,32 @@
 
         <section id="futuro">
             <h2>🚀 Gestión Estratégica</h2>
-             <div class="card">
-                <h3>Cuadrillas del Alcalde</h3>
-                <p><span id="cuadrillas-contrato-objeto"></span> A LA FECHA, SE HAN ATENDIDO <span class="highlight" id="cuadrillas-puntos-atendidos"></span>.</p>
-                <ul>
-                    <li>Verificación y reparación de defensas viales, barandas y pasamanos.</li>
-                    <li>Mantenimiento priorizado de parques y mobiliario urbano.</li>
-                    <li>Logística integral para lavado y pintura de estructuras viales.</li>
-                </ul>
-            </div>
-            <div class="card" style="margin-top: 30px;">
-                <h3>Contratos en Licitación</h3>
-                <p>Aseguramos la continuidad de las obras con <span class="highlight" id="licit-procesos-activos"></span> actualmente activos.</p>
-                 <ul id="licit-lista-tipos">
-                    </ul>
+            <div class="tabs-container">
+                <div class="tabs-nav">
+                    <button class="tab-link active" data-target="tab-cuadrillas">
+                        <i class="fa-solid fa-users"></i> Cuadrillas del Alcalde
+                    </button>
+                    <button class="tab-link" data-target="tab-licitaciones">
+                        <i class="fa-solid fa-file-signature"></i> Contratos en Licitación
+                    </button>
+                </div>
+                <div class="tabs-content">
+                    <div id="tab-cuadrillas" class="tab-pane active">
+                        <h3><i class="fa-solid fa-helmet-safety"></i> Atención de Contingencias</h3>
+                        <p><span id="cuadrillas-contrato-objeto"></span> A LA FECHA, SE HAN ATENDIDO <span class="highlight" id="cuadrillas-puntos-atendidos"></span>.</p>
+                        <ul>
+                            <li>Verificación y reparación de defensas viales, barandas y pasamanos.</li>
+                            <li>Mantenimiento priorizado de parques y mobiliario urbano.</li>
+                            <li>Logística integral para lavado y pintura de estructuras viales.</li>
+                        </ul>
+                    </div>
+                    <div id="tab-licitaciones" class="tab-pane">
+                        <h3><i class="fa-solid fa-gavel"></i> Obras Futuras Aseguradas</h3>
+                        <p>Aseguramos la continuidad de las obras y el mantenimiento de la infraestructura de la ciudad con <span class="highlight" id="licit-procesos-activos"></span> actualmente activos para:</p>
+                        <ul id="licit-lista-tipos">
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -634,10 +692,6 @@
     </div>
     
     <script>
-        // ##################################################################
-        // ### INICIO DE LA LÓGICA DE LA PÁGINA (VERSIÓN MEJORADA) ###
-        // ##################################################################
-
         const pageData = {
             stats: {
                 huecosTapados: "13,822",
@@ -734,11 +788,8 @@
         document.addEventListener('DOMContentLoaded', function () {
             
             function populateContent() {
-                // Malla Vial
-                document.getElementById('stat-huecos').textContent = pageData.stats.huecosTapados;
                 document.getElementById('date-malla-vial').textContent = pageData.dates.corteMallaVial;
-
-                // Infraestructura Verde
+                document.getElementById('stat-huecos').textContent = pageData.stats.huecosTapados;
                 document.getElementById('infra-corredores').textContent = pageData.infraVerde.corredores;
                 document.getElementById('infra-puentes').textContent = pageData.infraVerde.puentes;
                 document.getElementById('infra-metros-verdes').textContent = pageData.infraVerde.metrosVerdes;
@@ -748,25 +799,19 @@
                 document.getElementById('mant-individuos-arboreos').textContent = pageData.infraVerde.individuosArboreos;
                 document.getElementById('mant-plantas-sembradas').textContent = pageData.infraVerde.plantasSembradas;
                 document.getElementById('mant-inversion-total').textContent = pageData.infraVerde.inversionMantenimiento;
-
-                // Puente 4 Sur
                 document.getElementById('p4sur-inversion').textContent = pageData.puente4Sur.inversion;
                 document.getElementById('p4sur-plantas').textContent = pageData.puente4Sur.plantas;
                 document.getElementById('p4sur-muros').innerHTML = pageData.puente4Sur.muros;
                 document.getElementById('p4sur-materas').innerHTML = pageData.puente4Sur.materas;
                 document.getElementById('p4sur-pintura').innerHTML = pageData.puente4Sur.pintura;
                 document.getElementById('date-p4sur').textContent = pageData.dates.cortePuente4Sur;
-
-                // Emergencias
                 document.getElementById('stat-material-removido').textContent = pageData.stats.materialRemovido;
                 document.getElementById('stat-personas-emergencias').textContent = pageData.stats.personasEmergencias;
                 document.getElementById('date-emergencias').textContent = pageData.dates.corteEmergencias;
-
-                // Espacios Públicos
                 document.getElementById('parques-renovados').textContent = pageData.stats.parquesRenovados;
                 document.getElementById('parques-metros-intervenidos').textContent = pageData.stats.parquesMetrosIntervenidos;
                 const parquesLista = document.getElementById('parques-finalizados-lista');
-                parquesLista.innerHTML = ''; // Limpiar por si acaso
+                parquesLista.innerHTML = '';
                 pageData.parques.listaFinalizados.forEach(item => {
                     const li = document.createElement('li');
                     li.innerHTML = item;
@@ -774,8 +819,6 @@
                 });
                 document.getElementById('parques-inversion-futura').textContent = pageData.parques.inversionFutura;
                 document.getElementById('parques-futuros-cantidad').textContent = pageData.parques.cantidadFuturos;
-
-                // Proyectos Estratégicos
                 document.getElementById('pui-entregados').textContent = pageData.proyectosEstrategicos.puiEntregados;
                 document.getElementById('pui-inversion').textContent = pageData.proyectosEstrategicos.puiInversion;
                 document.getElementById('pui-habitantes').textContent = pageData.proyectosEstrategicos.puiHabitantes;
@@ -787,13 +830,11 @@
                 document.getElementById('o-estab-intervenidos').textContent = pageData.proyectosEstrategicos.obrasEstabilizacionIntervenidos;
                 document.getElementById('o-estab-proyeccion').textContent = pageData.proyectosEstrategicos.obrasEstabilizacionProyeccion;
                 document.getElementById('o-estab-inversion').textContent = pageData.proyectosEstrategicos.obrasEstabilizacionInversion;
-                
-                // Gestión Estratégica
                 document.getElementById('cuadrillas-contrato-objeto').textContent = pageData.gestionEstrategica.cuadrillasContrato;
                 document.getElementById('cuadrillas-puntos-atendidos').textContent = pageData.gestionEstrategica.cuadrillasPuntosAtendidos;
                 document.getElementById('licit-procesos-activos').textContent = pageData.gestionEstrategica.licitacionesActivas;
                 const licitLista = document.getElementById('licit-lista-tipos');
-                licitLista.innerHTML = ''; // Limpiar por si acaso
+                licitLista.innerHTML = '';
                 pageData.gestionEstrategica.licitacionesTipos.forEach(item => {
                     const li = document.createElement('li');
                     li.textContent = item;
@@ -802,48 +843,49 @@
             }
             populateContent();
 
-            // ### LÓGICA DEL GRÁFICO DE BARRAS CON DISEÑO ORIGINAL ###
             function renderCustomBarChart() {
                 const container = document.getElementById('barChartContainer');
-                container.innerHTML = ''; // Limpiar el contenedor
+                container.innerHTML = ''; 
                 const chartData = pageData.barChartData;
-
-                // Encontrar el valor máximo para calcular los porcentajes
                 const maxValue = Math.max(...chartData.map(item => item.value));
 
                 chartData.forEach(item => {
                     const widthPercentage = (item.value / maxValue) * 100;
-
-                    // Crear cada elemento del gráfico dinámicamente
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'bar-chart-item';
-
                     const labelDiv = document.createElement('div');
                     labelDiv.className = 'bar-label';
                     labelDiv.textContent = item.label;
-
                     const barContainerDiv = document.createElement('div');
                     barContainerDiv.className = 'bar-container';
-
                     const barDiv = document.createElement('div');
                     barDiv.className = 'bar';
                     barDiv.style.width = `${widthPercentage}%`;
                     barDiv.textContent = item.value.toLocaleString('es-CO');
-
-                    // Ensamblar la estructura
                     barContainerDiv.appendChild(barDiv);
                     itemDiv.appendChild(labelDiv);
                     itemDiv.appendChild(barContainerDiv);
-                    
-                    // Añadir el elemento completo al contenedor principal
                     container.appendChild(itemDiv);
                 });
             }
             renderCustomBarChart();
 
-            // ##################################################################
-            // ### INICIO DE LA LÓGICA DEL ASISTENTE VIRTUAL (MEJORADO) ###
-            // ##################################################################
+            // MEJORA: Lógica para las pestañas de Gestión Estratégica
+            const tabLinks = document.querySelectorAll('.tab-link');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            tabLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const targetId = link.getAttribute('data-target');
+
+                    tabLinks.forEach(item => item.classList.remove('active'));
+                    tabPanes.forEach(item => item.classList.remove('active'));
+
+                    link.classList.add('active');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // Lógica del Asistente Virtual (sin cambios)
             const communeData = [
                 { name: 'Comuna 1 – Popular', id: 1 }, { name: 'Comuna 2 – Santa Cruz', id: 2 },
                 { name: 'Comuna 3 – Manrique', id: 3 }, { name: 'Comuna 4 – Aranjuez', id: 4 },
@@ -884,7 +926,6 @@
                 'cuadrillas': { keywords: ['cuadrillas', 'alcalde'], answer: `Las Cuadrillas del Alcalde son nuestros equipos de respuesta rápida. Con un contrato de <strong>${pageData.gestionEstrategica.cuadrillasContrato.split(" ")[4]}</strong>, ya han atendido <strong>${pageData.gestionEstrategica.cuadrillasPuntosAtendidos}</strong> de la ciudad para reparaciones y mantenimiento. 👷‍♂️` },
                 'licitacion': { keywords: ['licitación', 'licitaciones', 'contratación'], answer: `Para garantizar que las obras no paren, actualmente tenemos <strong>${pageData.gestionEstrategica.licitacionesActivas}</strong> abiertos para malla vial, parques, andenes y mucho más. ¡El futuro de Medellín se sigue construyendo! 🏗️` }
             };
-
             const fab = document.getElementById('chat-fab');
             const chatWindow = document.getElementById('chat-window');
             const closeBtn = document.getElementById('chat-close-btn');
@@ -900,7 +941,6 @@
             
             let botTyping = false;
             let navigationPath = [];
-
             function addMessage(content, sender, options = {}) {
                 const bubble = document.createElement('div');
                 bubble.className = `max-w-xs md:max-w-lg p-3 rounded-xl ${sender === 'user' ? 'chat-bubble-user self-end' : 'chat-bubble-bot self-start'}`;
@@ -908,7 +948,6 @@
                 ui.chatMessages.appendChild(bubble);
                 ui.chatMessages.scrollTop = ui.chatMessages.scrollHeight;
             }
-            
             function addBotMessage(text, options = {}) {
                 if (botTyping) return;
                 botTyping = true;
@@ -925,7 +964,6 @@
                     botTyping = false;
                 }, 800 + Math.random() * 400);
             }
-
             function getCurrentLevelObject() {
                 let level = reportesSIF;
                 for (const key of navigationPath) {
@@ -936,13 +974,11 @@
                 }
                 return level;
             }
-
             function displayOptions() {
                 const currentLevel = getCurrentLevelObject();
                 ui.optionsGrid.innerHTML = '';
                 ui.backBtn.classList.toggle('hidden', navigationPath.length === 0);
                 updateBreadcrumbs();
-
                 if (Array.isArray(currentLevel)) {
                     if (currentLevel.length === 0) addBotMessage('Aquí no hay más informes, ¡pero puedes volver y explorar otra sección! 😉');
                     currentLevel.forEach(report => {
@@ -956,7 +992,6 @@
                     }
                 }
             }
-            
             function createButton(name, type, data) {
                 const button = document.createElement('button');
                 button.className = 'option-btn bg-white text-slate-700 text-sm font-medium p-3 rounded-lg hover:bg-slate-50 text-left';
@@ -967,7 +1002,6 @@
                 }
                 ui.optionsGrid.appendChild(button);
             }
-
             function updateBreadcrumbs() {
                 if (navigationPath.length === 0) {
                     ui.breadcrumbContainer.innerHTML = 'Inicio';
@@ -982,7 +1016,6 @@
                 });
                 ui.breadcrumbContainer.innerHTML = pathText;
             }
-
             function searchAllReports(obj) {
                 let reports = [];
                 for (const key in obj) {
@@ -994,7 +1027,6 @@
                 }
                 return reports;
             }
-            
             function handleUserInput() {
                 const userInput = ui.chatInput.value.trim();
                 if (userInput === '' || botTyping) return;
@@ -1002,37 +1034,30 @@
                 ui.chatInput.value = '';
                 generateBotResponse(userInput);
             }
-
             function generateBotResponse(input) {
                 const lowerInput = input.toLowerCase();
-                
                 const allReports = searchAllReports(reportesSIF);
                 const foundReport = allReports.find(report => 
                     report.name.toLowerCase().includes(lowerInput) || 
                     report.keywords.some(kw => lowerInput.includes(kw))
                 );
-
                 if (foundReport) {
                     const message = `¡Excelente! Encontré justo lo que buscas. Aquí tienes el acceso directo al informe sobre <strong class="font-semibold">${foundReport.name}</strong>. ¡Espero que los datos te sean de mucha utilidad! <br><br><a href="${foundReport.href}" target="_blank" class="text-blue-600 font-bold hover:underline" onclick="reportOpened()">🚀 Abrir Tablero de Power BI</a>`;
                     addBotMessage(message, { isHtml: true });
                     return;
                 }
-
                 for (const key in faqData) {
                     if (faqData[key].keywords.some(kw => lowerInput.includes(kw))) {
                         addBotMessage(faqData[key].answer, { isHtml: true });
                         return;
                     }
                 }
-                
                 const notFoundMessage = "Vaya, parece que no encontré nada con esas palabras exactas. 🤔 No te preocupes, a veces los términos técnicos pueden ser confusos. ¿Qué tal si intentas con una palabra más general como 'contratos', 'inversión' o 'parques'? O si prefieres, sigue explorando las opciones de abajo.";
                 addBotMessage(notFoundMessage, { isHtml: true });
             }
-
             window.reportOpened = () => {
                 addBotMessage("¡Perfecto! Abriendo el informe en una nueva pestaña. Si necesitas algo más, no dudes en preguntar. 😊");
             };
-
             fab.addEventListener('click', () => {
                 chatWindow.classList.toggle('visible');
                 if (chatWindow.classList.contains('visible') && ui.chatMessages.children.length === 0) {
@@ -1040,17 +1065,13 @@
                      displayOptions();
                 }
             });
-
             closeBtn.addEventListener('click', () => chatWindow.classList.remove('visible'));
-            
             ui.sendBtn.addEventListener('click', handleUserInput);
             ui.chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserInput(); });
-
             ui.optionsGrid.addEventListener('click', (e) => {
                 const button = e.target.closest('.option-btn');
                 if (!button) return;
                 const { type, navKey, href, reportName } = button.dataset;
-                
                 if (type === 'dependency') {
                     navigationPath.push(navKey);
                     const nextLevel = getCurrentLevelObject();
@@ -1063,7 +1084,6 @@
                     addBotMessage(message, { isHtml: true });
                 }
             });
-
             ui.backBtn.addEventListener('click', () => {
                 if (navigationPath.length > 0) {
                     if (navigationPath[navigationPath.length - 1] === 'reports') {
@@ -1073,7 +1093,6 @@
                     displayOptions();
                 }
             });
-
             ui.breadcrumbContainer.addEventListener('click', (e) => {
                 e.preventDefault();
                 const link = e.target.closest('a');
