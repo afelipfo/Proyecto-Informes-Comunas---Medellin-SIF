@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión 2025 - Secretaría de Infraestructura Física (Versión Mejorada)</title>
+    <title>Gestión 2025 - Secretaría de Infraestructura Física (Diseño Original + Mejoras)</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         :root {
@@ -158,14 +157,39 @@
             font-weight: 400;
             color: #555;
         }
-        
-        /* Contenedor para el gráfico de Chart.js */
-        .chart-container {
-            position: relative;
-            height: 600px; /* Ajusta la altura según necesites */
+        .bar-chart {
             width: 100%;
+            margin-top: 20px;
         }
-
+        .bar-chart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        .bar-label {
+            width: 220px;
+            flex-shrink: 0;
+        }
+        .bar-container {
+            flex-grow: 1;
+            background: #e0e0e0;
+            border-radius: 5px;
+            height: 22px;
+        }
+        .bar {
+            background: linear-gradient(90deg, #ffb74d, var(--secondary-color));
+            height: 100%;
+            border-radius: 5px;
+            text-align: right;
+            padding-right: 8px;
+            box-sizing: border-box;
+            color: white;
+            font-weight: 700;
+            line-height: 22px;
+            transition: width 1s ease-out;
+            font-size: 0.9em;
+        }
         ul {
             line-height: 1.8;
             padding-left: 20px;
@@ -412,7 +436,7 @@
                     <p>Mediante intervenciones integrales que incluyen reparación de baches, rehabilitación de vías y obras complementarias, hemos logrado una importante recuperación de la malla vial. Estas labores, coordinadas con múltiples cuadrillas, mejoran la transitabilidad y seguridad vial para todos.</p>
                 </div>
                 <div class="card stat-box">
-                     <div class="stat-number">+<span id="stat-huecos"></span></div>
+                    <div class="stat-number">+<span id="stat-huecos"></span></div>
                     <div class="stat-label">Huecos tapados en la ciudad y corregimientos</div>
                 </div>
             </div>
@@ -435,9 +459,8 @@
 
             <div class="card" style="margin-top: 30px;">
                 <h3>📊 Impacto Total por Comuna (Huecos Tapados)</h3>
-                <div class="chart-container">
-                    <canvas id="comunaChart"></canvas>
-                </div>
+                <div class="bar-chart" id="barChartContainer">
+                    </div>
             </div>
         </section>
         
@@ -447,7 +470,7 @@
                 <div class="card">
                     <h3>Nuevos Espacios Verdes</h3>
                     <ul>
-                         <li><span class="highlight" id="infra-corredores"></span> nuevos corredores verdes creados en 2024 (Manrique, Palmas, Av. 33 tramo 2).</li>
+                        <li><span class="highlight" id="infra-corredores"></span> nuevos corredores verdes creados en 2024 (Manrique, Palmas, Av. 33 tramo 2).</li>
                         <li><span class="highlight" id="infra-puentes"></span> nuevos puentes verdes para conectar cerros tutelares.</li>
                         <li>Total: <span class="highlight" id="infra-metros-verdes"></span> de nuevos espacios verdes.</li>
                         <li>Obras iniciadas en Av. Las Vegas y La 70 con inversión de <span class="highlight" id="infra-inversion-vegas"></span>.</li>
@@ -465,7 +488,7 @@
                 </div>
                  <div class="card">
                     <h3>Renovación Puente 4 Sur</h3>
-                     <p>Se intervinieron más de <span class="highlight" id="p4sur-inversion"></span> en la recuperación del urbanismo superior del puente, sembrando más de <span class="highlight" id="p4sur-plantas"></span> plantas para embellecer este icónico entorno.</p>
+                    <p>Se intervinieron más de <span class="highlight" id="p4sur-inversion"></span> en la recuperación del urbanismo superior del puente, sembrando más de <span class="highlight" id="p4sur-plantas"></span> plantas para embellecer este icónico entorno.</p>
                      <ul>
                          <li id="p4sur-muros"></li>
                          <li id="p4sur-materas"></li>
@@ -559,7 +582,7 @@
             <h2>🚀 Gestión Estratégica</h2>
              <div class="card">
                 <h3>Cuadrillas del Alcalde</h3>
-                 <p><span id="cuadrillas-contrato-objeto"></span> A LA FECHA, SE HAN ATENDIDO <span class="highlight" id="cuadrillas-puntos-atendidos"></span>.</p>
+                <p><span id="cuadrillas-contrato-objeto"></span> A LA FECHA, SE HAN ATENDIDO <span class="highlight" id="cuadrillas-puntos-atendidos"></span>.</p>
                 <ul>
                     <li>Verificación y reparación de defensas viales, barandas y pasamanos.</li>
                     <li>Mantenimiento priorizado de parques y mobiliario urbano.</li>
@@ -615,7 +638,6 @@
         // ### INICIO DE LA LÓGICA DE LA PÁGINA (VERSIÓN MEJORADA) ###
         // ##################################################################
 
-        // RECOMENDACIÓN 2: CENTRALIZACIÓN DE DATOS
         const pageData = {
             stats: {
                 huecosTapados: "13,822",
@@ -688,7 +710,7 @@
                 { label: 'Comuna 10 – La Candelaria', value: 1178 }, { label: 'Comuna 7 – Robledo', value: 1095 },
                 { label: 'Comuna 11 – Laureles', value: 965 }, { label: 'Comuna 3 – Manrique', value: 950 },
                 { label: 'Comuna 5 – Castilla', value: 895 }, { label: 'Comuna 14 – El Poblado', value: 879 },
-                { label: 'Comuna 16 – Belén/Estadio', value: 877 }, { label: 'Comuna 15 – Guayabal', value: 870 },
+                { label: 'Comuna 16 – Belén', value: 877 }, { label: 'Comuna 15 – Guayabal', value: 870 },
                 { label: 'Comuna 4 – Aranjuez', value: 783 }, { label: 'Comuna 8 – Villa Hermosa', value: 762 },
                 { label: 'Comuna 60 – San Cristóbal', value: 615 }, { label: 'Comuna 12 – La América', value: 609 },
                 { label: 'Comuna 13 – San Javier', value: 573 }, { label: 'Comuna 6 – Doce de Octubre', value: 543 },
@@ -699,7 +721,6 @@
             ]
         };
         
-        // --- Lógica para abrir reporte de comuna ---
         function abrirReporte() {
             const select = document.getElementById('comuna-select');
             const comunaId = select.value;
@@ -712,9 +733,6 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             
-            // ##################################################################
-            // ### INICIO DE POBLACIÓN DE CONTENIDO DINÁMICO
-            // ##################################################################
             function populateContent() {
                 // Malla Vial
                 document.getElementById('stat-huecos').textContent = pageData.stats.huecosTapados;
@@ -748,6 +766,7 @@
                 document.getElementById('parques-renovados').textContent = pageData.stats.parquesRenovados;
                 document.getElementById('parques-metros-intervenidos').textContent = pageData.stats.parquesMetrosIntervenidos;
                 const parquesLista = document.getElementById('parques-finalizados-lista');
+                parquesLista.innerHTML = ''; // Limpiar por si acaso
                 pageData.parques.listaFinalizados.forEach(item => {
                     const li = document.createElement('li');
                     li.innerHTML = item;
@@ -774,6 +793,7 @@
                 document.getElementById('cuadrillas-puntos-atendidos').textContent = pageData.gestionEstrategica.cuadrillasPuntosAtendidos;
                 document.getElementById('licit-procesos-activos').textContent = pageData.gestionEstrategica.licitacionesActivas;
                 const licitLista = document.getElementById('licit-lista-tipos');
+                licitLista.innerHTML = ''; // Limpiar por si acaso
                 pageData.gestionEstrategica.licitacionesTipos.forEach(item => {
                     const li = document.createElement('li');
                     li.textContent = item;
@@ -782,74 +802,48 @@
             }
             populateContent();
 
-            // ##################################################################
-            // ### INICIO DE IMPLEMENTACIÓN DE CHART.JS
-            // ##################################################################
-            function renderBarChart() {
-                const ctx = document.getElementById('comunaChart').getContext('2d');
-                const labels = pageData.barChartData.map(item => item.label);
-                const data = pageData.barChartData.map(item => item.value);
+            // ### LÓGICA DEL GRÁFICO DE BARRAS CON DISEÑO ORIGINAL ###
+            function renderCustomBarChart() {
+                const container = document.getElementById('barChartContainer');
+                container.innerHTML = ''; // Limpiar el contenedor
+                const chartData = pageData.barChartData;
 
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Huecos Tapados',
-                            data: data,
-                            backgroundColor: 'rgba(245, 124, 0, 0.8)',
-                            borderColor: 'rgba(245, 124, 0, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        indexAxis: 'y', // <-- Esto hace el gráfico horizontal
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false // Oculta la leyenda
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return ` ${context.raw.toLocaleString('es-CO')} huecos`;
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                grid: {
-                                    color: '#e0e0e0'
-                                },
-                                ticks: {
-                                    font: {
-                                        family: "'Roboto', sans-serif",
-                                    }
-                                }
-                            },
-                            y: {
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    font: {
-                                        family: "'Roboto', sans-serif",
-                                    }
-                                }
-                            }
-                        }
-                    }
+                // Encontrar el valor máximo para calcular los porcentajes
+                const maxValue = Math.max(...chartData.map(item => item.value));
+
+                chartData.forEach(item => {
+                    const widthPercentage = (item.value / maxValue) * 100;
+
+                    // Crear cada elemento del gráfico dinámicamente
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'bar-chart-item';
+
+                    const labelDiv = document.createElement('div');
+                    labelDiv.className = 'bar-label';
+                    labelDiv.textContent = item.label;
+
+                    const barContainerDiv = document.createElement('div');
+                    barContainerDiv.className = 'bar-container';
+
+                    const barDiv = document.createElement('div');
+                    barDiv.className = 'bar';
+                    barDiv.style.width = `${widthPercentage}%`;
+                    barDiv.textContent = item.value.toLocaleString('es-CO');
+
+                    // Ensamblar la estructura
+                    barContainerDiv.appendChild(barDiv);
+                    itemDiv.appendChild(labelDiv);
+                    itemDiv.appendChild(barContainerDiv);
+                    
+                    // Añadir el elemento completo al contenedor principal
+                    container.appendChild(itemDiv);
                 });
             }
-            renderBarChart();
+            renderCustomBarChart();
 
             // ##################################################################
             // ### INICIO DE LA LÓGICA DEL ASISTENTE VIRTUAL (MEJORADO) ###
             // ##################################################################
-
             const communeData = [
                 { name: 'Comuna 1 – Popular', id: 1 }, { name: 'Comuna 2 – Santa Cruz', id: 2 },
                 { name: 'Comuna 3 – Manrique', id: 3 }, { name: 'Comuna 4 – Aranjuez', id: 4 },
