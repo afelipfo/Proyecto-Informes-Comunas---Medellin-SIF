@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte de Analítica de Datos Comuna 7 - Robledo</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXrd3NBGQVJClubNFl4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -489,7 +489,7 @@
                     <thead>
                         <tr>
                             <th>Vigencia</th>
-                            <th>EPM</th>
+                            <th>Epm</th>
                             <th>Obras Civiles Menores</th>
                             <th>Parques y Cerrajería</th>
                             <th>Pavimentos</th>
@@ -616,7 +616,7 @@
                 backgroundColor: Object.values(chartColors)
             }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
 
     const estadoObra2024Ctx = document.getElementById('estadoObra2024Chart').getContext('2d');
@@ -629,7 +629,7 @@
                 backgroundColor: Object.values(chartColors)
             }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
 
     // Gráficas Intervenciones 2025
@@ -643,7 +643,7 @@
                 backgroundColor: [chartColors.blue, chartColors.orange, chartColors.green, chartColors.red]
             }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
 
     const estadoObra2025Ctx = document.getElementById('estadoObra2025Chart').getContext('2d');
@@ -656,7 +656,7 @@
                 backgroundColor: [chartColors.green, chartColors.blue, chartColors.grey, chartColors.orange]
             }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
 
     // Script para generar PDF
