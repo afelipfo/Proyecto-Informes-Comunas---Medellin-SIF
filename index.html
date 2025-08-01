@@ -8,9 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
         :root {
@@ -45,6 +46,10 @@
             max-width: 280px;
             margin-bottom: 25px;
             animation: fadeInDown 1s ease-in-out;
+            /* CORRECCIÓN: Estilos para asegurar el centrado del logo */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         header h1 {
             margin: 0;
@@ -206,55 +211,45 @@
             font-size: 0.9em;
             color: #777;
         }
-        .map-container-section {
-            display: flex;
-            flex-wrap: wrap;
-            height: 500px;
-            width: 100%;
+        
+        .consulta-comuna-container {
+             display: flex;
+             flex-direction: column;
+             gap: 20px;
+             padding: 30px;
+             box-sizing: border-box;
+             background: #fdfdff;
         }
-        #map {
-            width: 70%;
-            height: 100%;
-            cursor: pointer;
+        
+        .consulta-comuna-container h3 {
+             font-size: 1.3em;
+             margin-top: 0;
+             color: var(--primary-color);
         }
-        .info-panel {
-            width: 30%;
-            padding: 30px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            background: #fdfdff;
-            overflow-y: auto;
-        }
-        .info-panel h3 {
-            font-size: 1.3em;
-            margin-top: 0;
-            color: var(--primary-color);
-        }
-        .info-panel p {
+        .consulta-comuna-container p {
             font-size: 0.9em;
             color: #555;
             line-height: 1.5;
-            margin-bottom: 20px;
+            margin-bottom: 0;
         }
-        .info-panel label {
+        .consulta-comuna-container label {
             font-size: 1em;
             font-weight: 600;
             color: var(--text-color);
             display: block;
             margin-bottom: 10px;
         }
-        .info-panel select {
+        .consulta-comuna-container select {
             width: 100%;
             padding: 12px;
             font-size: 1em;
             border: 1px solid #ced4da;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             cursor: pointer;
             background-color: var(--bg-color);
         }
-        .info-panel button {
+        .consulta-comuna-container button {
             background-color: var(--secondary-color);
             color: white;
             border: none;
@@ -266,24 +261,10 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .info-panel button:hover {
+        .consulta-comuna-container button:hover {
             background-color: #e66300;
         }
-        @media (max-width: 900px) {
-            .map-container-section {
-                flex-direction: column;
-                height: auto;
-            }
-            #map {
-                width: 100%;
-                height: 400px;
-            }
-            .info-panel {
-                width: 100%;
-                padding: 25px;
-            }
-        }
-        
+
         #indicadores-cta {
             background-color: var(--light-gray);
             text-align: center;
@@ -348,10 +329,10 @@
             position: fixed;
             bottom: 100px;
             right: 30px;
-            width: 400px;
+            width: 420px;
             max-width: 90vw;
-            height: 550px;
-            max-height: 80vh;
+            height: 80vh;
+            max-height: 700px;
             background: var(--card-bg);
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.25);
@@ -378,6 +359,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
         #chat-close-btn {
             background: none;
@@ -386,145 +368,36 @@
             font-size: 20px;
             cursor: pointer;
         }
-        .chat-messages {
+        
+        /* Estilos para el nuevo contenido del chat */
+        .chat-body {
+            font-family: 'Inter', sans-serif;
             flex-grow: 1;
-            padding: 15px;
-            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            background-color: #f0f4f8;
+            height: 100%;
+            overflow: hidden;
         }
-        .chat-message {
-            padding: 10px 15px;
-            border-radius: 18px;
-            max-width: 80%;
-            line-height: 1.5;
+        .chat-bubble-user { background-color: #2563EB; color: white; }
+        .chat-bubble-bot { background-color: #E2E8F0; color: #1E293B; }
+        #chat-messages-container::-webkit-scrollbar { width: 6px; }
+        #chat-messages-container::-webkit-scrollbar-track { background: #CBD5E1; }
+        #chat-messages-container::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 3px; }
+        #chat-messages-container::-webkit-scrollbar-thumb:hover { background: #64748B; }
+        .option-btn {
+            transition: all 0.2s ease-in-out;
+            border: 1px solid #CBD5E1;
         }
-        .bot-message {
-            background: #e9e9f0;
-            color: var(--text-color);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-        .user-message {
-            background: var(--secondary-color);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-        .faq-button-container {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .faq-button {
-            background-color: var(--card-bg);
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 0.95em;
-            transition: background-color 0.2s, color 0.2s;
-        }
-        .faq-button:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        .chat-input-form {
-            display: flex;
-            border-top: 1px solid #ddd;
-            padding: 10px;
-        }
-        #chat-input {
-            flex-grow: 1;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            padding: 10px 15px;
-            font-size: 1em;
-            outline: none;
-        }
-        #chat-input:focus {
-            border-color: var(--primary-color);
-        }
-        footer {
-            background: #212121;
-            color: white;
-            text-align: center;
-            padding: 30px;
-        }
-        .footer-date {
-            font-size: 1.1em;
-            font-weight: 700;
-            margin: 0 0 20px 0;
-        }
-        .footer-credits p {
-            margin: 4px 0;
-            font-weight: 300;
-            font-size: 0.9em;
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #3B82F6;
         }
 
-        /* --- ESTILOS PARA EL POP-UP DE AUDITORÍA PQRS --- */
-        #pqrs-banner {
-            background-color: var(--primary-color-dark);
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            font-size: 0.9em;
-            animation: slideDown 0.5s ease-out;
-            position: relative;
-            z-index: 1000; /* Ensure it's above other content but below sticky nav */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-
-        #pqrs-banner p {
-            margin: 0;
-        }
-
-        #pqrs-banner a {
-            color: white;
-            text-decoration: underline;
-            font-weight: bold;
-            transition: opacity 0.2s;
-        }
-
-        #pqrs-banner a:hover {
-            opacity: 0.8;
-        }
-
-        #pqrs-banner .fa-solid {
-            margin-right: 5px;
-        }
-
-        #pqrs-close-banner {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.2em;
-            cursor: pointer;
-            margin-left: 20px;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
-
-    <div id="pqrs-banner">
-        <p><i class="fa-solid fa-file-signature"></i> ¡Nuevo informe disponible! Auditoría #1 PQRS.</p>
-        <a href="pqrs.html" target="_blank" rel="noopener noreferrer">
-            Ver Informe de Auditoría <i class="fa-solid fa-chart-pie"></i>
-        </a>
-        <button id="pqrs-close-banner">&times;</button>
-    </div>
 
     <header>
         <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="header-logo">
@@ -551,6 +424,7 @@
             <a href="#proyectos-estrategicos">Proyectos Estratégicos</a>
             <a href="#futuro">Gestión Estratégica</a>
             <a href="pp.html" target="_blank" rel="noopener noreferrer">Presupuesto Participativo</a>
+            <a href="pqrs.html" target="_blank" rel="noopener noreferrer">PQRS</a>
         </div>
     </nav>
 
@@ -569,18 +443,17 @@
             </div>
             
             <div class="card" style="margin-top: 30px; padding: 0; overflow: hidden;">
-                <h3 style="padding: 30px 30px 0 30px; margin-bottom: 0;">🗺️ Geovisor de Impacto por Comuna</h3>
-                <div class="map-container-section">
-                    <div id="map"></div>
-                    <div class="info-panel">
-                        <h3>Filtros del Mapa</h3>
-                        <p>Puedes hacer clic sobre uno de los círculos en el mapa o usar el siguiente menú para navegar y ver el reporte detallado.</p>
+                <h3 style="padding: 30px 30px 0 30px; margin-bottom: 0;">🔎 Consulta Detallada por Comuna</h3>
+                <div class="consulta-comuna-container">
+                    <h3>Filtros de Consulta</h3>
+                    <p>Usa el siguiente menú para seleccionar una comuna o corregimiento y ver su reporte detallado de intervenciones.</p>
+                    <div>
                         <label for="comuna-select">Filtrar por lista:</label>
                         <select id="comuna-select">
                             <option value="" disabled selected>-- Escoge una opción --</option>
                         </select>
-                        <button onclick="abrirReporte()">Ver Reporte Detallado</button>
                     </div>
+                    <button onclick="abrirReporte()">Ver Reporte Detallado</button>
                 </div>
                 <div class="date-stamp" style="padding: 15px 30px;">Corte: 1 de julio de 2025</div>
             </div>
@@ -740,7 +613,7 @@
             <h2>🚀 Gestión Estratégica</h2>
              <div class="card">
                 <h3>Cuadrillas del Alcalde</h3>
-                <p>Contrato interadministrativo de <span class="highlight">$23.900 millones</span> para atender contingencias en el espacio público. A la fecha, se han atendido <span class="highlight">152 puntos</span>.</p>
+                <p>CONTRATO INTERADMINISTRATIVO DE <span class="highlight">$23.900 MILLONES</span> PARA ATENDER CONTINGENCIAS EN EL ESPACIO PÚBLICO. A LA FECHA, SE HAN ATENDIDO <span class="highlight">152 PUNTOS</span>.</p>
                 <ul>
                     <li>Verificación y reparación de defensas viales, barandas y pasamanos.</li>
                     <li>Mantenimiento priorizado de parques y mobiliario urbano.</li>
@@ -765,29 +638,38 @@
     <div id="chat-fab">
         <span>💬</span>
     </div>
+    
     <div id="chat-window">
         <div class="chat-header">
-            <span>Asistente Virtual de FAQs</span>
+            <span>Asistente Virtual SIF</span>
             <button id="chat-close-btn">✖</button>
         </div>
-        <div class="chat-messages" id="chat-messages">
+        <div class="chat-body">
+            <div id="chat-messages-container" class="flex-grow p-4 overflow-y-auto space-y-4">
             </div>
-        <form class="chat-input-form" id="chat-form">
-            <input type="text" id="chat-input" placeholder="O busca por palabra clave...">
-        </form>
-    </div>
+            
+            <div id="options-container" class="p-3 border-t bg-slate-50 space-y-3">
+                <div id="navigation-controls" class="flex justify-between items-center text-sm mb-2">
+                    <button id="back-btn" class="text-blue-600 hover:underline hidden">← Volver</button>
+                    <div id="breadcrumb-container" class="text-slate-500 text-right font-medium"></div>
+                </div>
+                <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                </div>
+            </div>
 
-    <footer>
-        <p class="footer-date">Fecha de reporte: 11 de julio de 2025</p>
-        <div class="footer-credits">
-            <p>Elaboró:</p>
-            <p>Andrés Felipe Flórez Olivera</p>
-            <p>María Posada Villa</p>
+            <div class="p-4 border-t bg-white rounded-b-xl">
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="chat-input" placeholder="Busca un informe o palabra clave..." class="flex-grow border rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="send-btn" class="bg-blue-500 text-white rounded-full p-3 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
-    </footer>
+    </div>
     
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
     <script>
         function abrirReporte() {
             const select = document.getElementById('comuna-select');
@@ -801,227 +683,254 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             
-            // --- LÓGICA DEL BANNER DE AUDITORÍA PQRS ---
-            const pqrsBanner = document.getElementById('pqrs-banner');
-            const pqrsCloseBannerBtn = document.getElementById('pqrs-close-banner');
-
-            // Show the banner after 2 seconds
-            setTimeout(() => {
-                pqrsBanner.style.display = 'flex'; // Make sure it's visible with flex for proper alignment
-            }, 2000);
-
-            // Close banner when close button is clicked
-            pqrsCloseBannerBtn.addEventListener('click', () => {
-                pqrsBanner.style.display = 'none';
-            });
-
-
-            // --- LÓGICA ORIGINAL DE LA PÁGINA ---
             const communeData = [
-                { name: 'Comuna 1 – Popular', potholes: 525, lat: 6.293, lng: -75.553 },
-                { name: 'Comuna 2 – Santa Cruz', potholes: 478, lat: 6.287, lng: -75.550 },
-                { name: 'Comuna 3 – Manrique', potholes: 950, lat: 6.275, lng: -75.549 },
-                { name: 'Comuna 4 – Aranjuez', potholes: 783, lat: 6.275, lng: -75.560 },
-                { name: 'Comuna 5 – Castilla', potholes: 895, lat: 6.279, lng: -75.578 },
-                { name: 'Comuna 6 – Doce de Octubre', potholes: 543, lat: 6.288, lng: -75.589 },
-                { name: 'Comuna 7 – Robledo', potholes: 1095, lat: 6.272, lng: -75.594 },
-                { name: 'Comuna 8 – Villa Hermosa', potholes: 762, lat: 6.252, lng: -75.547 },
-                { name: 'Comuna 9 – Buenos Aires', potholes: 469, lat: 6.237, lng: -75.551 },
-                { name: 'Comuna 10 – La Candelaria', potholes: 1178, lat: 6.246, lng: -75.569 },
-                { name: 'Comuna 11 – Laureles-Estadio', potholes: 965, lat: 6.248, lng: -75.588 },
-                { name: 'Comuna 12 – La América', potholes: 609, lat: 6.244, lng: -75.603 },
-                { name: 'Comuna 13 – San Javier', potholes: 573, lat: 6.252, lng: -75.619 },
-                { name: 'Comuna 14 – El Poblado', potholes: 879, lat: 6.209, lng: -75.566 },
-                { name: 'Comuna 15 – Guayabal', potholes: 870, lat: 6.213, lng: -75.589 },
-                { name: 'Comuna 16 – Belén', potholes: 877, lat: 6.225, lng: -75.604 },
-                { name: 'Comuna 50 – San Sebastián de Palmitas', potholes: 25, lat: 6.294, lng: -75.727 },
-                { name: 'Comuna 60 – San Cristóbal', potholes: 615, lat: 6.298, lng: -75.636 },
-                { name: 'Comuna 70 – Altavista', potholes: 137, lat: 6.213, lng: -75.626 },
-                { name: 'Comuna 80 – San Antonio de Prado', potholes: 374, lat: 6.168, lng: -75.643 },
-                { name: 'Comuna 90 – Santa Elena', potholes: 220, lat: 6.185, lng: -75.500 }
+                { name: 'Comuna 1 – Popular', id: 1 }, { name: 'Comuna 2 – Santa Cruz', id: 2 },
+                { name: 'Comuna 3 – Manrique', id: 3 }, { name: 'Comuna 4 – Aranjuez', id: 4 },
+                { name: 'Comuna 5 – Castilla', id: 5 }, { name: 'Comuna 6 – Doce de Octubre', id: 6 },
+                { name: 'Comuna 7 – Robledo', id: 7 }, { name: 'Comuna 8 – Villa Hermosa', id: 8 },
+                { name: 'Comuna 9 – Buenos Aires', id: 9 }, { name: 'Comuna 10 – La Candelaria', id: 10 },
+                { name: 'Comuna 11 – Laureles-Estadio', id: 11 }, { name: 'Comuna 12 – La América', id: 12 },
+                { name: 'Comuna 13 – San Javier', id: 13 }, { name: 'Comuna 14 – El Poblado', id: 14 },
+                { name: 'Comuna 15 – Guayabal', id: 15 }, { name: 'Comuna 16 – Belén', id: 16 },
+                { name: 'Comuna 50 – San Sebastián de Palmitas', id: 50 }, { name: 'Comuna 60 – San Cristóbal', id: 60 },
+                { name: 'Comuna 70 – Altavista', id: 70 }, { name: 'Comuna 80 – San Antonio de Prado', id: 80 },
+                { name: 'Comuna 90 – Santa Elena', id: 90 }
             ];
-            const map = L.map('map').setView([6.2518, -75.5812], 11.5);
             const selectComuna = document.getElementById('comuna-select');
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-            
             communeData.forEach(commune => {
-                let color;
-                if (commune.potholes > 800) color = '#d32f2f'; 
-                else if (commune.potholes >= 400) color = '#f57c00';
-                else color = '#388e3c';
-                const radius = Math.sqrt(commune.potholes) * 40;
-                
-                const circle = L.circle([commune.lat, commune.lng], {
-                    color: color, fillColor: color, fillOpacity: 0.6, weight: 1.5, radius: radius
-                }).addTo(map);
-                
-                circle.bindPopup(`<b>${commune.name}</b><br><span style="font-size:1.2em; font-weight:bold; color:${color};">${commune.potholes}</span> huecos tapados.`);
-
-                const communeIdMatch = commune.name.match(/^Comuna (\d+)/);
-                if (communeIdMatch && communeIdMatch[1]) {
-                    const communeId = communeIdMatch[1];
-                    circle.on('click', () => {
-                        window.open(`comuna${communeId}.html`, '_blank');
-                    });
-                    
-                    const option = document.createElement('option');
-                    option.value = communeId;
-                    option.textContent = commune.name.replace(/–\s/g, '- ');
-                    selectComuna.appendChild(option);
-                }
+                const option = document.createElement('option');
+                option.value = commune.id;
+                option.textContent = commune.name.replace(/–\s/g, '- ');
+                selectComuna.appendChild(option);
             });
 
-            selectComuna.addEventListener('change', function() {
-                const comunaId = this.value;
-                const selectedComuna = communeData.find(c => {
-                    const idMatch = c.name.match(/^Comuna (\d+)/);
-                    return idMatch && idMatch[1] === comunaId;
-                });
-                if (selectedComuna) {
-                    map.flyTo([selectedComuna.lat, selectedComuna.lng], 14);
-                }
-            });
+            // ##################################################################
+            // ### INICIO DE LA LÓGICA DEL ASISTENTE VIRTUAL (MEJORADO) ###
+            // ##################################################################
 
-            setTimeout(() => { map.invalidateSize(); }, 200);
-
-            const faqData = {
-                'mallaVial': {
-                    displayName: '🛣️ Malla Vial',
-                    faqs: [
-                        { question: '¿Cuál es el total de huecos tapados?', answer: 'Se han tapado <strong>+13,822 huecos</strong> en toda la ciudad y corregimientos.' },
-                        { question: '¿Qué comuna tuvo la mayor intervención?', answer: 'La comuna con la <strong>mayor</strong> intervención fue <strong>La Candelaria (Comuna 10)</strong> con 1,178 huecos.' },
-                    ]
-                },
-                'infraVerde': {
-                    displayName: '🌳 Infraestructura Verde',
-                    faqs: [
-                        { question: '¿Qué nuevos espacios verdes se crearon?', answer: 'En 2024 se crearon <strong>3 nuevos corredores verdes y 3 puentes verdes</strong>, que equivalen a 5,000 m².'},
-                        { question: '¿Qué se hizo en el puente de la 4 Sur?', answer: 'Se invirtieron más de <strong>$1,330 millones</strong> en la recuperación del urbanismo y se sembraron más de 4,300 plantas.'}
-                    ]
-                },
-                'parques': {
-                    displayName: '🏞️ Parques y Espacios Públicos',
-                    faqs: [
-                        { question: '¿Cuántos parques se han renovado?', answer: 'Se han renovado <strong>17 espacios públicos</strong>, interviniendo más de 11,890 m².'},
-                        { question: '¿Cuál es la próxima gran inversión en parques?', answer: 'Está abierta una licitación por más de <strong>$20.000 millones</strong> para construir y mejorar <strong>29 parques</strong> en la ciudad.'},
-                    ]
-                },
-                'proyectos': {
-                    displayName: '🏗️ Proyectos Estratégicos',
-                    faqs: [
-                        { question: '¿Cuál es el balance de los proyectos PUI?', answer: 'Se entregaron <strong>4 Proyectos Urbanos Integrales (PUI)</strong> con una inversión de <strong>$16.000 millones</strong>, beneficiando a 209,000 habitantes.'},
-                        { question: '¿Cómo va la ejecución de Presupuesto Participativo?', answer: 'Se han intervenido 47 puntos con un avance del 90%. Se adicionaron $4.590 millones para 12 nuevos frentes.'},
-                    ]
-                },
-                'gestion': {
-                    displayName: '🚀 Gestión y Futuro',
-                    faqs: [
-                        { question: '¿En qué consisten las Cuadrillas del Alcalde?', answer: 'Es un contrato de <strong>$23.900 millones</strong> para atender contingencias en el espacio público. Ya se han atendido 152 puntos.' },
-                        { question: '¿Cuántas licitaciones hay abiertas?', answer: 'Actualmente hay <strong>12 procesos de licitación</strong> que incluyen obras de malla vial, parques, andenes, entre otros.'}
-                    ]
-                }
+            // --- DATA STRUCTURE 1: Reportes SIF ---
+            const reportesSIF = {
+                planeacion: { name: "Subsecretaría de Planeación", unidades: { gestion_informacion: { name: "Unidad de Gestión de la Información y Proyectos", reports: [ { name: "Ejecución Presupuestal", keywords: ['presupuesto', 'ejecución', 'plata', 'inversión'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNDAyOGE4OTMtZTExMi00M2VlLWJiNmUtMTMwMzk3MjY0YmU3IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Quiero ver cómo se invierte el presupuesto"] }, { name: "Indicadores PI", keywords: ['indicadores', 'pi', 'avance'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMDk4YTEyZTMtY2FlZi00Y2Y0LWI2ODgtNDZiYTgxN2EzZDMyIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo van los indicadores de rendimiento?"] }, { name: "Informe Tácita de plata", keywords: ['tácita', 'plata'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjliYjNkNGQtYjJiMC00MDRhLWJlZDMtYjk4YmI1YjMwZjUzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Muéstrame el informe de Tácita de Plata"] } ] }, estudios_disenos: { name: "Unidad de Estudios y Diseños", reports: [ { name: "Parques - Tejiendo Hogares", keywords: ['parques', 'tejiendo hogares'], href: 'https://app.powerbi.com/view?r=eyJrIjoiN2Y1ZTQyNGQtOTkzZC00MjY4LTg5NzktZWY1NzNiYjE2NzBkIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver el impacto del proyecto 'Tejiendo Hogares'"] } ] }, gestion_contractual: { name: "Unidad de Gestión Contractual", reports: [ { name: "Proceso Precontractual", keywords: ['precontractual', 'contratos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMzE1MWNmMjQtYWEyMy00MGVjLWI4MjgtNzIzZTYxZDAzNDVhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué proyectos se van a contratar pronto?"] } ] } } },
+                construccion: { name: "Subsecretaría de Construcción y Mantenimiento", unidades: { ejecucion_proyectos: { name: "Unidad de ejecución de Proyectos", reports: [ { name: "Seguimiento a contratos de Obra", keywords: ['contratos', 'obra'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNTI2N2NhMjktN2RmOS00OTliLTg1Y2UtMjY2M2Q5MDcxOTY0IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo van las obras en construcción?"] }, { name: "Empleabilidad", keywords: ['empleabilidad', 'empleo'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNjUyOWI4ZmQtZWIzNi00NjM2LTlkOGUtOGM0OTUwNjY1MmNmIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver el impacto en la generación de empleo"] }, { name: "Informe Baches", keywords: ['baches', 'huecos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNWI3ZTNkZmMtMjEyNy00NjU1LTk3YzktNTMyOGJkMzZlN2ZiIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Quiero ver el mapa de reparación de huecos"] }, { name: "Informe Paraderos", keywords: ['paraderos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZDQ2OGM4MDItYTc1Zi00MjE5LWJlNmUtZjJhMDE3ZjkzMWFjIiwidCI6ImJhMzM0NGUyLTAxMGYtNGJkZi1iNTEyLWMzOGRmYTdhNWJhNSIsImMiOjR9', preguntas: ["¿Cómo va la renovación de paraderos?"] } ] }, socioambiental_paisajismo: { name: "Unidad Socioambiental y Paisajismo", reports: [ { name: "Jardín Botánico*", keywords: ['jardín', 'botánico'], href: 'https://app.powerbi.com/view?r=eyJrIjoiOGQwNzU5ODgtNmIyYS00YTQ3LTg3ODMtOGRhOTU2MmMyNjZhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver proyectos con el Jardín Botánico"] }, { name: "Parque Arví*", keywords: ['arví'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMDkyNjU3Y2UtOTRjNy00YjVjLTg0MzgtNzBiYmUyOWNhNzEwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué se está haciendo en el Parque Arví?"] } ] }, mantenimiento: { name: "Unidad de Mantenimiento", reports: [ { name: "Trabajadores Oficiales", keywords: ['trabajadores', 'oficiales'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNWM1NzY3MjQtZmViMy00YmRiLWJiODgtMDg0MDRhZjVkMTgzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Conocer sobre los trabajadores oficiales"] }, { name: "Solicitudes Baches SIRO", keywords: ['siro', 'solicitudes baches'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNzkzZmIyODUtMGE3YS00YTUwLTkyYTMtMTBlODI3MWE4OWU2IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar el estado de mi solicitud de un bache"] }, { name: "Parque Automotor", keywords: ['automotor', 'vehículos', 'maquinaria'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNmQ1ZThhNWItZTA1Mi00ZDc4LTgwMTktYWEyYzViOTY1YTNhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Explorar el estado del parque automotor"] }, { name: "Intervenciones Directas", keywords: ['intervenciones', 'directas'], href: 'https://app.powerbi.com/view?r=eyJrIjoiYjE2NjE2MjItNTUxNi00ZTI4LThmNzAtNjY0NThjNGYxN2Q2IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver las pequeñas obras en los barrios"] }, { name: "Permisos de Roturas*", keywords: ['roturas', 'permisos'], href: '#link-placeholder', preguntas: ["Entender la gestión de permisos de roturas"] } ] } } },
+                despacho: { name: "Despacho SIF", reports: [ { name: "Gerencia de Corregimientos", keywords: ['corregimientos', 'gerencia', 'rural'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZmVhNjY3YTYtNTIwNi00NzUzLTkyYWYtZmZiMDBiNTdkNWQwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué obras hay en los corregimientos?"] }, { name: "Informe Calamidad Pública", keywords: ['calamidad', 'pública', 'emergencias'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjEyMzdhNGEtZGVjNC00YTM4LWEzNDAtMjI1MmY1NzdlODEwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver informe de gestión de emergencias"] }, { name: "Plan de Contratación", keywords: ['plan', 'contratación', 'licitaciones'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjgzYmIxZTctMmM1Yi00YWEzLWIyYTktYjk3ODYxNGI3NTY4IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar el plan anual de adquisiciones"] }, { name: "Informe de Gestión", keywords: ['gestión', 'informe de gestión', 'resumen'], href: '#link-placeholder', preguntas: ["Quiero un resumen de la gestión"] } ] },
+                direccion: { name: "Dirección Técnica", reports: [ { name: "Estado proyectos estratégicos", keywords: ['estratégicos', 'proyectos', 'metro 80'], href: 'https://app.powerbi.com/view?r=eyJrIjoiYzEzZGI3ZTUtNDc1ZS00ODdjLTg1YTctYTA1OGZjYzdmMTVlIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo avanzan los proyectos estratégicos?"] } ] },
+                apoyo_juridico: { name: "Apoyo Jurídico", reports: [ { name: "Acciones Populares", keywords: ['acciones', 'populares', 'demandas'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZWY3ZDM3ODctMGFmYS00OTlmLWJlYTgtMmViNTE5NmZmYjA5IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar estado de acciones populares"] } ] },
+                comunicaciones: { name: "Comunicaciones", reports: [] },
+                unidad_administrativa: { name: "Unidad Administrativa", reports: [] }
             };
 
+            // --- DATA STRUCTURE 2: FAQs (con respuestas conversacionales) ---
+            const faqData = {
+                'huecos': { keywords: ['hueco', 'bache', 'malla vial'], answer: '¡Hemos trabajado sin descanso en la malla vial! A la fecha, la cifra es de <strong>+13,822 huecos</strong> tapados en la ciudad y los corregimientos. ¡Seguimos sumando para mejorar tu movilidad! 🚧' },
+                'infraVerde': { keywords: ['verde', 'jardines', 'árboles'], answer: '¡Medellín es un jardín! Hemos creado <strong>3 nuevos corredores verdes y 3 puentes</strong>, que suman <strong>5,000 m²</strong> de nuevos espacios para todos. Además, más de <strong>540 jardineros</strong> cuidan de ellos. 🌳' },
+                'puente4Sur': { keywords: ['4 sur', 'cuatro sur'], answer: '¡El puente de la 4 Sur está más verde que nunca! Invertimos más de <strong>$1.330 millones</strong> en su renovación y sembramos más de <strong>4.300 plantas</strong> para embellecerlo. 🌉' },
+                'parques': { keywords: ['parque', 'juegos'], answer: '¡Claro que sí! Hemos renovado <strong>17 parques</strong> y espacios públicos. Y la buena noticia es que viene una inversión de más de <strong>$20.000 millones</strong> para mejorar y construir otros <strong>29 parques</strong>. ¡Más lugares para disfrutar! 🏞️' },
+                'pui': { keywords: ['pui', 'proyectos urbanos'], answer: 'Los Proyectos Urbanos Integrales (PUI) transforman barrios enteros. Ya entregamos <strong>4 PUI</strong> con una inversión de <strong>$16.000 millones</strong>, beneficiando a más de <strong>209,000 personas</strong>. 💪' },
+                'cuadrillas': { keywords: ['cuadrillas', 'alcalde'], answer: 'Las Cuadrillas del Alcalde son nuestros equipos de respuesta rápida. Con un contrato de <strong>$23.900 millones</strong>, ya han atendido <strong>152 puntos</strong> de la ciudad para reparaciones y mantenimiento. 👷‍♂️' },
+                'licitacion': { keywords: ['licitación', 'licitaciones'], answer: 'Para garantizar que las obras no paren, actualmente tenemos <strong>12 procesos de licitación</strong> abiertos para malla vial, parques, andenes y mucho más. ¡El futuro de Medellín se sigue construyendo! 🏗️' }
+            };
+
+            // --- UI Elements ---
             const fab = document.getElementById('chat-fab');
             const chatWindow = document.getElementById('chat-window');
             const closeBtn = document.getElementById('chat-close-btn');
-            const chatForm = document.getElementById('chat-form');
-            const chatInput = document.getElementById('chat-input');
-            const messagesContainer = document.getElementById('chat-messages');
-
-            const addMessage = (text, type) => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `chat-message ${type}-message`;
-                messageDiv.innerHTML = text;
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            };
-
-            const showAnswer = (question, answer) => {
-                messagesContainer.innerHTML = '';
-                addMessage(question, 'user');
-                setTimeout(() => {
-                    addMessage(answer, 'bot');
-                    const buttonContainer = document.createElement('div');
-                    buttonContainer.className = 'faq-button-container';
-                    buttonContainer.innerHTML = '<button class="faq-button back-button">⬅️ Volver al menú principal</button>';
-                    messagesContainer.appendChild(buttonContainer);
-                    buttonContainer.querySelector('.back-button').addEventListener('click', showMainMenu);
-                }, 500);
-            };
-
-            const showFaqQuestionsFor = (categoryKey) => {
-                messagesContainer.innerHTML = '';
-                addMessage(`Has seleccionado <strong>${faqData[categoryKey].displayName}</strong>. ¿Qué te gustaría saber?`, 'bot');
-                
-                const buttonContainer = document.createElement('div');
-                buttonContainer.className = 'faq-button-container';
-
-                faqData[categoryKey].faqs.forEach(faq => {
-                    const button = document.createElement('button');
-                    button.className = 'faq-button';
-                    button.textContent = faq.question;
-                    button.addEventListener('click', () => showAnswer(faq.question, faq.answer));
-                    buttonContainer.appendChild(button);
-                });
-                
-                const backButton = document.createElement('button');
-                backButton.className = 'faq-button back-button';
-                backButton.innerHTML = '⬅️ Volver al menú principal';
-                backButton.addEventListener('click', showMainMenu);
-                buttonContainer.appendChild(backButton);
-
-                messagesContainer.appendChild(buttonContainer);
-            };
-
-            const showMainMenu = () => {
-                messagesContainer.innerHTML = '';
-                addMessage('¡Hola! Soy el asistente virtual. Por favor, selecciona un tema para ver las preguntas frecuentes.', 'bot');
-                
-                const buttonContainer = document.createElement('div');
-                buttonContainer.className = 'faq-button-container';
-
-                for (const key in faqData) {
-                    const button = document.createElement('button');
-                    button.className = 'faq-button';
-                    button.textContent = faqData[key].displayName;
-                    button.addEventListener('click', () => showFaqQuestionsFor(key));
-                    buttonContainer.appendChild(button);
-                }
-                messagesContainer.appendChild(buttonContainer);
+            
+            const ui = {
+                chatMessages: document.getElementById('chat-messages-container'),
+                chatInput: document.getElementById('chat-input'),
+                sendBtn: document.getElementById('send-btn'),
+                optionsGrid: document.getElementById('options-grid'),
+                breadcrumbContainer: document.getElementById('breadcrumb-container'),
+                backBtn: document.getElementById('back-btn'),
             };
             
-            const handleKeywordSearch = (e) => {
-                e.preventDefault();
-                const query = chatInput.value.trim().toLowerCase();
-                if (!query) return;
+            let botTyping = false;
+            let navigationPath = [];
 
-                for (const key in faqData) {
-                    for (const faq of faqData[key].faqs) {
-                        if (faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query)) {
-                            showAnswer(faq.question, faq.answer);
-                            chatInput.value = '';
-                            return;
-                        }
+            // --- Lógica del Chat ---
+            function addMessage(content, sender, options = {}) {
+                const bubble = document.createElement('div');
+                bubble.className = `max-w-xs md:max-w-lg p-3 rounded-xl ${sender === 'user' ? 'chat-bubble-user self-end' : 'chat-bubble-bot self-start'}`;
+                bubble.innerHTML = options.isHtml ? content : content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                ui.chatMessages.appendChild(bubble);
+                ui.chatMessages.scrollTop = ui.chatMessages.scrollHeight;
+            }
+            
+            function addBotMessage(text, options = {}) {
+                if (botTyping) return;
+                botTyping = true;
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'chat-bubble-bot self-start p-3 rounded-xl flex items-center space-x-2';
+                typingIndicator.innerHTML = `<span class="block w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0s;"></span><span class="block w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></span><span class="block w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.4s;"></span>`;
+                ui.chatMessages.appendChild(typingIndicator);
+                ui.chatMessages.scrollTop = ui.chatMessages.scrollHeight;
+                setTimeout(() => {
+                    if (typingIndicator.parentNode) {
+                        ui.chatMessages.removeChild(typingIndicator);
+                    }
+                    addMessage(text, 'bot', options);
+                    botTyping = false;
+                }, 800 + Math.random() * 400);
+            }
+
+            // --- Navegación y Opciones ---
+            function getCurrentLevelObject() {
+                let level = reportesSIF;
+                for (const key of navigationPath) {
+                    level = level[key];
+                    if (level && level.unidades) {
+                        level = level.unidades;
                     }
                 }
-                
-                addMessage(`No encontré resultados para "${chatInput.value}". Por favor, usa el menú interactivo.`, 'bot');
-                chatInput.value = '';
-                setTimeout(showMainMenu, 2000);
-            };
+                return level;
+            }
 
+            function displayOptions() {
+                const currentLevel = getCurrentLevelObject();
+                ui.optionsGrid.innerHTML = '';
+                ui.backBtn.classList.toggle('hidden', navigationPath.length === 0);
+                updateBreadcrumbs();
+
+                if (Array.isArray(currentLevel)) {
+                    if (currentLevel.length === 0) addBotMessage('Aquí no hay más informes, ¡pero puedes volver y explorar otra sección! 😉');
+                    currentLevel.forEach(report => {
+                        const randomQuestion = report.preguntas[Math.floor(Math.random() * report.preguntas.length)];
+                        createButton(randomQuestion, 'report', { href: report.href, reportName: report.name });
+                    });
+                } else { 
+                    if (Object.keys(currentLevel).length === 0) addBotMessage('Parece que esta sección está vacía. ¡Intenta en otro lugar!');
+                    for (const [key, value] of Object.entries(currentLevel)) {
+                        createButton(value.name, 'dependency', { navKey: key });
+                    }
+                }
+            }
+            
+            function createButton(name, type, data) {
+                const button = document.createElement('button');
+                button.className = 'option-btn bg-white text-slate-700 text-sm font-medium p-3 rounded-lg hover:bg-slate-50 text-left';
+                button.innerHTML = `<span class="font-bold">${name}</span>`;
+                button.dataset.type = type;
+                for (const [key, value] of Object.entries(data)) {
+                    button.dataset[key] = value;
+                }
+                ui.optionsGrid.appendChild(button);
+            }
+
+            function updateBreadcrumbs() {
+                if (navigationPath.length === 0) {
+                    ui.breadcrumbContainer.innerHTML = 'Inicio';
+                    return;
+                }
+                let pathText = `<a href="#" class="hover:underline" data-level="-1">Inicio</a>`;
+                let level = reportesSIF;
+                navigationPath.forEach((key) => {
+                    level = level[key];
+                    pathText += ` / ${level.name}`;
+                    if (level.unidades) level = level.unidades;
+                });
+                ui.breadcrumbContainer.innerHTML = pathText;
+            }
+
+            // --- Lógica de Búsqueda y Respuesta (MERGE MEJORADO) ---
+            function searchAllReports(obj) {
+                let reports = [];
+                for (const key in obj) {
+                    if (key === 'reports') {
+                        reports = reports.concat(obj[key]);
+                    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                        reports = reports.concat(searchAllReports(obj[key]));
+                    }
+                }
+                return reports;
+            }
+            
+            function handleUserInput() {
+                const userInput = ui.chatInput.value.trim();
+                if (userInput === '' || botTyping) return;
+                addMessage(userInput, 'user');
+                ui.chatInput.value = '';
+                generateBotResponse(userInput);
+            }
+
+            function generateBotResponse(input) {
+                const lowerInput = input.toLowerCase();
+                
+                // 1. Buscar en informes de Power BI
+                const allReports = searchAllReports(reportesSIF);
+                const foundReport = allReports.find(report => 
+                    report.name.toLowerCase().includes(lowerInput) || 
+                    report.keywords.some(kw => lowerInput.includes(kw))
+                );
+
+                if (foundReport) {
+                    const message = `¡Excelente! Encontré justo lo que buscas. Aquí tienes el acceso directo al informe sobre <strong class="font-semibold">${foundReport.name}</strong>. ¡Espero que los datos te sean de mucha utilidad! <br><br><a href="${foundReport.href}" target="_blank" class="text-blue-600 font-bold hover:underline">🚀 Abrir Tablero de Power BI</a>`;
+                    addBotMessage(message, { isHtml: true });
+                    return;
+                }
+
+                // 2. Si no se encuentra, buscar en las FAQs
+                for (const key in faqData) {
+                    if (faqData[key].keywords.some(kw => lowerInput.includes(kw))) {
+                        addBotMessage(faqData[key].answer, { isHtml: true });
+                        return;
+                    }
+                }
+
+                // 3. Si no se encuentra nada
+                const notFoundMessage = "Vaya, parece que no encontré nada con esas palabras exactas. 🤔 No te preocupes, a veces los términos técnicos pueden ser confusos. ¿Qué tal si intentas con una palabra más general como 'contratos', 'inversión' o 'parques'? O si prefieres, sigue explorando las opciones de abajo.";
+                addBotMessage(notFoundMessage, { isHtml: true });
+            }
+
+            // --- Event Listeners ---
             fab.addEventListener('click', () => {
                 chatWindow.classList.toggle('visible');
-                if (chatWindow.classList.contains('visible')) {
-                    showMainMenu();
+                if (chatWindow.classList.contains('visible') && ui.chatMessages.children.length === 0) {
+                     addBotMessage("¡Hola! Soy SIF, tu asistente virtual de la Secretaría de Infraestructura. 😊 Estoy aquí para ayudarte a navegar por todos nuestros datos y proyectos. ¿Qué información te interesa hoy? Puedes explorar las categorías de abajo o preguntarme directamente por algo como 'huecos tapados' o 'nuevos parques'.");
+                     displayOptions();
                 }
             });
+
             closeBtn.addEventListener('click', () => chatWindow.classList.remove('visible'));
-            chatForm.addEventListener('submit', handleKeywordSearch);
+            
+            ui.sendBtn.addEventListener('click', handleUserInput);
+            ui.chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserInput(); });
+
+            ui.optionsGrid.addEventListener('click', (e) => {
+                const button = e.target.closest('.option-btn');
+                if (!button) return;
+                const { type, navKey, href, reportName } = button.dataset;
+                
+                if (type === 'dependency') {
+                    navigationPath.push(navKey);
+                    const nextLevel = getCurrentLevelObject();
+                    if (nextLevel && nextLevel.reports) { 
+                        navigationPath.push('reports');
+                    }
+                    displayOptions();
+                } else if (type === 'report') {
+                    const message = `¡Perfecto! Aquí tienes el acceso al informe: <br><strong class="font-semibold">${reportName}</strong>. <br><br><a href="${href}" target="_blank" class="text-blue-600 font-bold hover:underline">🚀 Abrir Tablero de Power BI</a>`;
+                    addBotMessage(message, { isHtml: true });
+                }
+            });
+
+            ui.backBtn.addEventListener('click', () => {
+                if (navigationPath.length > 0) {
+                    if (navigationPath[navigationPath.length - 1] === 'reports') {
+                        navigationPath.pop();
+                    }
+                    navigationPath.pop();
+                    displayOptions();
+                }
+            });
+
+            ui.breadcrumbContainer.addEventListener('click', (e) => {
+                e.preventDefault();
+                const link = e.target.closest('a');
+                if (link && link.dataset.level === "-1") {
+                    navigationPath = [];
+                    displayOptions();
+                }
+            });
         });
     </script>
 </body>
