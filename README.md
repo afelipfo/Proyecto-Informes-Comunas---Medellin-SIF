@@ -1,4 +1,4 @@
-# Visualizador de Bussiness Intelligence de la Secretaría de Infraestructura Física de Medellín 
+# Visualizador de la Secretaría de Infraestructura Física de Medellín 
 ## Alcaldía de Medellín  - RUTASIF 2025
 
 Un repositorio para la centralización y visualización interactiva de los datos de proyectos de la **Secretaría de Infraestructura Física**.
