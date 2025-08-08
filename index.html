@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión 2025 - Secretaría de Infraestructura Física (Versión Reorganizada)</title>
+    <title>Gestión 2025 - Secretaría de Infraestructura Física (Versión Optimizada)</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -305,7 +305,7 @@
             font-size: 1em;
         }
         
-        /* MEJORA: Estilos para las pestañas de Gestión Estratégica */
+        /* Estilos para las pestañas de Gestión Estratégica */
         .tabs-container {
             background: var(--card-bg);
             border-radius: 10px;
@@ -439,6 +439,18 @@
             border-color: #3B82F6;
         }
 
+        /* MEJORA: Estilos para animación en scroll */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
     </style>
 </head>
 <body>
@@ -458,14 +470,13 @@
             <a href="#proyectos-estrategicos">Proyectos Estratégicos</a>
             <a href="#futuro">Gestión Estratégica</a>
             <a href="pp.html" target="_blank" rel="noopener noreferrer">Presupuesto Participativo</a>
-            <a href="pqrs.html" target="_blank" rel="noopener noreferrer">PQRS</a>
         </div>
     </nav>
 
     <main class="container">
 
         <section id="consulta-comuna">
-            <div class="card" style="padding: 0; overflow: hidden;">
+            <div class="card reveal-on-scroll" style="padding: 0; overflow: hidden;">
                 <h3 style="padding: 30px 30px 0 30px; margin-bottom: 0;">🔎 Consulta Detallada por Comuna</h3>
                 <div class="consulta-comuna-container">
                     <h3>Filtros de Consulta</h3>
@@ -478,11 +489,10 @@
                     </div>
                     <button onclick="abrirReporte()">Ver Reporte Detallado</button>
                 </div>
-                <div class="date-stamp" style="padding: 15px 30px;">Corte: <span id="date-malla-vial"></span></div>
             </div>
         </section>
 
-        <section id="indicadores-cta">
+        <section id="indicadores-cta" class="reveal-on-scroll">
             <h2><i class="fa-solid fa-chart-line"></i> Indicadores - SIF</h2>
             <p>Explore los datos detallados y el progreso de nuestros proyectos estratégicos. Acceda a las métricas clave y siga en tiempo real el avance de las metas que transforman a Medellín.</p>
             <a href="indicadores.html" class="cta-button" target="_blank" rel="noopener noreferrer">
@@ -491,19 +501,19 @@
         </section>
 
         <section id="malla-vial">
-            <h2>🛣️ Conectando la Ciudad: Recuperación de la Malla Vial</h2>
+            <h2 class="reveal-on-scroll">🛣️ Conectando la Ciudad: Recuperación de la Malla Vial</h2>
             <div class="grid">
-                <div class="card">
+                <div class="card reveal-on-scroll">
                     <h3>Nuestra Gestión</h3>
                     <p>Mediante intervenciones integrales que incluyen reparación de baches, rehabilitación de vías y obras complementarias, hemos logrado una importante recuperación de la malla vial. Estas labores, coordinadas con múltiples cuadrillas, mejoran la transitabilidad y seguridad vial para todos.</p>
                 </div>
-                <div class="card stat-box">
-                    <div class="stat-number">+<span id="stat-huecos"></span></div>
+                <div class="card stat-box reveal-on-scroll">
+                    <div class="stat-number">+<span id="stat-huecos">0</span></div>
                     <div class="stat-label">Huecos tapados en la ciudad y corregimientos</div>
                 </div>
             </div>
             
-            <div class="card" style="margin-top: 30px;">
+            <div class="card reveal-on-scroll" style="margin-top: 30px;">
                 <h3>📊 Impacto Total por Comuna (Huecos Tapados)</h3>
                 <div class="bar-chart" id="barChartContainer">
                     </div>
@@ -511,9 +521,9 @@
         </section>
         
         <section id="infra-verde">
-            <h2>🌳 Infraestructura Verde</h2>
+            <h2 class="reveal-on-scroll">🌳 Infraestructura Verde</h2>
             <div class="grid">
-                <div class="card">
+                <div class="card reveal-on-scroll">
                     <h3>Nuevos Espacios Verdes</h3>
                     <ul>
                         <li><span class="highlight" id="infra-corredores"></span> nuevos corredores verdes creados en 2024 (Manrique, Palmas, Av. 33 tramo 2).</li>
@@ -522,7 +532,7 @@
                         <li>Obras iniciadas en Av. Las Vegas y La 70 con inversión de <span class="highlight" id="infra-inversion-vegas"></span>.</li>
                     </ul>
                 </div>
-                 <div class="card">
+                 <div class="card reveal-on-scroll">
                     <h3>Mantenimiento y Cuidado</h3>
                     <ul>
                         <li>A la fecha van <span class="highlight" id="mant-jardineros"></span> jardineros desplegados en toda la ciudad.</li>
@@ -532,7 +542,7 @@
                         <li>Inversión de <span class="highlight" id="mant-inversion-total"></span>.</li>
                     </ul>
                 </div>
-                 <div class="card">
+                 <div class="card reveal-on-scroll">
                     <h3>Renovación Puente 4 Sur</h3>
                     <p>Se intervinieron más de <span class="highlight" id="p4sur-inversion"></span> en la recuperación del urbanismo superior del puente, sembrando más de <span class="highlight" id="p4sur-plantas"></span> plantas para embellecer este icónico entorno.</p>
                      <ul>
@@ -546,18 +556,18 @@
         </section>
 
         <section id="emergencias">
-            <h2>👷🏽‍♀️ Respuesta Inmediata: Gestión de Emergencias</h2>
-            <p style="text-align: center; max-width: 800px; margin: 0 auto 40px;">En articulación con el DAGRD, removemos material y habilitamos puntos críticos para garantizar la seguridad de los ciudadanos.</p>
+            <h2 class="reveal-on-scroll">👷🏽‍♀️ Respuesta Inmediata: Gestión de Emergencias</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 40px;" class="reveal-on-scroll">En articulación con el DAGRD, removemos material y habilitamos puntos críticos para garantizar la seguridad de los ciudadanos.</p>
             <div class="grid">
-                 <div class="card stat-box">
-                    <div class="stat-number">&gt;<span id="stat-material-removido"></span></div>
+                 <div class="card stat-box reveal-on-scroll">
+                    <div class="stat-number">&gt;<span id="stat-material-removido">0</span></div>
                     <div class="stat-label">De material removido</div>
                 </div>
-                <div class="card stat-box">
-                    <div class="stat-number">&gt;<span id="stat-personas-emergencias"></span></div>
+                <div class="card stat-box reveal-on-scroll">
+                    <div class="stat-number">&gt;<span id="stat-personas-emergencias">0</span></div>
                     <div class="stat-label">Personas dedicadas a estas labores</div>
                 </div>
-                <div class="card">
+                <div class="card reveal-on-scroll">
                     <h3>Zonas Atendidas</h3>
                     <ul>
                         <li><b>Corregimientos:</b> Altavista, San Antonio de Prado, Santa Elena, San Cristóbal.</li>
@@ -565,27 +575,27 @@
                     </ul>
                 </div>
             </div>
-             <div class="date-stamp">Corte: <span id="date-emergencias"></span></div>
+             <div class="date-stamp reveal-on-scroll">Corte: <span id="date-emergencias"></span></div>
         </section>
 
         <section id="espacios-publicos">
-            <h2>🏞️ Espacios para la Gente: Renovación de Parques</h2>
+            <h2 class="reveal-on-scroll">🏞️ Espacios para la Gente: Renovación de Parques</h2>
              <div class="grid">
-                <div class="card stat-box">
-                    <div class="stat-number" id="parques-renovados"></div>
+                <div class="card stat-box reveal-on-scroll">
+                    <div class="stat-number" id="parques-renovados">0</div>
                     <div class="stat-label">Espacios públicos renovados</div>
                 </div>
-                <div class="card stat-box">
-                    <div class="stat-number">&gt;<span id="parques-metros-intervenidos"></span></div>
+                <div class="card stat-box reveal-on-scroll">
+                    <div class="stat-number">&gt;<span id="parques-metros-intervenidos">0</span></div>
                     <div class="stat-label">De espacio público intervenido</div>
                 </div>
-                <div class="card">
+                <div class="card reveal-on-scroll">
                     <h3>Parques finalizados</h3>
                     <ul id="parques-finalizados-lista">
                     </ul>
                 </div>
             </div>
-            <div class="card" style="margin-top: 30px;">
+            <div class="card reveal-on-scroll" style="margin-top: 30px;">
                 <h3>Proyectos en Curso y Futuros</h3>
                 <ul>
                     <li><b>En San Antonio de Prado (Presupuesto Participativo):</b> Se avanza en 4 parques. 
@@ -597,9 +607,9 @@
         </section>
         
         <section id="proyectos-estrategicos">
-            <h2>🏗️ Proyectos Estratégicos que Transforman Territorios</h2>
+            <h2 class="reveal-on-scroll">🏗️ Proyectos Estratégicos que Transforman Territorios</h2>
             <div class="grid">
-                 <div class="card">
+                 <div class="card reveal-on-scroll">
                     <h3>Proyectos Urbanos Integrales (PUI)</h3>
                     <p>Entregamos <span class="highlight" id="pui-entregados"></span> que fortalecen el espacio público con una inversión de <span class="highlight" id="pui-inversion"></span>, beneficiando a <span class="highlight" id="pui-habitantes"></span> habitantes.</p>
                     <ul>
@@ -608,11 +618,11 @@
                         <li>Conectividad Estación Cable Las Torres-Cerro Los Valores (PUI Centro Oriental).</li>
                     </ul>
                 </div>
-                <div class="card">
+                <div class="card reveal-on-scroll">
                     <h3>Presupuesto Participativo</h3>
                      <p>Intervención de <span class="highlight" id="pp-puntos"></span> (20 vías y 27 andenes) en las comunas 1, 4, 16, 50 y 80, con un avance físico superior al <span class="highlight" id="pp-avance"></span>. Por buen desempeño, se adicionaron <span class="highlight" id="pp-adicion"></span> para 12 nuevos frentes (<span id="pp-total-frentes"></span> total).</p>
                 </div>
-                 <div class="card">
+                 <div class="card reveal-on-scroll">
                     <h3>Obras de Estabilización</h3>
                     <p>Trabajamos en la contención y mitigación en <span class="highlight" id="o-estab-puntos"></span> de la ciudad, de los cuales ya se han intervenido <span class="highlight" id="o-estab-intervenidos"></span>.</p>
                     <ul>
@@ -625,8 +635,8 @@
         </section>
 
         <section id="futuro">
-            <h2>🚀 Gestión Estratégica</h2>
-            <div class="tabs-container">
+            <h2 class="reveal-on-scroll">🚀 Gestión Estratégica</h2>
+            <div class="tabs-container reveal-on-scroll">
                 <div class="tabs-nav">
                     <button class="tab-link active" data-target="tab-cuadrillas">
                         <i class="fa-solid fa-users"></i> Cuadrillas del Alcalde
@@ -701,7 +711,6 @@
                 parquesMetrosIntervenidos: "11,890 m²"
             },
             dates: {
-                corteMallaVial: "1 de julio de 2025",
                 cortePuente4Sur: "13 de junio de 2025",
                 corteEmergencias: "1 de julio de 2025"
             },
@@ -788,8 +797,14 @@
         document.addEventListener('DOMContentLoaded', function () {
             
             function populateContent() {
-                document.getElementById('date-malla-vial').textContent = pageData.dates.corteMallaVial;
+                // Populate stats but leave counters at 0 initially for animation
                 document.getElementById('stat-huecos').textContent = pageData.stats.huecosTapados;
+                document.getElementById('stat-material-removido').textContent = pageData.stats.materialRemovido;
+                document.getElementById('stat-personas-emergencias').textContent = pageData.stats.personasEmergencias;
+                document.getElementById('parques-renovados').textContent = pageData.stats.parquesRenovados;
+                document.getElementById('parques-metros-intervenidos').textContent = pageData.stats.parquesMetrosIntervenidos;
+                
+                // Populate the rest of the content
                 document.getElementById('infra-corredores').textContent = pageData.infraVerde.corredores;
                 document.getElementById('infra-puentes').textContent = pageData.infraVerde.puentes;
                 document.getElementById('infra-metros-verdes').textContent = pageData.infraVerde.metrosVerdes;
@@ -805,11 +820,8 @@
                 document.getElementById('p4sur-materas').innerHTML = pageData.puente4Sur.materas;
                 document.getElementById('p4sur-pintura').innerHTML = pageData.puente4Sur.pintura;
                 document.getElementById('date-p4sur').textContent = pageData.dates.cortePuente4Sur;
-                document.getElementById('stat-material-removido').textContent = pageData.stats.materialRemovido;
-                document.getElementById('stat-personas-emergencias').textContent = pageData.stats.personasEmergencias;
                 document.getElementById('date-emergencias').textContent = pageData.dates.corteEmergencias;
-                document.getElementById('parques-renovados').textContent = pageData.stats.parquesRenovados;
-                document.getElementById('parques-metros-intervenidos').textContent = pageData.stats.parquesMetrosIntervenidos;
+                
                 const parquesLista = document.getElementById('parques-finalizados-lista');
                 parquesLista.innerHTML = '';
                 pageData.parques.listaFinalizados.forEach(item => {
@@ -817,6 +829,7 @@
                     li.innerHTML = item;
                     parquesLista.appendChild(li);
                 });
+
                 document.getElementById('parques-inversion-futura').textContent = pageData.parques.inversionFutura;
                 document.getElementById('parques-futuros-cantidad').textContent = pageData.parques.cantidadFuturos;
                 document.getElementById('pui-entregados').textContent = pageData.proyectosEstrategicos.puiEntregados;
@@ -833,6 +846,7 @@
                 document.getElementById('cuadrillas-contrato-objeto').textContent = pageData.gestionEstrategica.cuadrillasContrato;
                 document.getElementById('cuadrillas-puntos-atendidos').textContent = pageData.gestionEstrategica.cuadrillasPuntosAtendidos;
                 document.getElementById('licit-procesos-activos').textContent = pageData.gestionEstrategica.licitacionesActivas;
+                
                 const licitLista = document.getElementById('licit-lista-tipos');
                 licitLista.innerHTML = '';
                 pageData.gestionEstrategica.licitacionesTipos.forEach(item => {
@@ -860,7 +874,20 @@
                     barContainerDiv.className = 'bar-container';
                     const barDiv = document.createElement('div');
                     barDiv.className = 'bar';
-                    barDiv.style.width = `${widthPercentage}%`;
+                    barDiv.style.width = '0%'; // Start at 0 for animation
+                    // Animate width when the bar chart is visible
+                    const chartObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => { // Small delay for better visual effect
+                                     barDiv.style.width = `${widthPercentage}%`;
+                                }, 200);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    chartObserver.observe(barContainerDiv);
+                    
                     barDiv.textContent = item.value.toLocaleString('es-CO');
                     barContainerDiv.appendChild(barDiv);
                     itemDiv.appendChild(labelDiv);
@@ -870,7 +897,7 @@
             }
             renderCustomBarChart();
 
-            // MEJORA: Lógica para las pestañas de Gestión Estratégica
+            // Lógica para las pestañas de Gestión Estratégica
             const tabLinks = document.querySelectorAll('.tab-link');
             const tabPanes = document.querySelectorAll('.tab-pane');
             tabLinks.forEach(link => {
@@ -885,7 +912,7 @@
                 });
             });
 
-            // Lógica del Asistente Virtual (sin cambios)
+            // Lógica para Comunas
             const communeData = [
                 { name: 'Comuna 1 – Popular', id: 1 }, { name: 'Comuna 2 – Santa Cruz', id: 2 },
                 { name: 'Comuna 3 – Manrique', id: 3 }, { name: 'Comuna 4 – Aranjuez', id: 4 },
@@ -906,7 +933,60 @@
                 option.textContent = commune.name.replace(/–\s/g, '- ');
                 selectComuna.appendChild(option);
             });
+            
+            // --- INICIO DE MEJORAS ---
 
+            // 1. Animación de Contadores
+            function animateCounter(el) {
+                const originalText = el.textContent.trim();
+                const prefix = originalText.match(/^[^\d]*/)[0] || '';
+                const suffix = originalText.match(/[^\d.,]*$/)[0] || '';
+                const targetNumber = parseInt(originalText.replace(/[^\d]/g, ''), 10);
+
+                if (isNaN(targetNumber)) return;
+                
+                el.textContent = prefix + '0' + suffix;
+                let startTime = null;
+                const duration = 1800; // ms
+
+                const step = (timestamp) => {
+                    if (!startTime) startTime = timestamp;
+                    const progress = Math.min((timestamp - startTime) / duration, 1);
+                    const currentVal = Math.floor(progress * targetNumber);
+                    el.textContent = prefix + currentVal.toLocaleString('es-CO') + suffix;
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        el.textContent = prefix + targetNumber.toLocaleString('es-CO') + suffix;
+                    }
+                };
+                requestAnimationFrame(step);
+            }
+
+            // 2. Observer para animaciones en scroll
+            const scrollObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+
+                        if (entry.target.classList.contains('stat-box')) {
+                            const numberEl = entry.target.querySelector('.stat-number');
+                            if (numberEl && !numberEl.dataset.animated) {
+                                animateCounter(numberEl);
+                                numberEl.dataset.animated = 'true';
+                            }
+                        }
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => scrollObserver.observe(el));
+            
+            // --- FIN DE MEJORAS ---
+
+
+            // --- Lógica del Asistente Virtual (Sin cambios) ---
             const reportesSIF = {
                 planeacion: { name: "Subsecretaría de Planeación", unidades: { gestion_informacion: { name: "Unidad de Gestión de la Información y Proyectos", reports: [ { name: "Ejecución Presupuestal", keywords: ['presupuesto', 'ejecución', 'plata', 'inversión'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNDAyOGE4OTMtZTExMi00M2VlLWJiNmUtMTMwMzk3MjY0YmU3IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Quiero ver cómo se invierte el presupuesto"] }, { name: "Indicadores PI", keywords: ['indicadores', 'pi', 'avance'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMDk4YTEyZTMtY2FlZi00Y2Y0LWI2ODgtNDZiYTgxN2EzZDMyIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo van los indicadores de rendimiento?"] }, { name: "Informe Tácita de plata", keywords: ['tácita', 'plata'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjliYjNkNGQtYjJiMC00MDRhLWJlZDMtYjk4YmI1YjMwZjUzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Muéstrame el informe de Tácita de Plata"] } ] }, estudios_disenos: { name: "Unidad de Estudios y Diseños", reports: [ { name: "Parques - Tejiendo Hogares", keywords: ['parques', 'tejiendo hogares'], href: 'https://app.powerbi.com/view?r=eyJrIjoiN2Y1ZTQyNGQtOTkzZC00MjY4LTg5NzktZWY1NzNiYjE2NzBkIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver el impacto del proyecto 'Tejiendo Hogares'"] } ] }, gestion_contractual: { name: "Unidad de Gestión Contractual", reports: [ { name: "Proceso Precontractual", keywords: ['precontractual', 'contratos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMzE1MWNmMjQtYWEyMy00MGVjLWI4MjgtNzIzZTYxZDAzNDVhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué proyectos se van a contratar pronto?"] } ] } } },
                 construccion: { name: "Subsecretaría de Construcción y Mantenimiento", unidades: { ejecucion_proyectos: { name: "Unidad de ejecución de Proyectos", reports: [ { name: "Seguimiento a contratos de Obra", keywords: ['contratos', 'obra'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNTI2N2NhMjktN2RmOS00OTliLTg1Y2UtMjY2M2Q5MDcxOTY0IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo van las obras en construcción?"] }, { name: "Empleabilidad", keywords: ['empleabilidad', 'empleo'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNjUyOWI4ZmQtZWIzNi00NjM2LTlkOGUtOGM0OTUwNjY1MmNmIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver el impacto en la generación de empleo"] }, { name: "Informe Baches", keywords: ['baches', 'huecos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNWI3ZTNkZmMtMjEyNy00NjU1LTk3YzktNTMyOGJkMzZlN2ZiIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Quiero ver el mapa de reparación de huecos"] }, { name: "Informe Paraderos", keywords: ['paraderos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZDQ2OGM4MDItYTc1Zi00MjE5LWJlNmUtZjJhMDE3ZjkzMWFjIiwidCI6ImJhMzM0NGUyLTAxMGYtNGJkZi1iNTEyLWMzOGRmYTdhNWJhNSIsImMiOjR9', preguntas: ["¿Cómo va la renovación de paraderos?"] } ] }, socioambiental_paisajismo: { name: "Unidad Socioambiental y Paisajismo", reports: [ { name: "Jardín Botánico*", keywords: ['jardín', 'botánico'], href: 'https://app.powerbi.com/view?r=eyJrIjoiOGQwNzU5ODgtNmIyYS00YTQ3LTg3ODMtOGRhOTU2MmMyNjZhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver proyectos con el Jardín Botánico"] }, { name: "Parque Arví*", keywords: ['arví'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMDkyNjU3Y2UtOTRjNy00YjVjLTg0MzgtNzBiYmUyOWNhNzEwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué se está haciendo en el Parque Arví?"] } ] }, mantenimiento: { name: "Unidad de Mantenimiento", reports: [ { name: "Trabajadores Oficiales", keywords: ['trabajadores', 'oficiales'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNWM1NzY3MjQtZmViMy00YmRiLWJiODgtMDg0MDRhZjVkMTgzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Conocer sobre los trabajadores oficiales"] }, { name: "Solicitudes Baches SIRO", keywords: ['siro', 'solicitudes baches'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNzkzZmIyODUtMGE3YS00YTUwLTkyYTMtMTBlODI3MWE4OWU2IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar el estado de mi solicitud de un bache"] }, { name: "Parque Automotor", keywords: ['automotor', 'vehículos', 'maquinaria'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNmQ1ZThhNWItZTA1Mi00ZDc4LTgwMTktYWEyYzViOTY1YTNhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Explorar el estado del parque automotor"] }, { name: "Intervenciones Directas", keywords: ['intervenciones', 'directas'], href: 'https://app.powerbi.com/view?r=eyJrIjoiYjE2NjE2MjItNTUxNi00ZTI4LThmNzAtNjY0NThjNGYxN2Q2IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver las pequeñas obras en los barrios"] }, { name: "Permisos de Roturas*", keywords: ['roturas', 'permisos'], href: '#link-placeholder', preguntas: ["Entender la gestión de permisos de roturas"] } ] } } },
@@ -916,7 +996,6 @@
                 comunicaciones: { name: "Comunicaciones", reports: [] },
                 unidad_administrativa: { name: "Unidad Administrativa", reports: [] }
             };
-
             const faqData = {
                 'huecos': { keywords: ['hueco', 'bache', 'malla vial'], answer: `¡Hemos trabajado sin descanso en la malla vial! A la fecha, la cifra es de <strong>+${pageData.stats.huecosTapados} huecos</strong> tapados en la ciudad y los corregimientos. ¡Seguimos sumando para mejorar tu movilidad! 🚧` },
                 'infraVerde': { keywords: ['verde', 'jardines', 'árboles'], answer: `¡Medellín es un jardín! Hemos creado <strong>${pageData.infraVerde.corredores} nuevos corredores verdes y ${pageData.infraVerde.puentes} puentes</strong>, que suman <strong>${pageData.infraVerde.metrosVerdes}</strong> de nuevos espacios para todos. Además, más de <strong>${pageData.infraVerde.jardineros} jardineros</strong> cuidan de ellos. 🌳` },
