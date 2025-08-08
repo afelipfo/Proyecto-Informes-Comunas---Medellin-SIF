@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Analítica de Datos Comuna 11 - Laureles - Estadio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXrd3NBGQVJClubNFl4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        :root {
+            --color-azul-oscuro: #0D47A1;
+            --color-azul-medio: #1976D2;
+            --color-naranja: #FF6F00;
+            --color-blanco: #FFFFFF;
+            --color-gris-claro: #F5F5F5;
+            --color-texto: #333333;
+            --sombra-card: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--color-gris-claro);
+            color: var(--color-texto);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* --- ESTILOS PARA LA BARRA DE ACCIONES FIJA --- */
+        .actions-bar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            background-color: var(--color-blanco);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+        .actions-bar a, .actions-bar button {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .actions-bar .back-button {
+            color: var(--color-azul-medio);
+            border-color: var(--color-azul-medio);
+        }
+        .actions-bar .back-button:hover {
+            background-color: var(--color-azul-medio);
+            color: var(--color-blanco);
+        }
+        .actions-bar .download-button {
+            color: var(--color-blanco);
+            background-color: var(--color-naranja);
+            border-color: var(--color-naranja);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .actions-bar .download-button:hover {
+            background-color: #e66300;
+            border-color: #e66300;
+        }
+        /* --- FIN DE ESTILOS DE LA BARRA --- */
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--color-azul-oscuro), var(--color-azul-medio));
+            color: var(--color-blanco);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--sombra-card);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 5px 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: var(--color-azul-oscuro);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--color-naranja);
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+        .grid-container, .intervention-section {
+            display: grid;
+            gap: 25px;
+        }
+        .grid-container {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .intervention-section {
+             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+             align-items: stretch;
+        }
+        .stat-card {
+            background-color: var(--color-blanco);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+            text-align: center;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card .icon {
+            font-size: 3em;
+            color: var(--color-naranja);
+            margin-bottom: 15px;
+        }
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--color-azul-medio);
+        }
+        .stat-card .label {
+            font-size: 0.9em;
+            color: var(--color-texto);
+            margin-top: 5px;
+            line-height: 1.3;
+        }
+        .stat-card.inversion {
+            grid-column: 1 / -1;
+            background: var(--color-azul-medio);
+            color: var(--color-blanco);
+        }
+        .stat-card.inversion .value, .stat-card.inversion .icon {
+            color: var(--color-blanco);
+        }
+         .stat-card.inversion .label {
+            color: var(--color-gris-claro);
+        }
+        .chart-container {
+            background: var(--color-blanco);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+            margin-top: 30px;
+        }
+        .contract-card {
+            background: var(--color-blanco);
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+            margin-bottom: 25px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .contract-header {
+            background-color: var(--color-azul-oscuro);
+            color: var(--color-blanco);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .contract-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .contract-header .status {
+            background-color: var(--color-naranja);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .contract-body {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .contract-body .detail-item {
+            font-size: 0.95em;
+        }
+        .contract-body .detail-item strong {
+            color: var(--color-azul-medio);
+            display: block;
+            margin-bottom: 5px;
+        }
+        .contract-body .full-width {
+            grid-column: 1 / -1;
+        }
+        .frentes-obra ul {
+            padding-left: 20px;
+            margin: 0;
+            list-style-type: square;
+        }
+        .frentes-obra li {
+            margin-bottom: 5px;
+        }
+        .summary-table-container {
+            width: 100%;
+            overflow-x: auto;
+         }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: var(--color-blanco);
+            box-shadow: var(--sombra-card);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .summary-table th, .summary-table td {
+            padding: 15px;
+            text-align: left;
+        }
+        .summary-table thead {
+            background-color: var(--color-azul-medio);
+            color: var(--color-blanco);
+            font-weight: 600;
+        }
+        .summary-table tbody tr:nth-child(even) {
+            background-color: var(--color-gris-claro);
+        }
+        .summary-table tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+        .intervention-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            align-items: stretch;
+        }
+        .detail-list {
+            background-color: var(--color-blanco);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-card);
+        }
+        .detail-list h3 {
+             margin-top: 0;
+             color: var(--color-azul-oscuro);
+             border-bottom: 2px solid var(--color-gris-claro);
+             padding-bottom: 10px;
+        }
+        .detail-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .detail-list li {
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--color-gris-claro);
+        }
+        .detail-list li:last-child {
+            border-bottom: none;
+        }
+        .detail-list li strong {
+            color: var(--color-texto);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="actions-bar">
+        <a href="index.html" class="back-button">← Volver</a>
+        <button id="download-pdf" class="download-button">
+            <i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)
+        </button>
+    </div>
+
+    <div class="container" id="report-content">
+        <header class="header">
+            <h1>Reporte de Analítica de Datos Comuna 11 - Laureles - Estadio</h1>
+            <p>Fecha de corte al 31 de julio de 2025</p>
+        </header>
+        
+        <section>
+            <h2 class="section-title"><i class="fas fa-leaf"></i>Indicadores Plan Indicativo (Código 5.1.3.7)</h2>
+            <div class="grid-container" style="margin-top: 25px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="stat-card"><div class="value">7.316 m²</div><div class="label">Área Verde Total Intervenida</div></div>
+                <div class="stat-card"><div class="value">180</div><div class="label">Individuos Arbóreos Conservados</div></div>
+                <div class="stat-card"><div class="value">6.761 m²</div><div class="label">Conservación de Jardines (Parque La Vida y Parques del Río)</div></div>
+                <div class="stat-card"><div class="value">374 m²</div><div class="label">Establecimiento Área de Jardines (Parque La Vida y Parques del Río)</div></div>
+            </div>
+             <div class="contract-card" style="margin-top: 25px;">
+                    <div class="contract-header"><h3>Contrato 4600104824</h3></div>
+                    <div class="contract-body" style="grid-template-columns: 1fr;">
+                         <div class="detail-item"><strong>Objeto:</strong> Área verde de corredores, en espacio público, en quebradas y cerros 2.000.000 fortalecidas, intervenidas y conservadas.</div>
+                         <div class="detail-item"><strong>Proyecto Asociado:</strong> PARQUE ARVÍ</div>
+                         <div class="detail-item"><strong>Vigencia del Contrato:</strong> 8 de mayo al 31 de diciembre de 2025</div>
+                         <div class="detail-item"><strong>Actividades en la Comuna:</strong>
+                            <ul style="padding-left: 20px; margin-top: 5px;">
+                                <li>Conservación de individuos arbóreos juveniles: 180 individuos</li>
+                                <li>Conservación de jardines: 6.761 m²</li>
+                                <li>Establecimiento área de jardines: 374 m²</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas SIF - Vigencia 2024</h2>
+             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="value">56</div>
+                    <div class="label">Solicitudes Gestionadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-wallet"></i></div>
+                    <div class="value">$555.915.420</div>
+                    <div class="label">Costo Total de Obras</div>
+                </div>
+            </div>
+             <div class="intervention-section" style="margin-top: 25px;">
+                <div class="detail-list">
+                    <h3>Distribución de Solicitudes</h3>
+                    <ul>
+                        <li><span>Obras Civiles Menores</span> <strong>19 solicitudes (34%)</strong></li>
+                        <li><span>Pavimentos</span> <strong>17 solicitudes (30%)</strong></li>
+                        <li><span>Parques y Cerrajería</span> <strong>10 solicitudes (18%)</strong></li>
+                        <li><span>Otros (Bomberos, Paisajismo, Esim)</span> <strong>10 solicitudes (18%)</strong></li>
+                    </ul>
+                </div>
+                <div class="detail-list">
+                    <h3>Datos Clave 2024</h3>
+                    <ul>
+                        <li><span>Mayor Inversión</span> <strong>Pavimentos (aprox. $395 millones)</strong></li>
+                        <li><span>Obras Terminadas</span> <strong>68% del total</strong></li>
+                        <li><span>Obras Por Iniciar</span> <strong>13% del total</strong></li>
+                    </ul>
+                </div>
+             </div>
+             <div class="intervention-section" style="margin-top: 25px;">
+                <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra (2024)</h3>
+                    <canvas id="distribucionGrupo2024Chart"></canvas>
+                </div>
+                 <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado de Avance de Obras (2024)</h3>
+                    <canvas id="estadoObra2024Chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-calendar-alt"></i>Intervenciones Directas SIF - Vigencia 2025</h2>
+             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="value">22</div>
+                    <div class="label">Solicitudes Gestionadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-wallet"></i></div>
+                    <div class="value">$231.859.899</div>
+                    <div class="label">Costo Total de Obras</div>
+                </div>
+            </div>
+            <div class="intervention-section" style="margin-top: 25px;">
+                 <div class="detail-list">
+                    <h3>Distribución de Solicitudes</h3>
+                    <ul>
+                        <li><span>Pavimentos</span> <strong>8 solicitudes (36%)</strong></li>
+                        <li><span>Obras Civiles Menores</span> <strong>7 solicitudes (32%)</strong></li>
+                        <li><span>Parques y Cerrajería</span> <strong>7 solicitudes (32%)</strong></li>
+                    </ul>
+                </div>
+                 <div class="detail-list">
+                    <h3>Datos Clave 2025</h3>
+                    <ul>
+                        <li><span>Mayor Inversión</span> <strong>Pavimentos (aprox. $185 millones)</strong></li>
+                        <li><span>Obras Terminadas</span> <strong>68% del total</strong></li>
+                        <li><span>Obras En Ejecución</span> <strong>23% del total</strong></li>
+                    </ul>
+                </div>
+            </div>
+             <div class="intervention-section" style="margin-top: 25px;">
+                <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra (2025)</h3>
+                    <canvas id="distribucionGrupo2025Chart"></canvas>
+                </div>
+                 <div class="chart-container">
+                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado de Avance de Obras (2025)</h3>
+                    <canvas id="estadoObra2025Chart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2 class="section-title"><i class="fas fa-exchange-alt"></i>Análisis Comparativo de Obras: 2024 vs. 2025</h2>
+            <div class="summary-table-container">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Vigencia</th>
+                            <th>Total de Intervenciones</th>
+                            <th>Costo Total de Obra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>2024</strong></td><td>56</td><td>$555.915.420</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2025</strong></td><td>22</td><td>$231.859.899</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+             <p style="text-align: center; font-size: 1.1em; color: var(--color-texto); max-width: 800px; margin: 0 auto;">Se observa una <strong>reducción significativa</strong> en la inversión y el número de intervenciones en la Comuna 11 del año 2024 al 2025. Aunque el costo y número de obras disminuyó, la distribución de los tipos de trabajo mantuvo un enfoque similar, concentrándose principalmente en Pavimentos y Obras Civiles Menores.</p>
+        </section>
+        
+    </div>
+
+<script>
+    // Configuración de colores para Chart.js
+    const chartColors = {
+        blue: 'rgba(25, 118, 210, 0.85)',
+        orange: 'rgba(255, 111, 0, 0.85)',
+        blueDark: 'rgba(13, 71, 161, 0.85)',
+        teal: 'rgba(0, 150, 136, 0.85)',
+        green: 'rgba(56, 142, 60, 0.85)',
+        grey: 'rgba(158, 158, 158, 0.85)'
+    };
+    
+    // Gráficas Intervenciones 2024
+    const distGrupo2024Ctx = document.getElementById('distribucionGrupo2024Chart').getContext('2d');
+    new Chart(distGrupo2024Ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Obras Civiles Menores (34%)', 'Pavimentos (30%)', 'Parques y Cerrajería (18%)', 'Otros (18%)'],
+            datasets: [{
+                data: [19, 17, 10, 10],
+                backgroundColor: Object.values(chartColors)
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const estadoObra2024Ctx = document.getElementById('estadoObra2024Chart').getContext('2d');
+    new Chart(estadoObra2024Ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Terminada (68%)', 'Por iniciar (13%)', 'Otros Estados (19%)'],
+            datasets: [{
+                data: [68, 13, 19],
+                backgroundColor: [chartColors.green, chartColors.orange, chartColors.grey]
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // Gráficas Intervenciones 2025
+    const distGrupo2025Ctx = document.getElementById('distribucionGrupo2025Chart').getContext('2d');
+    new Chart(distGrupo2025Ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Pavimentos (36%)', 'Obras Civiles Menores (32%)', 'Parques y Cerrajería (32%)'],
+            datasets: [{
+                data: [8, 7, 7],
+                backgroundColor: [chartColors.blue, chartColors.orange, chartColors.teal]
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const estadoObra2025Ctx = document.getElementById('estadoObra2025Chart').getContext('2d');
+    new Chart(estadoObra2025Ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Terminada (68%)', 'En ejecución (23%)', 'Otros Estados (9%)'],
+            datasets: [{
+                data: [68, 23, 9],
+                backgroundColor: [chartColors.green, chartColors.blue, chartColors.grey]
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // Script para generar PDF
+    document.getElementById('download-pdf').addEventListener('click', function () {
+        const content = document.getElementById('report-content');
+        
+        const button = this;
+        button.innerText = 'Generando PDF...';
+        button.disabled = true;
+
+        html2canvas(content, {
+            scale: 2,
+            useCORS: true,
+            windowWidth: content.scrollWidth,
+            windowHeight: content.scrollHeight
+        }).then(canvas => {
+            
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+
+            const pdf = new jsPDF({
+                orientation: 'p',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const ratio = canvasWidth / canvasHeight;
+
+            const imgHeight = pdfWidth / ratio;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+            heightLeft -= pdfHeight;
+
+            while (heightLeft > 0) {
+                position -= pdfHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                heightLeft -= pdfHeight;
+            }
+
+            pdf.save('Reporte-Comuna-11-Laureles-Estadio.pdf');
+
+            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+            button.disabled = false;
+
+        }).catch(err => {
+            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+            button.disabled = false;
+            console.error("Error al generar el PDF:", err);
+            alert("Hubo un error al generar el PDF. Por favor, intenta de nuevo.");
+        });
+    });
+</script>
+
+</body>
+</html>
