@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión 2025 - Secretaría de Infraestructura Física (Versión Optimizada)</title>
+    <title>Portal de Consulta Ciudadana - Infraestructura Medellín</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +19,7 @@
             --primary-color-dark: #003D6B;
             --secondary-color: #f57c00;
             --text-color: #212121;
+            --text-color-light: #555;
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --light-gray: #e9ecef;
@@ -52,7 +53,7 @@
         }
         header h1 {
             margin: 0;
-            font-size: 2.6em;
+            font-size: 2.8em;
             font-weight: 900;
             line-height: 1.2;
             animation: fadeInUp 1s ease-in-out;
@@ -74,22 +75,21 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        main > .intro-text {
+            font-size: 1.15em;
+            text-align: center;
+            color: var(--text-color-light);
+            max-width: 800px;
+            margin: 40px auto -20px auto;
+            line-height: 1.6;
+        }
+
         section {
             padding: 60px 0;
             border-bottom: 1px solid #e0e0e0;
         }
-        main > section:first-of-type {
-            padding-top: 40px; /* Ajuste para el primer elemento */
-        }
         main > section:last-of-type {
             border-bottom: none;
-        }
-        section h2 {
-            font-size: 2.2em;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            text-align: center;
         }
         .card {
             background: var(--card-bg);
@@ -97,8 +97,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -111,19 +109,20 @@
              gap: 20px;
              padding: 30px;
              box-sizing: border-box;
-             background: #fdfdff;
         }
         
         .consulta-comuna-container h3 {
-             font-size: 1.3em;
+             font-size: 1.5em;
              margin-top: 0;
+             margin-bottom: 5px;
              color: var(--primary-color);
+             font-weight: 700;
         }
         .consulta-comuna-container p {
-            font-size: 0.9em;
-            color: #555;
-            line-height: 1.5;
-            margin-bottom: 0;
+            font-size: 1em;
+            color: var(--text-color-light);
+            line-height: 1.6;
+            margin-bottom: 10px;
         }
         .consulta-comuna-container label {
             font-size: 1em;
@@ -162,17 +161,18 @@
             background-color: var(--light-gray);
             text-align: center;
             padding: 50px 20px;
+            border-radius: 10px;
         }
         #indicadores-cta h2 {
-            font-size: 2em;
-            border-bottom: none;
+            font-size: 2.2em;
             color: var(--primary-color-dark);
+            font-weight: 700;
         }
         #indicadores-cta p {
             font-size: 1.1em;
             max-width: 650px;
-            margin: -15px auto 30px auto;
-            color: #555;
+            margin: -10px auto 30px auto;
+            color: var(--text-color-light);
             line-height: 1.6;
         }
         .cta-button {
@@ -208,7 +208,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 24px;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             z-index: 1001;
@@ -286,7 +286,6 @@
             border-color: #3B82F6;
         }
 
-        /* MEJORA: Estilos para animación en scroll */
         .reveal-on-scroll {
             opacity: 0;
             transform: translateY(30px);
@@ -297,48 +296,52 @@
             opacity: 1;
             transform: translateY(0);
         }
-
     </style>
 </head>
 <body>
 
     <header>
         <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="header-logo">
-        <h1>Gestión 2025 - Secretaría de Infraestructura Física</h1>
-        <p class="subheading">Alcaldía de Medellín - Distrito Especial de Ciencia, Tecnología e Innovación.</p>
+        <h1>Portal de Consulta Ciudadana</h1>
+        <p class="subheading">Secretaría de Infraestructura Física | Gestión 2025</p>
     </header>
     
     <main class="container">
 
+        <p class="intro-text">
+            ¡Te damos la bienvenida! Este es un espacio de transparencia creado para ti. Aquí podrás consultar el detalle de las obras en tu comuna y explorar los indicadores de gestión de nuestros proyectos estratégicos.
+        </p>
+
         <section id="consulta-comuna">
             <div class="card reveal-on-scroll" style="padding: 0; overflow: hidden;">
-                <h3 style="padding: 30px 30px 0 30px; margin-bottom: 0;">🔎 Consulta Detallada por Comuna</h3>
                 <div class="consulta-comuna-container">
-                    <h3>Filtros de Consulta</h3>
-                    <p>Usa el siguiente menú para seleccionar una comuna o corregimiento y ver su reporte detallado de intervenciones.</p>
+                    <h3><i class="fa-solid fa-map-location-dot"></i> Explora las Obras en tu Comuna</h3>
+                    <p>Queremos que estés informado. Selecciona tu comuna o corregimiento para ver en detalle las intervenciones y proyectos que estamos realizando en tu sector.</p>
                     <div>
-                        <label for="comuna-select">Filtrar por lista:</label>
+                        <label for="comuna-select"><strong>Selecciona tu comuna o corregimiento:</strong></label>
                         <select id="comuna-select">
                             <option value="" disabled selected>-- Escoge una opción --</option>
                         </select>
                     </div>
-                    <button onclick="abrirReporte()">Ver Reporte Detallado</button>
+                    <button onclick="abrirReporte()">
+                        <i class="fa-solid fa-magnifying-glass"></i> Consultar Obras
+                    </button>
                 </div>
             </div>
         </section>
 
         <section id="indicadores-cta" class="reveal-on-scroll">
-            <h2><i class="fa-solid fa-chart-line"></i> Indicadores - SIF</h2>
-            <p>Explore los datos detallados y el progreso de nuestros proyectos estratégicos. Acceda a las métricas clave y siga en tiempo real el avance de las metas que transforman a Medellín.</p>
+            <h2><i class="fa-solid fa-chart-line"></i> Indicadores de Gestión SIF</h2>
+            <p>Los datos son clave para la transparencia. Accede a nuestro tablero de control interactivo y sigue en tiempo real el avance de los proyectos que transforman a Medellín.</p>
             <a href="indicadores.html" class="cta-button" target="_blank" rel="noopener noreferrer">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>Ver Tablero de Indicadores
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Tablero Interactivo
             </a>
         </section>
 
     </main>
     
     <div id="chat-fab">
-        <span>💬</span>
+        <i class="fa-solid fa-robot"></i>
     </div>
     
     <div id="chat-window">
@@ -361,7 +364,7 @@
 
             <div class="p-4 border-t bg-white rounded-b-xl">
                 <div class="flex items-center space-x-2">
-                    <input type="text" id="chat-input" placeholder="Busca un informe o palabra clave..." class="flex-grow border rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" id="chat-input" placeholder="Pregúntame algo, como 'huecos' o 'parques'..." class="flex-grow border rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <button id="send-btn" class="bg-blue-500 text-white rounded-full p-3 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
