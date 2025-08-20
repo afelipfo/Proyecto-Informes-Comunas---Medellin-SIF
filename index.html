@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Consulta e Indicadores - Infraestructura Medellín</title>
+    <title>RUTASIF - Portal de consulta</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -237,21 +237,21 @@
 
     <header>
         <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="header-logo">
-        <h1>Portal de Consulta e Indicadores</h1>
+        <h1>Portal de consulta</h1>
         <p class="subheading">Secretaría de Infraestructura Física | Gestión 2025</p>
     </header>
     
     <main class="container">
 
         <p class="intro-text">
-            ¡Te damos la bienvenida! Este es un espacio de transparencia. Consulta las obras en tu comuna y explora en detalle los indicadores de gestión de nuestros proyectos estratégicos para la ciudad.
+            ¡Te damos la bienvenida! Consulta las obras en tu comuna y explora en detalle los indicadores de gestión de nuestros proyectos estratégicos para la ciudad.
         </p>
 
         <section id="consulta-comuna" class="reveal-on-scroll">
             <div class="card" style="padding: 0; overflow: hidden;">
                 <div class="consulta-comuna-container">
-                    <h3><i class="fa-solid fa-map-location-dot"></i> Explora las Obras en tu Comuna</h3>
-                    <p>Selecciona tu comuna o corregimiento para ver en detalle las intervenciones y proyectos que estamos realizando en tu sector.</p>
+                    <h3><i class="fa-solid fa-map-location-dot"></i> Consulta por comuna</h3>
+                    <p>Selecciona tu comuna para ver en detalle las intervenciones y proyectos que hemos realizado, que estamos realizando y que estamos por realizar en tu sector.</p>
                     <div>
                         <label for="comuna-select"><strong>Selecciona tu comuna o corregimiento:</strong></label>
                         <select id="comuna-select">
@@ -259,7 +259,7 @@
                         </select>
                     </div>
                     <button onclick="abrirReporte()">
-                        <i class="fa-solid fa-magnifying-glass"></i> Consultar Obras
+                        <i class="fa-solid fa-magnifying-glass"></i> Consultar
                     </button>
                 </div>
             </div>
@@ -320,8 +320,7 @@
     </main>
     
     <footer>
-        <p>Informe generado a partir de los datos oficiales de la Secretaría de Infraestructura.</p>
-        <p><strong>Julio de 2025 | Alcaldía de Medellín</strong></p>
+        <p><strong>Mes de reporte: Julio de 2025</strong></p>
     </footer>
 
     <div id="chat-fab">
@@ -416,10 +415,7 @@
                 { name: 'Comuna 9 – Buenos Aires', id: 9 }, { name: 'Comuna 10 – La Candelaria', id: 10 },
                 { name: 'Comuna 11 – Laureles-Estadio', id: 11 }, { name: 'Comuna 12 – La América', id: 12 },
                 { name: 'Comuna 13 – San Javier', id: 13 }, { name: 'Comuna 14 – El Poblado', id: 14 },
-                { name: 'Comuna 15 – Guayabal', id: 15 }, { name: 'Comuna 16 – Belen', id: 16 },
-                { name: 'Comuna 50 – San Sebastián de Palmitas', id: 50 }, { name: 'Comuna 60 – San Cristóbal', id: 60 },
-                { name: 'Comuna 70 – Altavista', id: 70 }, { name: 'Comuna 80 – San Antonio de Prado', id: 80 },
-                { name: 'Comuna 90 – Santa Elena', id: 90 }
+                { name: 'Comuna 15 – Guayabal', id: 15 }, { name: 'Comuna 16 – Belen', id: 16 }
             ];
             const selectComuna = document.getElementById('comuna-select');
             communeData.forEach(commune => {
