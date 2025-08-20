@@ -79,18 +79,35 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        main > .intro-text {
-            font-size: 1.15em;
+        .intro-block {
+            background-color: #e3f2fd;
+            border-left: 5px solid var(--primary-color);
+            padding: 2em;
+            margin: 40px auto;
+            border-radius: 8px;
+            max-width: 850px;
             text-align: center;
+        }
+        .intro-block h3 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color-dark);
+            margin-top: 0;
+            margin-bottom: 0.5em;
+        }
+        .intro-block p {
+            font-size: 1.1em;
             color: var(--text-color-light);
-            max-width: 800px;
-            margin: 40px auto -20px auto;
             line-height: 1.6;
+            margin-bottom: 0;
         }
 
         section {
             padding: 60px 0;
             border-bottom: 1px solid #e0e0e0;
+        }
+        main > section:first-of-type {
+            padding-top: 0;
         }
         main > section:last-of-type {
             border-bottom: none;
@@ -110,11 +127,7 @@
         
         /* ===== SECCIÓN CONSULTA COMUNA ===== */
         .consulta-comuna-container {
-             display: flex;
-             flex-direction: column;
-             gap: 20px;
-             padding: 30px;
-             box-sizing: border-box;
+             display: flex; flex-direction: column; gap: 20px; padding: 30px; box-sizing: border-box;
         }
         .consulta-comuna-container h3 {
              font-size: 1.5em; margin-top: 0; margin-bottom: 5px; color: var(--primary-color); font-weight: 700;
@@ -133,68 +146,62 @@
         }
         .consulta-comuna-container button:hover { background-color: #e66300; }
 
-        /* ===== SECCIÓN INDICADORES ===== */
-        #indicadores-detalle h2 {
+        /* ===== SECCIÓN CONTRATOS ===== */
+        #contracts-section h2 {
             font-size: 2.2em; font-weight: 700; color: var(--primary-color); border-bottom: 3px solid var(--secondary-color); padding-bottom: 0.5em; margin-bottom: 1.5em; display: flex; align-items: center; gap: 15px;
         }
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 2.5em;
+        .summary-container {
+            display: flex; flex-wrap: wrap; gap: 2em; align-items: stretch; margin-bottom: 2.5em;
         }
-        .indicator-card { /* Clase específica para no colisionar con .card genérica */
-            padding: 1.8em; display: flex; flex-direction: column; border-top: 5px solid var(--secondary-color);
+        .summary-total {
+            background: var(--primary-color); color: white; padding: 1.5em 2em; border-radius: 10px; text-align: center;
         }
-        .card-header {
-            display: flex; align-items: flex-start; gap: 12px; margin-bottom: 0.5em;
+        .summary-total .label { font-size: 1em; font-weight: 400; opacity: 0.9; }
+        .summary-total .value { font-size: 3.5em; font-weight: 900; line-height: 1.1; }
+        .summary-status {
+            flex-grow: 1; display: flex; flex-direction: column;
         }
-        .card-header .icon {
-            font-size: 1.6em; color: var(--primary-color); width: 40px; text-align: center; margin-top: 5px;
+        .summary-status .title { font-weight: 700; color: var(--text-color); margin-bottom: 0.5em; font-size: 1.1em; }
+        .status-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background-color: #ccc; border-radius: 10px; overflow: hidden; flex-grow: 1;
         }
-        .card-header h3 {
-            margin: 0; color: var(--primary-color); font-size: 1.20em; font-weight: 700; flex-grow: 1; line-height: 1.3;
+        .status-item {
+            background-color: var(--card-bg); text-align: center; padding: 1em;
         }
-        .indicator-meta { text-align: right; }
-        .indicator-id { font-size: 0.8em; color: #888; font-weight: 400; }
-        .indicator-type-tag {
-            font-size: 0.75em; font-weight: 700; padding: 3px 8px; border-radius: 12px; background-color: var(--light-gray); color: var(--text-color-light); display: inline-block; margin-top: 4px;
+        .status-item .label { font-size: 0.9em; font-weight: 700; color: var(--text-color-light); }
+        .status-item .value { font-size: 2em; font-weight: 900; color: var(--primary-color); margin-top: 0.2em; }
+        
+        .contracts-container {
+            display: grid; grid-template-columns: 1fr; gap: 2em;
         }
-        .card-body { margin-top: 1em; flex-grow: 1; }
-        .main-metric {
-            text-align: center; margin-bottom: 1.5em; padding: 1em; background-color: var(--light-gray); border-radius: 8px;
+        .contract-card { padding: 1.5em; }
+        .contract-card-header {
+            display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--light-gray); padding-bottom: 1em; margin-bottom: 1em;
         }
-        .main-metric .value {
-            font-size: 2.8em; font-weight: 900; color: var(--text-color); line-height: 1.1;
+        .contract-card-header h3 { font-size: 1.4em; color: var(--primary-color); font-weight: 700; margin: 0; }
+        .contract-card-header .contract-id { font-size: 0.9em; font-weight: 400; color: var(--text-color-light); text-align: right; }
+        
+        .contract-details-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1em; margin-bottom: 1.5em;
         }
-        .main-metric .value.small-text { font-size: 2.2em; }
-        .main-metric .value span.unit {
-            font-size: 0.4em; font-weight: 400; color: var(--text-color-light); margin-left: 5px;
+        .detail-item { font-size: 0.9em; }
+        .detail-item .label { display: block; font-weight: 700; color: var(--text-color-light); margin-bottom: 0.2em; }
+        .detail-item .value { font-weight: 400; color: var(--text-color); }
+        .detail-item .value.status-ejecucion { color: var(--status-orange); font-weight: 700; }
+        .detail-item .value.status-liquidacion { color: var(--status-blue); font-weight: 700; }
+        .detail-item .value.status-liquidado { color: var(--status-green); font-weight: 700; }
+        .detail-item .value.status-finalizado { color: var(--status-red); font-weight: 700; }
+        
+        .alerts-section .title {
+            font-size: 1.1em; font-weight: 700; color: var(--primary-color); margin-bottom: 0.7em;
         }
-        .main-metric .label {
-            font-size: 0.95em; color: var(--text-color-light); font-weight: 700; margin-top: 5px;
+        .alerts-list {
+            list-style: none; padding-left: 0; margin: 0;
         }
-        .details-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 1em; font-size: 0.9em; margin-bottom: 1.5em;
+        .alerts-list li {
+            background-color: var(--light-gray); padding: 0.8em 1em; border-radius: 6px; margin-bottom: 0.5em; border-left: 4px solid var(--secondary-color);
+            font-size: 0.95em; line-height: 1.5; color: var(--text-color);
         }
-        .details-grid div {
-            padding: 0.8em; background-color: var(--light-gray); border-radius: 8px; border-left: 3px solid #ced4da;
-        }
-        .details-grid strong {
-            display: block; color: var(--primary-color); margin-bottom: 0.3em; font-weight: 700;
-        }
-        .progress-container { margin-top: auto; padding-top: 1em; }
-        .progress-container label {
-            font-size: 0.9em; color: var(--text-color-light); display: block; margin-bottom: 0.7em; font-weight: 700; text-align: center;
-        }
-        .progress-bar {
-            background-color: var(--light-gray); border-radius: 25px; height: 22px; width: 100%; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .progress-bar-fill {
-            height: 100%; border-radius: 25px; text-align: center; color: white; font-size: 0.85em; line-height: 22px; font-weight: bold; transition: width 0.8s ease-in-out, background-color 0.5s ease; background-color: var(--status-red); /* Default */
-        }
-        .progress-bar-fill.status-medium { background-color: var(--status-orange); }
-        .progress-bar-fill.status-high { background-color: var(--status-green); }
-        .progress-bar-fill.status-complete { background-color: var(--status-blue); }
 
         /* ===== ESTILOS DE CHATBOT Y FOOTER ===== */
         #chat-fab {
@@ -243,17 +250,18 @@
     
     <main class="container">
 
-        <p class="intro-text">
-            ¡Te damos la bienvenida! Consulta las obras en tu comuna y explora en detalle los indicadores de gestión de nuestros proyectos estratégicos para la ciudad.
-        </p>
+        <div class="intro-block reveal-on-scroll">
+            <h3>¡Te damos la bienvenida!</h3>
+            <p>Consulta las obras en tu comuna y explora en detalle los indicadores de gestión de nuestros proyectos estratégicos para la ciudad.</p>
+        </div>
 
         <section id="consulta-comuna" class="reveal-on-scroll">
             <div class="card" style="padding: 0; overflow: hidden;">
                 <div class="consulta-comuna-container">
                     <h3><i class="fa-solid fa-map-location-dot"></i> Consulta por comuna</h3>
-                    <p>Selecciona tu comuna para ver en detalle las intervenciones y proyectos que hemos realizado, que estamos realizando y que estamos por realizar en tu sector.</p>
+                    <p>Selecciona tu comuna para ver en detalle las intervenciones y proyectos que hemos realizado, lo que estamos realizando y lo que estamos por realizar en tu comuna.</p>
                     <div>
-                        <label for="comuna-select"><strong>Selecciona tu comuna o corregimiento:</strong></label>
+                        <label for="comuna-select"><strong>Selecciona tu comuna:</strong></label>
                         <select id="comuna-select">
                             <option value="" disabled selected>-- Escoge una opción --</option>
                         </select>
@@ -265,58 +273,453 @@
             </div>
         </section>
 
-        <section id="indicadores-detalle">
+        <section id="contracts-section">
             <div class="chapter">
-                <h2><i class="fa-solid fa-award"></i> Proyecto Estratégico: Medellín, Tacita de Plata</h2>
-                <div class="cards-container">
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-bridge-water"></i><h3>Puentes vehiculares intervenidos</h3><div class="indicator-meta"><span class="indicator-id">4.1.1.6</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">8<span class="unit">Número</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 0,00% <br/>(0 de 0)</div><div><strong>2025:</strong> 40,0% <br/>(8 de 20)</div><div><strong>2026:</strong> 29,6% <br/>(Meta 27)</div><div><strong>2027:</strong> 25,8% <br/>(Meta 31)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 31)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 25.8%;">25,8%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-person-walking-luggage"></i><h3>Puentes peatonales intervenidos</h3><div class="indicator-meta"><span class="indicator-id">4.1.1.7</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">5<span class="unit">Número</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 0,00% <br/>(0 de 0)</div><div><strong>2025:</strong> 250,0% <br/>(5 de 2)</div><div><strong>2026:</strong> 17,2% <br/>(Meta 29)</div><div><strong>2027:</strong> 12,5% <br/>(Meta 40)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 40)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 12.5%;">12,5%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-chart-line"></i><h3>Estado de la malla vial</h3><div class="indicator-meta"><span class="indicator-id">4.1.3</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">7,66<span class="unit">Índice</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(7,66 de 7,66)</div><div><strong>2025:</strong> 57,1% <br/>(7,66 de 7,72)</div><div><strong>2026:</strong> 36,4% <br/>(Meta 7,80)</div><div><strong>2027:</strong> 26,7% <br/>(Meta 7,88)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 7,88)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 26.7%;">26,7%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-compass-drafting"></i><h3>Espacios públicos construidos y mejorados</h3><div class="indicator-meta"><span class="indicator-id">4.1.4.2</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">12.380<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(2.922 de 2.922 m²)</div><div><strong>2025:</strong> 18,4% <br/>(12.380 de 67.192 m²)</div><div><strong>2026:</strong> 8,2% <br/>(Meta 150.664 m²)</div><div><strong>2027:</strong> 5,8% <br/>(Meta 212.748 m²)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 212.748 m²)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 5.8%;">5,8%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-toolbox"></i><h3>Espacios públicos mantenidos</h3><div class="indicator-meta"><span class="indicator-id">4.1.4.3</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">403.298<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(373.511 de 373.511 m²)</div><div><strong>2025:</strong> 100,8% <br/>(403.298 de 400.000 m²)</div><div><strong>2026:</strong> 89,6% <br/>(Meta 450.000 m²)</div><div><strong>2027:</strong> 80,7% <br/>(Meta 500.000 m²)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 500.000 m²)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 80.7%;">80,7%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-city"></i><h3>Espacio público intervenido en el Centro</h3><div class="indicator-meta"><span class="indicator-id">4.1.4.4</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">2.445<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 0,00% <br/>(0 de 0 m²)</div><div><strong>2025:</strong> 74,4% <br/>(2.445 de 3.287 m²)</div><div><strong>2026:</strong> 28,0% <br/>(Meta 8.734 m²)</div><div><strong>2027:</strong> 7,5% <br/>(Meta 32.630 m²)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 32.630 m²)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 7.5%;">7,5%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-shoe-prints"></i><h3>Andenes construidos y mejorados</h3><div class="indicator-meta"><span class="indicator-id">4.3.1.1</span><div class="indicator-type-tag">No Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">5.307<span class="unit">Metros</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(10.607 de 10.607 m)</div><div><strong>2025:</strong> 72,1% <br/>(5.307 de 7.360 m)</div><div><strong>2026:</strong> N.A. <br/>(Meta 7.360 m)</div><div><strong>2027:</strong> N.A. <br/>(Meta 7.360 m)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 32.687,00 m)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 48.7%;">48,7%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-person-walking-arrow-right"></i><h3>Andenes mantenidos</h3><div class="indicator-meta"><span class="indicator-id">4.3.1.2</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">2.167<span class="unit">Metros</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(100 de 100 m)</div><div><strong>2025:</strong> 21,7% <br/>(2.167 de 10.000 m)</div><div><strong>2026:</strong> 13,5% <br/>(Meta 16.000 m)</div><div><strong>2027:</strong> 10,8% <br/>(Meta 20.000 m)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 20.000,00 m)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 10.8%;">10,8%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-bicycle"></i><h3>Cicloinfraestructura urbana mantenida</h3><div class="indicator-meta"><span class="indicator-id">4.3.5.2</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">3,67<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(1,00 de 1,00 Km)</div><div><strong>2025:</strong> 8,2% <br/>(3,67 de 45,00 Km)</div><div><strong>2026:</strong> 4,5% <br/>(Meta 81,00 Km)</div><div><strong>2027:</strong> 3,2% <br/>(Meta 116,50 Km)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 116,50 Km)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 3.2%;">3,2%</div></div></div></div>
+                <h2><i class="fa-solid fa-file-signature"></i> Estado de Contratos Estratégicos</h2>
+                
+                <div class="summary-container reveal-on-scroll">
+                    <div class="summary-total">
+                        <div class="label">Total Contratos</div>
+                        <div class="value">20</div>
+                    </div>
+                    <div class="summary-status">
+                        <div class="title">Estado de los contratos</div>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <div class="label">Ejecución</div>
+                                <div class="value">9</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="label">Finalizado sin liquidar</div>
+                                <div class="value">1</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="label">Liquidación</div>
+                                <div class="value">8</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="label">Liquidado</div>
+                                <div class="value">2</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="chapter">
-                <h2><i class="fa-solid fa-train-tram"></i> Proyecto Estratégico: Metro de la 80</h2>
-                <div class="cards-container">
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-person-digging"></i><h3>Obras ejecutadas en Metro de la 80</h3><div class="indicator-meta"><span class="indicator-id">4.1.2.3</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">32,33%<span class="unit">Avance</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(29,30% de 29,30%)</div><div><strong>2025:</strong> 92,4% <br/>(32,33% de 35,00%)</div><div><strong>2026:</strong> 71,8% <br/>(Meta 45,00%)</div><div><strong>2027:</strong> 64,7% <br/>(Meta 50,00%)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 50,00%)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 64.7%;">64,7%</div></div></div></div>
-                </div>
-            </div>
-            <div class="chapter">
-                <h2><i class="fa-solid fa-water"></i> Proyecto Estratégico: Parques del Río Norte</h2>
-                <div class="cards-container">
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-water"></i><h3>Espacio público en Parques del Río Norte</h3><div class="indicator-meta"><span class="indicator-id">4.1.4.6</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">0<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 0,00% <br/>(0 de 0 m²)</div><div><strong>2025:</strong> 0,0% <br/>(0 de 0 m²)</div><div><strong>2026:</strong> 0,0% <br/>(Meta 28.000 m²)</div><div><strong>2027:</strong> 0,0% <br/>(Meta 56.000 m²)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 56.000 m²)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 0%;">0,0%</div></div></div></div>
-                </div>
-            </div>
-            <div class="chapter">
-                <h2><i class="fa-solid fa-leaf"></i> Proyecto Estratégico: Indicadores evaluados por Medio Ambiente</h2>
-                <div class="cards-container">
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-seedling"></i><h3>Infraestructura verde alternativa</h3><div class="indicator-meta"><span class="indicator-id">5.1.3.5</span><div class="indicator-type-tag">No Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">1.738<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(2.500 de 2.500 m²)</div><div><strong>2025:</strong> 64,4% <br/>(1.738 de 2.700 m²)</div><div><strong>2026:</strong> N.A. <br/>(Meta 2.700 m²)</div><div><strong>2027:</strong> N.A. <br/>(Meta 2.600 m²)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 10.500,00 m²)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 40.4%;">40,4%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-tree"></i><h3>Área verde de corredores conservadas</h3><div class="indicator-meta"><span class="indicator-id">5.1.3.7</span><div class="indicator-type-tag">Mantenimiento</div></div></div><div class="card-body"><div class="main-metric"><div class="value small-text">1.153.474<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(2.000.000 m²)</div><div><strong>2025:</strong> 57,7% <br/>(1.153.474 de 2.000.000 m²)</div><div><strong>2026:</strong> N.A. <br/>(Meta 2.000.000 m²)</div><div><strong>2027:</strong> N.A. <br/>(Meta 2.000.000 m²)</div></div></div><div class="progress-container"><label>Indicador de Mantenimiento Anual (Meta 2.000.000 m²)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 57.7%;">57,7%</div></div></div></div>
-                </div>
-            </div>
-            <div class="chapter">
-                <h2><i class="fa-solid fa-folder-open"></i> Proyecto Estratégico: Otros proyectos</h2>
-                <div class="cards-container">
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-road-circle-check"></i><h3>Vías urbanas construidas y mejoradas</h3><div class="indicator-meta"><span class="indicator-id">4.1.1.1</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">9,83<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,04% <br/>(9,39 de 9,39 Km)</div><div><strong>2025:</strong> 80,9% <br/>(9,83 de 12,15 Km)</div><div><strong>2026:</strong> 66,0% <br/>(Meta 14,91 Km)</div><div><strong>2027:</strong> 55,6% <br/>(Meta 17,68 Km)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 17,68 Km)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 55.6%;">55,6%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-screwdriver-wrench"></i><h3>Infraestructura vial urbana mantenida</h3><div class="indicator-meta"><span class="indicator-id">4.1.1.2</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">45,50<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(35,80 de 35,80 Km)</div><div><strong>2025:</strong> 78,4% <br/>(45,50 de 58,00 Km)</div><div><strong>2026:</strong> 51,7% <br/>(Meta 88,00 Km)</div><div><strong>2027:</strong> 39,6% <br/>(Meta 115,00 Km)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 115,00 Km)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 39.6%;">39,6%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-tractor"></i><h3>Infraestructura vial rural intervenida</h3><div class="indicator-meta"><span class="indicator-id">4.1.1.3</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">7,77<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(2,00 de 2,00 Km)</div><div><strong>2025:</strong> 82,7% <br/>(7,77 de 9,40 Km)</div><div><strong>2026:</strong> 47,7% <br/>(Meta 16,30 Km)</div><div><strong>2027:</strong> 33,8% <br/>(Meta 23,00 Km)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 23,00 Km)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 33.8%;">33,8%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-mountain-city"></i><h3>Obras para estabilización de taludes</h3><div class="indicator-meta"><span class="indicator-id">4.1.1.4</span><div class="indicator-type-tag">No Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">603,13<span class="unit">Metros</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(220,50 de 220,50 m)</div><div><strong>2025:</strong> 77,4% <br/>(603,13 de 779,50 m)</div><div><strong>2026:</strong> N.A. <br/>(Meta 100,00 m)</div><div><strong>2027:</strong> N.A. <br/>(Meta 100,00 m)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 1.200,00 m)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 68.6%;">68,6%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-money-bill-transfer"></i><h3>Recursos para Autopistas de la Prosperidad</h3><div class="indicator-meta"><span class="indicator-id">4.1.2.1</span><div class="indicator-type-tag">No Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">0<span class="unit">Millones de pesos</span></div><div class="label">Desembolso en 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 113,01% <br/>(89.296,30 de 79.014,00)</div><div><strong>2025:</strong> 0,0% <br/>(0 de 0)</div><div><strong>2026:</strong> N.A. <br/>(Meta 0)</div><div><strong>2027:</strong> N.A. <br/>(Meta 0)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 79.014,00)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 113%;">113,0%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-cable-car"></i><h3>Sistema teleférico de Palmitas mantenido</h3><div class="indicator-meta"><span class="indicator-id">4.1.2.2</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">1,30<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(1,30 de 1,30 Km)</div><div><strong>2025:</strong> N.A. <br/>(1,30 de 0,00 Km)</div><div><strong>2026:</strong> 50,0% <br/>(Meta 2,60 Km)</div><div><strong>2027:</strong> 50,0% <br/>(Meta 2,60 Km)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 2,60 Km)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 50%;">50,0%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-road"></i><h3>Vías intervenidas en Proyectos de Desarrollo</h3><div class="indicator-meta"><span class="indicator-id">4.1.3.1</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">0,20<span class="unit">Km</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(0,20 de 0,20 Km)</div><div><strong>2025:</strong> 24,4% <br/>(0,20 de 0,82 Km)</div><div><strong>2026:</strong> 17,2% <br/>(Meta 1,16 Km)</div><div><strong>2027:</strong> 13,6% <br/>(Meta 1,47 Km)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 1,47 Km)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 13.6%;">13,6%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-ruler-combined"></i><h3>Espacio público intervenido en desarrollo</h3><div class="indicator-meta"><span class="indicator-id">4.1.3.2</span><div class="indicator-type-tag">Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">5.096<span class="unit">m²</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(2.922 de 2.922 m²)</div><div><strong>2025:</strong> 29,6% <br/>(5.096 de 17.234 m²)</div><div><strong>2026:</strong> 15,7% <br/>(Meta 32.561 m²)</div><div><strong>2027:</strong> 10,6% <br/>(Meta 47.889 m²)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 47.889 m²)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 10.6%;">10,6%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-book-open-reader"></i><h3>Parque Biblioteca Nororiental rehabilitado</h3><div class="indicator-meta"><span class="indicator-id">4.1.3.4</span><div class="indicator-type-tag">No Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">0,64%<span class="unit">Avance</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 100,00% <br/>(97,76% de 97,76%)</div><div><strong>2025:</strong> 28,6% <br/>(0,64% de 2,24%)</div><div><strong>2026:</strong> N.A. <br/>(Meta 0,00%)</div><div><strong>2027:</strong> N.A. <br/>(Meta 0,00%)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 100,00%)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 98.4%;">98,4%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-magnifying-glass-chart"></i><h3>Diagnóstico de espacios públicos</h3><div class="indicator-meta"><span class="indicator-id">4.1.4.7</span><div class="indicator-type-tag">No Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">0<span class="unit">Número</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 0,00% <br/>(0 de 0)</div><div><strong>2025:</strong> 0,0% <br/>(0 de 0)</div><div><strong>2026:</strong> N.A. <br/>(Meta 0,50)</div><div><strong>2027:</strong> N.A. <br/>(Meta 0,50)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 1,00)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 0%;">0,0%</div></div></div></div>
-                    <div class="card indicator-card reveal-on-scroll"><div class="card-header"><i class="icon fa-solid fa-square-parking"></i><h3>Cicloparqueaderos instalados</h3><div class="indicator-meta"><span class="indicator-id">4.3.5.3</span><div class="indicator-type-tag">No Acumulado</div></div></div><div class="card-body"><div class="main-metric"><div class="value">8<span class="unit">Número</span></div><div class="label">Avance a 2025</div></div><div class="details-grid"><div><strong>2024:</strong> 0,00% <br/>(0 de 0)</div><div><strong>2025:</strong> 2,0% <br/>(8 de 400)</div><div><strong>2026:</strong> N.A. <br/>(Meta 300)</div><div><strong>2027:</strong> N.A. <br/>(Meta 300)</div></div></div><div class="progress-container"><label>Progreso Total (Meta 2024-2027: 1.000)</label><div class="progress-bar"><div class="progress-bar-fill" style="width: 0.8%;">0,8%</div></div></div></div>
+
+                <div class="contracts-container">
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>No elegibles metro 80</h3><span class="contract-id">N° Contrato: 4600098630</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2023</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">27/06/2023</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2035</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$17.542.005.383</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se debe hacer reunión para cerrar el tema de impuesto predial.</li>
+                                <li>Se debe hacer reunión para definir que se puede hacer con el dinero de 11.200 millones de compensaciones que son elegibles.</li>
+                                <li>Se debe nombrar Secretario técnico del comité de no elegibles.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Metro 80</h3><span class="contract-id">N° Contrato: 4600066323</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2016</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">02/08/2016</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2035</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$3.500.000.000.000</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se debe hacer comité técnico con secretarios y directivos para revisar las obras faltantes en el corredor de la 80 y al mismo tiempo posibilitar la aprobación de estudio de movilidad, geométrico y urbanismo.</li>
+                                <li>Se tiene alerta grande con el predio de parqueadero Córdoba y la UdeA.</li>
+                                <li>Se debe nombrar un gerente o coordinador del Metro de la 80 por parte del Distrito.</li>
+                                <li>Se debe modificar la periodicidad de reuniones del Comité general ya que se está incumpliendo el convenio.</li>
+                                <li>Se debe validar con el Metro el tema asociado a los pesos de las redes.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Contrato asociado a Metroplús convenio 01</h3><span class="contract-id">N° Contrato: 4600029928</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2010</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metroplus</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">21/12/2010</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">19/12/2025</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$26.203.024.434</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Pierde competencia el 19 de junio 2028</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Adición 13 convenio 01 de 2005</h3><span class="contract-id">N° Contrato: 4600059829</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2015</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metroplus</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">05/08/2005</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">19/12/2025</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se han pagado $ 3.500.000.000 asociados al RP No.</li>
+                                <li>Pierde competencia el 19 de junio 2028</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Túnel Toyo</h3><span class="contract-id">N° Contrato: 4600059240</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2015</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Departamento de Antioquia</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">26/02/2015</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">14/03/2026</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$520.000.000.000</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Validar valores que se incorporaran al convenio</li>
+                                <li>Pierde competencia el 14 de septiembre de 2028</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Tranvía Ayacucho</h3><span class="contract-id">N° Contrato: 4600027977</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2010</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">07/06/2011</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">18/12/2026</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$754.348.436.246</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Validar ampliación del convenio marco para la compra de los 3 predios de San Luis</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Convenio 01 de 2005 Troncal y Pretroncal sur</h3><span class="contract-id">N° Contrato: 4800001394</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2005</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metroplus</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">05/08/2005</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">19/12/2025</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$16.178.000.000</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se tiene la demanda de Guinovart por 27.000 Millones.</li>
+                                <li>Terminar el diseño y construcción de estaciones Pretroncal Guayabal</li>
+                                <li>Terminar la pretroncal sur para cumplir convenio</li>
+                                <li>Se debe reintegrar rendimientos, legalizar ejecuciones y realizar informes de supervisión</li>
+                                <li>Pierde competencia el 19 de junio 2028</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>EPM</h3><span class="contract-id">N° Contrato: 4600092271</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2021</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa Públicas de Medellín E.S.P.</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">12/11/2021</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/03/2028</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">Convenio Sin cuantía</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se debe revisar el acta para modificación de número de actas.</li>
+                                <li>Se debe revisar el anexo tecnico del acta No. 5 de EPM para firma.</li>
+                                <li>Requerir a EDU subsanar pendientes del proyecto Carabobo, enviados por EPM.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Paraderos 2024</h3><span class="contract-id">N° Contrato: 4600100673</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2024</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">05/02/2024</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">30/09/2025</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se debe programar ampliación de plazo hasta febrero de 2026 para que la APP pueda ingresar con la concesión.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>PUI 5 y 6 2013-2015 Nor Occidental</h3><span class="contract-id">N° Contrato: 4600049670</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2013</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-finalizado">Finalizado sin liquidar</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">07/10/2013</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">07/11/2018</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$13.589.396.415</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>El contrato perdió competencia para liquidar.</li>
+                                <li>Pendiente conciliación financiera con la EDU en aras de realizar el cierre financiero del contrato interadministrativo, el cual se finiquitará una vez EDU subsane los procesos jurídicos que adelanta con sus contratistas.</li>
+                                <li>Se requiere realizar reunión desde la Supervisión con la EDU en pro de conocer los avances en el cierre de estas controversias contractuales en aras del Auto de Archivo del contrato interadministrativo.</li>
+                                <li>EDU debe subsanar los procesos jurídicos que adelanta con sus contratistas y presentar informe final a la Supervisión en la Secretaría de Infraestructura Física, con dicha información se complementará el "auto de archivo definitivo del expediente contractual" para ser suscrito por el Secretario de Despacho.</li>
+                                <li>Pendiente designación de nuevo apoyo jurídico.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Palmitas</h3><span class="contract-id">N° Contrato: 4600082031</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2019</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Área Metropolitana</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">05/07/2019</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">04/07/2023</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se desarrolla mediante el contrato derivado 4600088096-2020 EDU; de acuerdo a la supervisión de este contrato falta que la EDU termine de liquidar los contratos derivados.</li>
+                                <li>221-2022: Pendiente que el contratista de obra cobre un reajuste final.</li>
+                                <li>238-2022: No han liquidado contrato logístico</li>
+                                <li>Del contrato Interadministrativo 4600088096-2020 ya se tiene acta de liquidación proyectada, con el componente técnico y predial. Falta actualizar el componente financiero cuando la EDU termine de liquidar los contratos citados con anterioridad.</li>
+                                <li>PD. Del convenio 4600082031-2019 (Palmitas) que es suscrito con el AMVA como financiador del proyecto en 100%, se indica y/o recuerda que el proceso de alimentación de información al SECOP I es responsabilidad del AMVA.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Zona Norte Tricentenario</h3><span class="contract-id">N° Contrato: 1093 de 2020 (AMVA) - 4600088535 (Distrito de Medellín)</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2020</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Área Metropolitana</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value"></span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value"></span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Convenio sin recursos</li>
+                                <li>Revisar la liquidación y cerrar</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Metro 80</h3><span class="contract-id">N° Contrato: 4600085398</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2020</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metro</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">19/03/2020</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">30/06/2023</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$9.398.568.894</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Revisar la liquidación y cerrar</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Paraderos 2023</h3><span class="contract-id">N° Contrato: 4600097677</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2023</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">24/03/2023</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">30/12/2023</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Organizar toda la información para liquidación</li>
+                                <li>Pierde competencia 30 de junio 2026</li>
+                                <li>Se debe realizar la liquidación.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Parques del Río Centro</h3><span class="contract-id">N° Contrato: 524</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2014</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value"></span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">17/07/2014</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">17/07/2024</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$0</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Revisar la liquidación y cerrar</li>
+                                <li>Se adelantó contacto con personal de INVIAS para definir las condiciones para la liquidación.</li>
+                                <li>El abogado Alejandro Morales quedó de proyectar modelo de liquidación para compartir a INVIAS, según "modelo" proporcionado por ellos.</li>
+                                <li>Convenio sin recursos</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Picacho</h3><span class="contract-id">N° Contrato: 4600059075</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2015</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">02/03/2015</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2023</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$339.955.747.297</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se debe revisar valores de construcción para solicitar el mayor valor según última reunión</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>CLT</h3><span class="contract-id">N° Contrato: 4600088084</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2020</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">26/11/2020</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2023</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se debe revisar los pendientes de liquidación y cerrar el tema con metroplus y Metro</li>
+                                <li>Pierde competencia el 30 de junio del 2026</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Paraderos 2023</h3><span class="contract-id">N° Contrato: 4600097484</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2023</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">01/03/2023</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">23/01/2024</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se debe realizar la liquidación.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>Comunicaciones</h3><span class="contract-id">N° Contrato: 4600080797</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2019</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidado">Liquidado</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metroparques</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">16/05/2019</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2019</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$903.812.756</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Se debió liquidar el 27 de diciembre de 2023</li>
+                                <li>Quedó un valor restante igual a $ 5.036 pesos</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card contract-card reveal-on-scroll">
+                        <div class="contract-card-header">
+                            <div><h3>PUI 8 y 9 Centro oriental</h3><span class="contract-id">N° Contrato: 4600001192</span></div>
+                        </div>
+                        <div class="contract-details-grid">
+                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2008</span></div>
+                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidado">Liquidado</span></div>
+                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
+                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">24/10/2008</span></div>
+                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">15/01/2019</span></div>
+                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$88.321.936.665</span></div>
+                        </div>
+                        <div class="alerts-section">
+                            <h4 class="title">Alertas</h4>
+                            <ul class="alerts-list">
+                                <li>Validar como proceder a liquidar</li>
+                                <li>Quedó un valor restante igual a $5.035.693.458 pesos.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-
     </main>
     
     <footer>
@@ -431,25 +834,6 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        
-                        // Si el elemento es una tarjeta de indicador, aplicar lógica adicional
-                        if (entry.target.classList.contains('indicator-card')) {
-                            const progressBarFill = entry.target.querySelector('.progress-bar-fill');
-                            if (progressBarFill) {
-                                const widthPercent = parseFloat(progressBarFill.style.width);
-                                if (widthPercent >= 100) {
-                                    progressBarFill.classList.add('status-complete');
-                                } else if (widthPercent > 75) {
-                                    progressBarFill.classList.add('status-high');
-                                } else if (widthPercent > 30) {
-                                    progressBarFill.classList.add('status-medium');
-                                }
-                            }
-                            const metricValue = entry.target.querySelector('.main-metric .value');
-                            if (metricValue && metricValue.textContent.length > 7) {
-                                metricValue.classList.add('small-text');
-                            }
-                        }
                         observer.unobserve(entry.target);
                     }
                 });
