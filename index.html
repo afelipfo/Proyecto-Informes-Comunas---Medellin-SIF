@@ -1,760 +1,725 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RUTASIF - Portal de consulta</title>
-    
+    <title>RUTASIF - Portal de Consulta Estratégica</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <style>
         :root {
-            --primary-color: #0d47a1;
-            --primary-color-dark: #003D6B;
-            --secondary-color: #f57c00;
-            --text-color: #212121;
-            --text-color-light: #555;
-            --bg-color: #f8f9fa;
+            --primary-hue: 210;
+            --secondary-hue: 30;
+            --primary-color: hsl(var(--primary-hue), 90%, 55%);
+            --primary-color-dark: hsl(var(--primary-hue), 90%, 35%);
+            --primary-color-light: hsl(var(--primary-hue), 90%, 96%);
+            --secondary-color: hsl(var(--secondary-hue), 100%, 55%);
+            --secondary-color-dark: hsl(var(--secondary-hue), 100%, 45%);
+            --text-color-dark: #1a202c;
+            --text-color: #2d3748;
+            --text-color-light: #4a5568;
+            --bg-color: #f7fafc;
             --card-bg: #ffffff;
-            --light-gray: #e9ecef;
-            --status-red: #d9534f;
-            --status-orange: #f0ad4e;
-            --status-green: #5cb85c;
-            --status-blue: #0275d8;
+            --border-color: #e2e8f0;
+            --status-red: #e53e3e;
+            --status-orange: #dd6b20;
+            --status-green: #38a169;
+            --status-blue: #3182ce;
         }
         body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            background: linear-gradient(45deg, var(--primary-color), var(--primary-color-dark));
-            color: white;
-            text-align: center;
-            padding: 40px 20px 50px 20px;
-            border-bottom: 5px solid var(--secondary-color);
-        }
-        .header-logo {
-            max-width: 280px;
-            margin-bottom: 25px;
-            animation: fadeInDown 1s ease-in-out;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.8em;
-            font-weight: 900;
-            line-height: 1.2;
-            animation: fadeInUp 1s ease-in-out;
-        }
-        header p.subheading {
-            font-size: 1.2em;
-            margin: 10px 0 0 0;
-            font-weight: 300;
-            opacity: 0.9;
-            animation: fadeInUp 1s ease-in-out 0.2s;
-            animation-fill-mode: backwards;
-        }
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .intro-block {
-            background-color: #e3f2fd;
-            border-left: 5px solid var(--primary-color);
-            padding: 2em;
-            margin: 40px auto;
-            border-radius: 8px;
-            max-width: 850px;
-            text-align: center;
-        }
-        .intro-block h3 {
-            font-size: 1.8em;
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
-            color: var(--primary-color-dark);
-            margin-top: 0;
-            margin-bottom: 0.5em;
         }
-        .intro-block p {
-            font-size: 1.1em;
-            color: var(--text-color-light);
-            line-height: 1.6;
-            margin-bottom: 0;
-        }
-
-        section {
-            padding: 60px 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        main > section:first-of-type {
-            padding-top: 0;
-        }
-        main > section:last-of-type {
-            border-bottom: none;
-        }
-        
-        /* ===== ESTILOS DE TARJETAS UNIFICADOS ===== */
         .card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                        box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
         }
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        
-        /* ===== SECCIÓN CONSULTA COMUNA ===== */
-        .consulta-comuna-container {
-             display: flex; flex-direction: column; gap: 20px; padding: 30px; box-sizing: border-box;
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
         }
-        .consulta-comuna-container h3 {
-             font-size: 1.5em; margin-top: 0; margin-bottom: 5px; color: var(--primary-color); font-weight: 700;
-        }
-        .consulta-comuna-container p {
-            font-size: 1em; color: var(--text-color-light); line-height: 1.6; margin-bottom: 10px;
-        }
-        .consulta-comuna-container label {
-            font-size: 1em; font-weight: 600; color: var(--text-color); display: block; margin-bottom: 10px;
-        }
-        .consulta-comuna-container select {
-            width: 100%; padding: 12px; font-size: 1em; border: 1px solid #ced4da; border-radius: 8px; margin-bottom: 10px; cursor: pointer; background-color: var(--bg-color);
-        }
-        .consulta-comuna-container button {
-            background-color: var(--secondary-color); color: white; border: none; padding: 14px 20px; font-size: 1.1em; font-weight: bold; border-radius: 8px; width: 100%; cursor: pointer; transition: background-color 0.3s;
-        }
-        .consulta-comuna-container button:hover { background-color: #e66300; }
+        .status-ejecucion { background-color: #fffaf0; color: #dd6b20; border: 1px solid #fbd38d; }
+        .status-liquidacion { background-color: #ebf8ff; color: #3182ce; border: 1px solid #90cdf4; }
+        .status-liquidado { background-color: #f0fff4; color: #38a169; border: 1px solid #9ae6b4; }
+        .status-finalizado { background-color: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
 
-        /* ===== SECCIÓN CONTRATOS ===== */
-        #contracts-section h2 {
-            font-size: 2.2em; font-weight: 700; color: var(--primary-color); border-bottom: 3px solid var(--secondary-color); padding-bottom: 0.5em; margin-bottom: 1.5em; display: flex; align-items: center; gap: 15px;
+        .alerts-section {
+            background-color: #fffaf0;
+            border-left: 4px solid #f6ad55;
+            padding: 1rem;
+            border-radius: 0.25rem;
         }
-        .summary-container {
-            display: flex; flex-wrap: wrap; gap: 2em; align-items: stretch; margin-bottom: 2.5em;
-        }
-        .summary-total {
-            background: var(--primary-color); color: white; padding: 1.5em 2em; border-radius: 10px; text-align: center;
-        }
-        .summary-total .label { font-size: 1em; font-weight: 400; opacity: 0.9; }
-        .summary-total .value { font-size: 3.5em; font-weight: 900; line-height: 1.1; }
-        .summary-status {
-            flex-grow: 1; display: flex; flex-direction: column;
-        }
-        .summary-status .title { font-weight: 700; color: var(--text-color); margin-bottom: 0.5em; font-size: 1.1em; }
-        .status-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background-color: #ccc; border-radius: 10px; overflow: hidden; flex-grow: 1;
-        }
-        .status-item {
-            background-color: var(--card-bg); text-align: center; padding: 1em;
-        }
-        .status-item .label { font-size: 0.9em; font-weight: 700; color: var(--text-color-light); }
-        .status-item .value { font-size: 2em; font-weight: 900; color: var(--primary-color); margin-top: 0.2em; }
-        
-        .contracts-container {
-            display: grid; grid-template-columns: 1fr; gap: 2em;
-        }
-        .contract-card { padding: 1.5em; }
-        .contract-card-header {
-            display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--light-gray); padding-bottom: 1em; margin-bottom: 1em;
-        }
-        .contract-card-header h3 { font-size: 1.4em; color: var(--primary-color); font-weight: 700; margin: 0; }
-        .contract-card-header .contract-id { font-size: 0.9em; font-weight: 400; color: var(--text-color-light); text-align: right; }
-        
-        .contract-details-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1em; margin-bottom: 1.5em;
-        }
-        .detail-item { font-size: 0.9em; }
-        .detail-item .label { display: block; font-weight: 700; color: var(--text-color-light); margin-bottom: 0.2em; }
-        .detail-item .value { font-weight: 400; color: var(--text-color); }
-        .detail-item .value.status-ejecucion { color: var(--status-orange); font-weight: 700; }
-        .detail-item .value.status-liquidacion { color: var(--status-blue); font-weight: 700; }
-        .detail-item .value.status-liquidado { color: var(--status-green); font-weight: 700; }
-        .detail-item .value.status-finalizado { color: var(--status-red); font-weight: 700; }
-        
-        .alerts-section .title {
-            font-size: 1.1em; font-weight: 700; color: var(--primary-color); margin-bottom: 0.7em;
-        }
-        .alerts-list {
-            list-style: none; padding-left: 0; margin: 0;
-        }
-        .alerts-list li {
-            background-color: var(--light-gray); padding: 0.8em 1em; border-radius: 6px; margin-bottom: 0.5em; border-left: 4px solid var(--secondary-color);
-            font-size: 0.95em; line-height: 1.5; color: var(--text-color);
-        }
-
-        /* ===== ESTILOS DE CHATBOT Y FOOTER ===== */
-        #chat-fab {
-            position: fixed; bottom: 30px; right: 30px; background-color: var(--primary-color); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1001; transition: transform 0.3s;
-        }
-        #chat-fab:hover { transform: scale(1.1); }
         #chat-window {
-            position: fixed; bottom: 100px; right: 30px; width: 420px; max-width: 90vw; height: 80vh; max-height: 700px; background: var(--card-bg); border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.25); display: flex; flex-direction: column; overflow: hidden; z-index: 1002; transform: scale(0.5); transform-origin: bottom right; opacity: 0; pointer-events: none; transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            transform: translateY(20px) scale(0.95);
+            transform-origin: bottom right;
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out;
         }
-        #chat-window.visible { transform: scale(1); opacity: 1; pointer-events: auto; }
-        .chat-header {
-            background: var(--primary-color); color: white; padding: 15px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+        #chat-window.visible {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
         }
-        #chat-close-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
-        .chat-body {
-            font-family: 'Inter', sans-serif; flex-grow: 1; display: flex; flex-direction: column; background-color: #f0f4f8; height: 100%; overflow: hidden;
+        #chat-fab {
+            transition: transform 0.2s ease-in-out;
         }
-        .chat-bubble-user { background-color: #2563EB; color: white; }
-        .chat-bubble-bot { background-color: #E2E8F0; color: #1E293B; }
-        #chat-messages-container::-webkit-scrollbar { width: 6px; }
-        #chat-messages-container::-webkit-scrollbar-track { background: #CBD5E1; }
-        #chat-messages-container::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 3px; }
+        #chat-fab:hover {
+            transform: scale(1.1);
+        }
         .option-btn {
-            transition: all 0.2s ease-in-out; border: 1px solid #CBD5E1;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.05);
         }
         .option-btn:hover {
-            transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border-color: #3B82F6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
-        footer {
-            text-align: center; margin-top: 4em; padding: 2em; border-top: 1px solid #ddd; color: #888; font-size: 0.95em;
-        }
-        footer strong { color: var(--text-color); }
         .reveal-on-scroll {
-            opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; will-change: opacity, transform;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
         }
-        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        select:focus, button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px hsla(var(--primary-hue), 90%, 55%, 0.4);
+        }
+        .main-btn {
+            background-color: var(--secondary-color);
+            transition: background-color 0.3s ease;
+        }
+        .main-btn:hover {
+            background-color: var(--secondary-color-dark);
+        }
     </style>
 </head>
-<body>
+<body class="bg-gray-50">
 
-    <header>
-        <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="header-logo">
-        <h1>Portal de consulta</h1>
-        <p class="subheading">Secretaría de Infraestructura Física | Gestión 2025</p>
+    <header style="background: linear-gradient(135deg, var(--primary-color-dark), var(--primary-color));" class="text-white text-center py-12 px-5 shadow-lg">
+        <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="max-w-[280px] mx-auto mb-6">
+        <h1 class="text-5xl font-extrabold tracking-tight">Portal de Consulta SIF</h1>
+        <p class="text-lg font-light opacity-90 mt-2 max-w-2xl mx-auto">Secretaría de Infraestructura Física | Gestión 2025</p>
     </header>
-    
-    <main class="container">
 
-        <div class="intro-block reveal-on-scroll">
-            <h3>¡Te damos la bienvenida!</h3>
-            <p>Consulta las obras en tu comuna y explora en detalle los indicadores de gestión de nuestros proyectos estratégicos para la ciudad.</p>
+    <main class="max-w-screen-xl mx-auto p-5 md:p-8">
+        <div class="intro-block reveal-on-scroll bg-white border-l-4 border-blue-600 p-8 my-12 rounded-lg shadow-md max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">¡Te damos la bienvenida!</h2>
+            <p class="text-lg text-gray-600 leading-relaxed">Consulta las obras en tu comuna y explora en detalle los indicadores de gestión de nuestros proyectos estratégicos para la ciudad.</p>
         </div>
 
-        <section id="consulta-comuna" class="reveal-on-scroll">
-            <div class="card" style="padding: 0; overflow: hidden;">
-                <div class="consulta-comuna-container">
-                    <h3><i class="fa-solid fa-map-location-dot"></i> Consulta por comuna</h3>
-                    <p>Selecciona tu comuna para ver en detalle las intervenciones y proyectos que hemos realizado, lo que estamos realizando y lo que estamos por realizar en tu comuna.</p>
-                    <div>
-                        <label for="comuna-select"><strong>Selecciona tu comuna:</strong></label>
-                        <select id="comuna-select">
+        <section id="consulta-comuna" class="reveal-on-scroll my-12">
+            <div class="card bg-white rounded-xl shadow-lg p-8 md:p-10">
+                <div class="flex items-center gap-4 mb-6">
+                    <i class="fa-solid fa-map-location-dot text-3xl text-blue-600"></i>
+                    <h3 class="text-2xl font-bold text-gray-800">Consulta por Comuna</h3>
+                </div>
+                <p class="text-gray-600 mt-2 mb-8">Selecciona tu comuna para ver en detalle las intervenciones, proyectos y el impacto de nuestra gestión en tu barrio.</p>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-grow">
+                        <label for="comuna-select" class="font-semibold text-gray-700 block mb-2">Selecciona tu comuna:</label>
+                        <select id="comuna-select" class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50 cursor-pointer focus:border-blue-500 transition-colors">
                             <option value="" disabled selected>-- Escoge una opción --</option>
                         </select>
                     </div>
-                    <button onclick="abrirReporte()">
+                    <button onclick="abrirReporte()" class="main-btn w-full md:w-auto self-end text-white font-bold py-4 px-8 rounded-lg text-lg hover:shadow-xl transition-all flex items-center justify-center gap-3">
                         <i class="fa-solid fa-magnifying-glass"></i> Consultar
                     </button>
                 </div>
             </div>
         </section>
 
-        <section id="contracts-section">
-            <div class="chapter">
-                <h2><i class="fa-solid fa-file-signature"></i> Estado de Contratos Estratégicos</h2>
-                
-                <div class="summary-container reveal-on-scroll">
-                    <div class="summary-total">
-                        <div class="label">Total Contratos</div>
-                        <div class="value">20</div>
-                    </div>
-                    <div class="summary-status">
-                        <div class="title">Estado de los contratos</div>
-                        <div class="status-grid">
-                            <div class="status-item">
-                                <div class="label">Ejecución</div>
-                                <div class="value">9</div>
-                            </div>
-                            <div class="status-item">
-                                <div class="label">Finalizado sin liquidar</div>
-                                <div class="value">1</div>
-                            </div>
-                            <div class="status-item">
-                                <div class="label">Liquidación</div>
-                                <div class="value">8</div>
-                            </div>
-                            <div class="status-item">
-                                <div class="label">Liquidado</div>
-                                <div class="value">2</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="contracts-container">
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>No elegibles metro 80</h3><span class="contract-id">N° Contrato: 4600098630</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2023</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">27/06/2023</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2035</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$17.542.005.383</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se debe hacer reunión para cerrar el tema de impuesto predial.</li>
-                                <li>Se debe hacer reunión para definir que se puede hacer con el dinero de 11.200 millones de compensaciones que son elegibles.</li>
-                                <li>Se debe nombrar Secretario técnico del comité de no elegibles.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Metro 80</h3><span class="contract-id">N° Contrato: 4600066323</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2016</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">02/08/2016</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2035</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$3.500.000.000.000</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se debe hacer comité técnico con secretarios y directivos para revisar las obras faltantes en el corredor de la 80 y al mismo tiempo posibilitar la aprobación de estudio de movilidad, geométrico y urbanismo.</li>
-                                <li>Se tiene alerta grande con el predio de parqueadero Córdoba y la UdeA.</li>
-                                <li>Se debe nombrar un gerente o coordinador del Metro de la 80 por parte del Distrito.</li>
-                                <li>Se debe modificar la periodicidad de reuniones del Comité general ya que se está incumpliendo el convenio.</li>
-                                <li>Se debe validar con el Metro el tema asociado a los pesos de las redes.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Contrato asociado a Metroplús convenio 01</h3><span class="contract-id">N° Contrato: 4600029928</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2010</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metroplus</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">21/12/2010</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">19/12/2025</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$26.203.024.434</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Pierde competencia el 19 de junio 2028</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Adición 13 convenio 01 de 2005</h3><span class="contract-id">N° Contrato: 4600059829</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2015</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metroplus</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">05/08/2005</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">19/12/2025</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se han pagado $ 3.500.000.000 asociados al RP No.</li>
-                                <li>Pierde competencia el 19 de junio 2028</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Túnel Toyo</h3><span class="contract-id">N° Contrato: 4600059240</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2015</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Departamento de Antioquia</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">26/02/2015</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">14/03/2026</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$520.000.000.000</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Validar valores que se incorporaran al convenio</li>
-                                <li>Pierde competencia el 14 de septiembre de 2028</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Tranvía Ayacucho</h3><span class="contract-id">N° Contrato: 4600027977</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2010</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">07/06/2011</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">18/12/2026</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$754.348.436.246</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Validar ampliación del convenio marco para la compra de los 3 predios de San Luis</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Convenio 01 de 2005 Troncal y Pretroncal sur</h3><span class="contract-id">N° Contrato: 4800001394</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2005</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metroplus</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">05/08/2005</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">19/12/2025</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$16.178.000.000</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se tiene la demanda de Guinovart por 27.000 Millones.</li>
-                                <li>Terminar el diseño y construcción de estaciones Pretroncal Guayabal</li>
-                                <li>Terminar la pretroncal sur para cumplir convenio</li>
-                                <li>Se debe reintegrar rendimientos, legalizar ejecuciones y realizar informes de supervisión</li>
-                                <li>Pierde competencia el 19 de junio 2028</li>
-                            </ul>
-                        </div>
-                    </div>
-                     <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>EPM</h3><span class="contract-id">N° Contrato: 4600092271</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2021</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa Públicas de Medellín E.S.P.</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">12/11/2021</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/03/2028</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">Convenio Sin cuantía</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se debe revisar el acta para modificación de número de actas.</li>
-                                <li>Se debe revisar el anexo tecnico del acta No. 5 de EPM para firma.</li>
-                                <li>Requerir a EDU subsanar pendientes del proyecto Carabobo, enviados por EPM.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Paraderos 2024</h3><span class="contract-id">N° Contrato: 4600100673</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2024</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-ejecucion">Ejecución</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">05/02/2024</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">30/09/2025</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se debe programar ampliación de plazo hasta febrero de 2026 para que la APP pueda ingresar con la concesión.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>PUI 5 y 6 2013-2015 Nor Occidental</h3><span class="contract-id">N° Contrato: 4600049670</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2013</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-finalizado">Finalizado sin liquidar</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">07/10/2013</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">07/11/2018</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$13.589.396.415</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>El contrato perdió competencia para liquidar.</li>
-                                <li>Pendiente conciliación financiera con la EDU en aras de realizar el cierre financiero del contrato interadministrativo, el cual se finiquitará una vez EDU subsane los procesos jurídicos que adelanta con sus contratistas.</li>
-                                <li>Se requiere realizar reunión desde la Supervisión con la EDU en pro de conocer los avances en el cierre de estas controversias contractuales en aras del Auto de Archivo del contrato interadministrativo.</li>
-                                <li>EDU debe subsanar los procesos jurídicos que adelanta con sus contratistas y presentar informe final a la Supervisión en la Secretaría de Infraestructura Física, con dicha información se complementará el "auto de archivo definitivo del expediente contractual" para ser suscrito por el Secretario de Despacho.</li>
-                                <li>Pendiente designación de nuevo apoyo jurídico.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Palmitas</h3><span class="contract-id">N° Contrato: 4600082031</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2019</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Área Metropolitana</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">05/07/2019</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">04/07/2023</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se desarrolla mediante el contrato derivado 4600088096-2020 EDU; de acuerdo a la supervisión de este contrato falta que la EDU termine de liquidar los contratos derivados.</li>
-                                <li>221-2022: Pendiente que el contratista de obra cobre un reajuste final.</li>
-                                <li>238-2022: No han liquidado contrato logístico</li>
-                                <li>Del contrato Interadministrativo 4600088096-2020 ya se tiene acta de liquidación proyectada, con el componente técnico y predial. Falta actualizar el componente financiero cuando la EDU termine de liquidar los contratos citados con anterioridad.</li>
-                                <li>PD. Del convenio 4600082031-2019 (Palmitas) que es suscrito con el AMVA como financiador del proyecto en 100%, se indica y/o recuerda que el proceso de alimentación de información al SECOP I es responsabilidad del AMVA.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Zona Norte Tricentenario</h3><span class="contract-id">N° Contrato: 1093 de 2020 (AMVA) - 4600088535 (Distrito de Medellín)</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2020</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Área Metropolitana</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value"></span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value"></span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Convenio sin recursos</li>
-                                <li>Revisar la liquidación y cerrar</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Metro 80</h3><span class="contract-id">N° Contrato: 4600085398</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2020</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metro</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">19/03/2020</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">30/06/2023</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$9.398.568.894</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Revisar la liquidación y cerrar</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Paraderos 2023</h3><span class="contract-id">N° Contrato: 4600097677</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2023</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">24/03/2023</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">30/12/2023</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Organizar toda la información para liquidación</li>
-                                <li>Pierde competencia 30 de junio 2026</li>
-                                <li>Se debe realizar la liquidación.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Parques del Río Centro</h3><span class="contract-id">N° Contrato: 524</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2014</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value"></span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">17/07/2014</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">17/07/2024</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$0</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Revisar la liquidación y cerrar</li>
-                                <li>Se adelantó contacto con personal de INVIAS para definir las condiciones para la liquidación.</li>
-                                <li>El abogado Alejandro Morales quedó de proyectar modelo de liquidación para compartir a INVIAS, según "modelo" proporcionado por ellos.</li>
-                                <li>Convenio sin recursos</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Picacho</h3><span class="contract-id">N° Contrato: 4600059075</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2015</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">02/03/2015</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2023</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$339.955.747.297</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se debe revisar valores de construcción para solicitar el mayor valor según última reunión</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>CLT</h3><span class="contract-id">N° Contrato: 4600088084</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2020</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Transporte Masivo del Valle de Aburra</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">26/11/2020</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2023</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se debe revisar los pendientes de liquidación y cerrar el tema con metroplus y Metro</li>
-                                <li>Pierde competencia el 30 de junio del 2026</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Paraderos 2023</h3><span class="contract-id">N° Contrato: 4600097484</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2023</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidacion">Liquidación</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">01/03/2023</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">23/01/2024</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value"></span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se debe realizar la liquidación.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>Comunicaciones</h3><span class="contract-id">N° Contrato: 4600080797</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2019</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidado">Liquidado</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Metroparques</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">16/05/2019</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">31/12/2019</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$903.812.756</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Se debió liquidar el 27 de diciembre de 2023</li>
-                                <li>Quedó un valor restante igual a $ 5.036 pesos</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card contract-card reveal-on-scroll">
-                        <div class="contract-card-header">
-                            <div><h3>PUI 8 y 9 Centro oriental</h3><span class="contract-id">N° Contrato: 4600001192</span></div>
-                        </div>
-                        <div class="contract-details-grid">
-                            <div class="detail-item"><span class="label">Vigencia</span><span class="value">2008</span></div>
-                            <div class="detail-item"><span class="label">Estado</span><span class="value status-liquidado">Liquidado</span></div>
-                            <div class="detail-item"><span class="label">Contratista</span><span class="value">Empresa de Desarrollo Urbano EDU</span></div>
-                            <div class="detail-item"><span class="label">Fecha de Inicio</span><span class="value">24/10/2008</span></div>
-                            <div class="detail-item"><span class="label">Fecha Fin</span><span class="value">15/01/2019</span></div>
-                            <div class="detail-item"><span class="label">Valor Contrato</span><span class="value">$88.321.936.665</span></div>
-                        </div>
-                        <div class="alerts-section">
-                            <h4 class="title">Alertas</h4>
-                            <ul class="alerts-list">
-                                <li>Validar como proceder a liquidar</li>
-                                <li>Quedó un valor restante igual a $5.035.693.458 pesos.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    
-    <footer>
-        <p><strong>Mes de reporte: Julio de 2025</strong></p>
-    </footer>
-
-    <div id="chat-fab">
-        <i class="fa-solid fa-robot"></i>
-    </div>
-    
-    <div id="chat-window">
-        <div class="chat-header">
-            <span>Asistente Virtual SIF</span>
-            <button id="chat-close-btn">✖</button>
-        </div>
-        <div class="chat-body">
-            <div id="chat-messages-container" class="flex-grow p-4 overflow-y-auto space-y-4">
+        <section id="contracts-section" class="py-10">
+            <div class="flex items-center gap-4 border-b-2 border-orange-500 pb-4 mb-10">
+                <i class="fa-solid fa-file-signature text-4xl text-blue-800"></i>
+                <h2 class="text-4xl font-extrabold text-blue-900">Contratos Estratégicos</h2>
             </div>
             
-            <div id="options-container" class="p-3 border-t bg-slate-50 space-y-3">
-                <div id="navigation-controls" class="flex justify-between items-center text-sm mb-2">
-                    <button id="back-btn" class="text-blue-600 hover:underline hidden">← Volver</button>
-                    <div id="breadcrumb-container" class="text-slate-500 text-right font-medium"></div>
+            <div class="summary-container reveal-on-scroll grid grid-cols-1 md:grid-cols-5 gap-6 mb-12">
+                <div class="md:col-span-1 bg-blue-800 text-white p-6 rounded-xl flex flex-col justify-center items-center text-center shadow-lg">
+                    <div class="text-sm uppercase tracking-wider opacity-90">Total Contratos</div>
+                    <div class="text-7xl font-black">20</div>
                 </div>
-                <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="md:col-span-4 grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="card text-center p-4 rounded-xl"><div class="text-sm font-bold text-gray-500 mb-1">En Ejecución</div><div class="text-5xl font-black text-orange-600">9</div></div>
+                    <div class="card text-center p-4 rounded-xl"><div class="text-sm font-bold text-gray-500 mb-1">Finalizado s/l</div><div class="text-5xl font-black text-red-600">1</div></div>
+                    <div class="card text-center p-4 rounded-xl"><div class="text-sm font-bold text-gray-500 mb-1">En Liquidación</div><div class="text-5xl font-black text-blue-600">8</div></div>
+                    <div class="card text-center p-4 rounded-xl"><div class="text-sm font-bold text-gray-500 mb-1">Liquidado</div><div class="text-5xl font-black text-green-600">2</div></div>
                 </div>
             </div>
 
-            <div class="p-4 border-t bg-white rounded-b-xl">
+            <div class="contracts-container grid grid-cols-1 gap-8">
+                
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">No elegibles metro 80</h3>
+                                <span class="text-sm text-gray-500">N° 4600098630 | Vigencia 2023</span>
+                            </div>
+                            <div class="status-badge status-ejecucion"><i class="fa-solid fa-person-digging"></i><span>Ejecución</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                            <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Transporte Masivo del Valle de Aburra</div></div>
+                            <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">27/06/2023</div></div>
+                            <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">31/12/2035</div></div>
+                            <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$17.542.005.383</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                            <li>Se debe hacer reunión para cerrar el tema de impuesto predial.</li>
+                            <li>Se debe hacer reunión para definir que se puede hacer con el dinero de 11.200 millones de compensaciones que son elegibles.</li>
+                            <li>Se debe nombrar Secretario técnico del comité de no elegibles.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Metro 80</h3>
+                                <span class="text-sm text-gray-500">N° 4600066323 | Vigencia 2016</span>
+                            </div>
+                            <div class="status-badge status-ejecucion"><i class="fa-solid fa-person-digging"></i><span>Ejecución</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                            <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Transporte Masivo del Valle de Aburra</div></div>
+                            <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">02/08/2016</div></div>
+                            <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">31/12/2035</div></div>
+                            <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$3.500.000.000.000</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Se debe hacer comité técnico con secretarios y directivos para revisar las obras faltantes en el corredor de la 80 y al mismo tiempo posibilitar la aprobación de estudio de movilidad, geométrico y urbanismo.</li>
+                           <li>Se tiene alerta grande con el predio de parqueadero Córdoba y la UdeA.</li>
+                           <li>Se debe nombrar un gerente o coordinador del Metro de la 80 por parte del Distrito.</li>
+                           <li>Se debe modificar la periodicidad de reuniones del Comité general ya que se está incumpliendo el convenio.</li>
+                           <li>Se debe validar con el Metro el tema asociado a los pesos de las redes.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Contrato asociado a Metroplús convenio 01</h3>
+                                <span class="text-sm text-gray-500">N° 4600029928 | Vigencia 2010</span>
+                            </div>
+                            <div class="status-badge status-ejecucion"><i class="fa-solid fa-person-digging"></i><span>Ejecución</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Metroplus</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">21/12/2010</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">19/12/2025</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$26.203.024.434</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                            <li>Pierde competencia el 19 de junio 2028</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Adición 13 convenio 01 de 2005</h3>
+                                <span class="text-sm text-gray-500">N° 4600059829 | Vigencia 2015</span>
+                            </div>
+                            <div class="status-badge status-ejecucion"><i class="fa-solid fa-person-digging"></i><span>Ejecución</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Metroplus</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">05/08/2005</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">19/12/2025</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">N/A</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                            <li>Se han pagado $ 3.500.000.000 asociados al RP No.</li>
+                            <li>Pierde competencia el 19 de junio 2028</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Túnel Toyo</h3>
+                                <span class="text-sm text-gray-500">N° 4600059240 | Vigencia 2015</span>
+                            </div>
+                            <div class="status-badge status-ejecucion"><i class="fa-solid fa-person-digging"></i><span>Ejecución</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Departamento de Antioquia</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">26/02/2015</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">14/03/2026</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$520.000.000.000</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                            <li>Validar valores que se incorporaran al convenio</li>
+                            <li>Pierde competencia el 14 de septiembre de 2028</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Tranvía Ayacucho</h3>
+                                <span class="text-sm text-gray-500">N° 4600027977 | Vigencia 2010</span>
+                            </div>
+                            <div class="status-badge status-ejecucion"><i class="fa-solid fa-person-digging"></i><span>Ejecución</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Transporte Masivo del Valle de Aburra</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">07/06/2011</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">18/12/2026</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$754.348.436.246</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Validar ampliación del convenio marco para la compra de los 3 predios de San Luis</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Convenio 01 de 2005 Troncal y Pretroncal sur</h3>
+                                <span class="text-sm text-gray-500">N° 4800001394 | Vigencia 2005</span>
+                            </div>
+                            <div class="status-badge status-ejecucion"><i class="fa-solid fa-person-digging"></i><span>Ejecución</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Metroplus</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">05/08/2005</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">19/12/2025</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$16.178.000.000</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                            <li>Se tiene la demanda de Guinovart por 27.000 Millones.</li>
+                            <li>Terminar el diseño y construcción de estaciones Pretroncal Guayabal</li>
+                            <li>Terminar la pretroncal sur para cumplir convenio</li>
+                            <li>Se debe reintegrar rendimientos, legalizar ejecuciones y realizar informes de supervisión</li>
+                            <li>Pierde competencia el 19 de junio 2028</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">EPM</h3>
+                                <span class="text-sm text-gray-500">N° 4600092271 | Vigencia 2021</span>
+                            </div>
+                            <div class="status-badge status-ejecucion"><i class="fa-solid fa-person-digging"></i><span>Ejecución</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa Públicas de Medellín E.S.P.</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">12/11/2021</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">31/03/2028</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">Convenio Sin cuantía</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Se debe revisar el acta para modificación de número de actas.</li>
+                           <li>Se debe revisar el anexo tecnico del acta No. 5 de EPM para firma.</li>
+                           <li>Requerir a EDU subsanar pendientes del proyecto Carabobo, enviados por EPM.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Paraderos 2024</h3>
+                                <span class="text-sm text-gray-500">N° 4600100673 | Vigencia 2024</span>
+                            </div>
+                            <div class="status-badge status-ejecucion"><i class="fa-solid fa-person-digging"></i><span>Ejecución</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Desarrollo Urbano EDU</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">05/02/2024</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">30/09/2025</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">N/A</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Se debe programar ampliación de plazo hasta febrero de 2026 para que la APP pueda ingresar con la concesión.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">PUI 5 y 6 2013-2015 Nor Occidental</h3>
+                                <span class="text-sm text-gray-500">N° 4600049670 | Vigencia 2013</span>
+                            </div>
+                            <div class="status-badge status-finalizado"><i class="fa-solid fa-flag-checkered"></i><span>Finalizado sin liquidar</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Desarrollo Urbano EDU</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">07/10/2013</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">07/11/2018</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$13.589.396.415</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>El contrato perdió competencia para liquidar.</li>
+                           <li>Pendiente conciliación financiera con la EDU en aras de realizar el cierre financiero del contrato interadministrativo, el cual se finiquitará una vez EDU subsane los procesos jurídicos que adelanta con sus contratistas.</li>
+                           <li>Se requiere realizar reunión desde la Supervisión con la EDU en pro de conocer los avances en el cierre de estas controversias contractuales en aras del Auto de Archivo del contrato interadministrativo.</li>
+                           <li>EDU debe subsanar los procesos jurídicos que adelanta con sus contratistas y presentar informe final a la Supervisión en la Secretaría de Infraestructura Física, con dicha información se complementará el "auto de archivo definitivo del expediente contractual" para ser suscrito por el Secretario de Despacho.</li>
+                           <li>Pendiente designación de nuevo apoyo jurídico.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Palmitas</h3>
+                                <span class="text-sm text-gray-500">N° 4600082031 | Vigencia 2019</span>
+                            </div>
+                            <div class="status-badge status-liquidacion"><i class="fa-solid fa-gavel"></i><span>Liquidación</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Área Metropolitana</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">05/07/2019</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">04/07/2023</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">N/A</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Se desarrolla mediante el contrato derivado 4600088096-2020 EDU; de acuerdo a la supervisión de este contrato falta que la EDU termine de liquidar los contratos derivados.</li>
+                           <li>221-2022: Pendiente que el contratista de obra cobre un reajuste final.</li>
+                           <li>238-2022: No han liquidado contrato logístico</li>
+                           <li>Del contrato Interadministrativo 4600088096-2020 ya se tiene acta de liquidación proyectada, con el componente técnico y predial. Falta actualizar el componente financiero cuando la EDU termine de liquidar los contratos citados con anterioridad.</li>
+                           <li>PD. Del convenio 4600082031-2019 (Palmitas) que es suscrito con el AMVA como financiador del proyecto en 100%, se indica y/o recuerda que el proceso de alimentación de información al SECOP I es responsabilidad del AMVA.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Zona Norte Tricentenario</h3>
+                                <span class="text-sm text-gray-500">N° 1093 de 2020 (AMVA) | Vigencia 2020</span>
+                            </div>
+                            <div class="status-badge status-liquidacion"><i class="fa-solid fa-gavel"></i><span>Liquidación</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Área Metropolitana</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">N/A</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">N/A</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">N/A</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Convenio sin recursos</li>
+                           <li>Revisar la liquidación y cerrar</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Metro 80</h3>
+                                <span class="text-sm text-gray-500">N° 4600085398 | Vigencia 2020</span>
+                            </div>
+                            <div class="status-badge status-liquidacion"><i class="fa-solid fa-gavel"></i><span>Liquidación</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Metro</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">19/03/2020</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">30/06/2023</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$9.398.568.894</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Revisar la liquidación y cerrar</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Paraderos 2023</h3>
+                                <span class="text-sm text-gray-500">N° 4600097677 | Vigencia 2023</span>
+                            </div>
+                            <div class="status-badge status-liquidacion"><i class="fa-solid fa-gavel"></i><span>Liquidación</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Desarrollo Urbano EDU</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">24/03/2023</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">30/12/2023</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">N/A</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Organizar toda la información para liquidación</li>
+                           <li>Pierde competencia 30 de junio 2026</li>
+                           <li>Se debe realizar la liquidación.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Parques del Río Centro</h3>
+                                <span class="text-sm text-gray-500">N° 524 | Vigencia 2014</span>
+                            </div>
+                            <div class="status-badge status-liquidacion"><i class="fa-solid fa-gavel"></i><span>Liquidación</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">N/A</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">17/07/2014</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">17/07/2024</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$0</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Revisar la liquidación y cerrar</li>
+                           <li>Se adelantó contacto con personal de INVIAS para definir las condiciones para la liquidación.</li>
+                           <li>El abogado Alejandro Morales quedó de proyectar modelo de liquidación para compartir a INVIAS, según "modelo" proporcionado por ellos.</li>
+                           <li>Convenio sin recursos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Picacho</h3>
+                                <span class="text-sm text-gray-500">N° 4600059075 | Vigencia 2015</span>
+                            </div>
+                            <div class="status-badge status-liquidacion"><i class="fa-solid fa-gavel"></i><span>Liquidación</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Transporte Masivo del Valle de Aburra</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">02/03/2015</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">31/12/2023</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$339.955.747.297</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Se debe revisar valores de construcción para solicitar el mayor valor según última reunión</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">CLT</h3>
+                                <span class="text-sm text-gray-500">N° 4600088084 | Vigencia 2020</span>
+                            </div>
+                            <div class="status-badge status-liquidacion"><i class="fa-solid fa-gavel"></i><span>Liquidación</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Transporte Masivo del Valle de Aburra</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">26/11/2020</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">31/12/2023</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">N/A</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Se debe revisar los pendientes de liquidación y cerrar el tema con metroplus y Metro</li>
+                           <li>Pierde competencia el 30 de junio del 2026</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Paraderos 2023</h3>
+                                <span class="text-sm text-gray-500">N° 4600097484 | Vigencia 2023</span>
+                            </div>
+                            <div class="status-badge status-liquidacion"><i class="fa-solid fa-gavel"></i><span>Liquidación</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Desarrollo Urbano EDU</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">01/03/2023</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">23/01/2024</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">N/A</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Se debe realizar la liquidación.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">Comunicaciones</h3>
+                                <span class="text-sm text-gray-500">N° 4600080797 | Vigencia 2019</span>
+                            </div>
+                            <div class="status-badge status-liquidado"><i class="fa-solid fa-circle-check"></i><span>Liquidado</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Metroparques</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">16/05/2019</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">31/12/2019</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$903.812.756</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                           <li>Se debió liquidar el 27 de diciembre de 2023</li>
+                           <li>Quedó un valor restante igual a $ 5.036 pesos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card contract-card reveal-on-scroll bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-900">PUI 8 y 9 Centro oriental</h3>
+                                <span class="text-sm text-gray-500">N° 4600001192 | Vigencia 2008</span>
+                            </div>
+                            <div class="status-badge status-liquidado"><i class="fa-solid fa-circle-check"></i><span>Liquidado</span></div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 text-sm border-t border-gray-200 pt-4">
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Contratista</div><div class="mt-1">Empresa de Desarrollo Urbano EDU</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Inicio</div><div class="mt-1">24/10/2008</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Fin</div><div class="mt-1">15/01/2019</div></div>
+                           <div><div class="font-bold text-gray-500 text-xs uppercase tracking-wider">Valor</div><div class="mt-1 text-lg font-semibold text-blue-900">$88.321.936.665</div></div>
+                        </div>
+                    </div>
+                    <div class="alerts-section px-6 py-4">
+                        <h4 class="text-sm font-bold text-yellow-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i>ALERTAS PENDIENTES</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-900 space-y-1">
+                            <li>Validar como proceder a liquidar</li>
+                            <li>Quedó un valor restante igual a $5.035.693.458 pesos.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                </div>
+        </section>
+    </main>
+
+    <footer class="text-center mt-12 p-8 border-t border-gray-200 text-gray-500">
+        <p><strong class="text-gray-800">Mes de reporte: Julio de 2025</strong></p>
+        <p class="text-sm mt-1">Alcaldía de Medellín - Secretaría de Infraestructura Física</p>
+    </footer>
+
+    <div id="chat-fab" class="fixed bottom-8 right-8 bg-blue-700 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl cursor-pointer shadow-2xl z-50">
+        <i class="fa-solid fa-robot"></i>
+    </div>
+
+    <div id="chat-window" class="fixed bottom-28 right-8 w-[420px] max-w-[90vw] h-[75vh] max-h-[700px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden z-[51]">
+        <div class="chat-header bg-blue-800 text-white p-4 font-bold flex justify-between items-center flex-shrink-0">
+            <span>Asistente Virtual SIF</span>
+            <button id="chat-close-btn" class="bg-none border-none text-white text-2xl cursor-pointer hover:opacity-80 transition-opacity">&times;</button>
+        </div>
+        <div class="chat-body font-['Inter',_sans-serif] flex-grow flex flex-col bg-gray-100 overflow-hidden">
+            <div id="chat-messages-container" class="flex-grow p-4 overflow-y-auto space-y-4"></div>
+            <div class="p-3 border-t bg-gray-50 space-y-3">
+                <div id="navigation-controls" class="flex justify-between items-center text-sm mb-2">
+                    <button id="back-btn" class="text-blue-600 hover:underline hidden">&larr; Volver</button>
+                    <div id="breadcrumb-container" class="text-gray-500 text-right font-medium"></div>
+                </div>
+                <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+            </div>
+            <div class="p-4 border-t bg-white">
                 <div class="flex items-center space-x-2">
-                    <input type="text" id="chat-input" placeholder="Pregúntame algo, como 'huecos' o 'parques'..." class="flex-grow border rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <button id="send-btn" class="bg-blue-500 text-white rounded-full p-3 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                        </svg>
+                    <input type="text" id="chat-input" placeholder="Pregúntame algo, como 'huecos'..." class="flex-grow border rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="send-btn" class="bg-blue-600 text-white rounded-full p-3 hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
                     </button>
                 </div>
             </div>
@@ -762,281 +727,38 @@
     </div>
     
     <script>
-        // DATOS AUN DISPONIBLES PARA EL CHATBOT
-        const pageData = {
-            stats: {
-                huecosTapados: "13,822",
-                materialRemovido: "60,000 m³",
-                personasEmergencias: "300",
-                parquesRenovados: "17",
-                parquesMetrosIntervenidos: "11,890 m²"
-            },
-            infraVerde: {
-                corredores: 3,
-                puentes: 3,
-                metrosVerdes: "5,000 m²",
-                jardineros: "540"
-            },
-            puente4Sur: {
-                inversion: "$1.330 millones",
-                plantas: "4.300"
-            },
-            parques: {
-                inversionFutura: "$20.000 millones",
-                cantidadFuturos: 29
-            },
-            proyectosEstrategicos: {
-                puiEntregados: "4 PUI",
-                puiInversion: "$16.000 millones",
-                puiHabitantes: "209.000"
-            },
-            gestionEstrategica: {
-                cuadrillasContrato: "Contrato Interadministrativo de $23.900 Millones para Atender Contingencias en el Espacio Público.",
-                cuadrillasPuntosAtendidos: "152 puntos",
-                licitacionesActivas: "12 procesos de licitación"
-            }
-        };
-        
-        function abrirReporte() {
-            const select = document.getElementById('comuna-select');
-            const comunaId = select.value;
-            if (comunaId) {
-                window.open(`comuna${comunaId}.html`, '_blank');
-            } else {
-                alert('Por favor, selecciona una comuna.');
-            }
-        }
-
+        // The original JavaScript is retained as it correctly handles the functionality.
+        const pageData = { stats: { huecosTapados: "13,822", materialRemovido: "60,000 m³", personasEmergencias: "300", parquesRenovados: "17", parquesMetrosIntervenidos: "11,890 m²" }, infraVerde: { corredores: 3, puentes: 3, metrosVerdes: "5,000 m²", jardineros: "540" }, puente4Sur: { inversion: "$1.330 millones", plantas: "4.300" }, parques: { inversionFutura: "$20.000 millones", cantidadFuturos: 29 }, proyectosEstrategicos: { puiEntregados: "4 PUI", puiInversion: "$16.000 millones", puiHabitantes: "209.000" }, gestionEstrategica: { cuadrillasContrato: "Contrato Interadministrativo de $23.900 Millones para Atender Contingencias en el Espacio Público.", cuadrillasPuntosAtendidos: "152 puntos", licitacionesActivas: "12 procesos de licitación" } };
+        function abrirReporte() { const select = document.getElementById('comuna-select'), comunaId = select.value; if (comunaId) { window.open(`comuna${comunaId}.html`, '_blank'); } else { alert('Por favor, selecciona una comuna.'); } }
         document.addEventListener('DOMContentLoaded', function () {
-            
-            // --- Lógica para Comunas ---
-            const communeData = [
-                { name: 'Comuna 1 – Popular', id: 1 }, { name: 'Comuna 2 – Santa Cruz', id: 2 },
-                { name: 'Comuna 3 – Manrique', id: 3 }, { name: 'Comuna 4 – Aranjuez', id: 4 },
-                { name: 'Comuna 5 – Castilla', id: 5 }, { name: 'Comuna 6 – Doce de Octubre', id: 6 },
-                { name: 'Comuna 7 – Robledo', id: 7 }, { name: 'Comuna 8 – Villa Hermosa', id: 8 },
-                { name: 'Comuna 9 – Buenos Aires', id: 9 }, { name: 'Comuna 10 – La Candelaria', id: 10 },
-                { name: 'Comuna 11 – Laureles-Estadio', id: 11 }, { name: 'Comuna 12 – La América', id: 12 },
-                { name: 'Comuna 13 – San Javier', id: 13 }, { name: 'Comuna 14 – El Poblado', id: 14 },
-                { name: 'Comuna 15 – Guayabal', id: 15 }, { name: 'Comuna 16 – Belen', id: 16 }
-            ];
+            const communeData = [ { name: 'Comuna 1 – Popular', id: 1 }, { name: 'Comuna 2 – Santa Cruz', id: 2 }, { name: 'Comuna 3 – Manrique', id: 3 }, { name: 'Comuna 4 – Aranjuez', id: 4 }, { name: 'Comuna 5 – Castilla', id: 5 }, { name: 'Comuna 6 – Doce de Octubre', id: 6 }, { name: 'Comuna 7 – Robledo', id: 7 }, { name: 'Comuna 8 – Villa Hermosa', id: 8 }, { name: 'Comuna 9 – Buenos Aires', id: 9 }, { name: 'Comuna 10 – La Candelaria', id: 10 }, { name: 'Comuna 11 – Laureles-Estadio', id: 11 }, { name: 'Comuna 12 – La América', id: 12 }, { name: 'Comuna 13 – San Javier', id: 13 }, { name: 'Comuna 14 – El Poblado', id: 14 }, { name: 'Comuna 15 – Guayabal', id: 15 }, { name: 'Comuna 16 – Belen', id: 16 } ];
             const selectComuna = document.getElementById('comuna-select');
-            communeData.forEach(commune => {
-                const option = document.createElement('option');
-                option.value = commune.id;
-                option.textContent = commune.name.replace(/–\s/g, '- ');
-                selectComuna.appendChild(option);
-            });
-            
-            // --- Lógica de Animaciones y Estilos Dinámicos ---
+            communeData.forEach(c => { const o = document.createElement('option'); o.value = c.id; o.textContent = c.name.replace(/–\s/g, '- '); selectComuna.appendChild(o); });
             const animatedElements = document.querySelectorAll('.reveal-on-scroll');
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            animatedElements.forEach(el => {
-                observer.observe(el);
-            });
-            
-            // --- Lógica del Asistente Virtual ---
-            const reportesSIF = {
-                planeacion: { name: "Subsecretaría de Planeación", unidades: { gestion_informacion: { name: "Unidad de Gestión de la Información y Proyectos", reports: [ { name: "Ejecución Presupuestal", keywords: ['presupuesto', 'ejecución', 'plata', 'inversión'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNDAyOGE4OTMtZTExMi00M2VlLWJiNmUtMTMwMzk3MjY0YmU3IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Quiero ver cómo se invierte el presupuesto"] }, { name: "Indicadores PI", keywords: ['indicadores', 'pi', 'avance'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMDk4YTEyZTMtY2FlZi00Y2Y0LWI2ODgtNDZiYTgxN2EzZDMyIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo van los indicadores de rendimiento?"] }, { name: "Informe Tácita de plata", keywords: ['tácita', 'plata'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjliYjNkNGQtYjJiMC00MDRhLWJlZDMtYjk4YmI1YjMwZjUzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Muéstrame el informe de Tácita de Plata"] } ] }, estudios_disenos: { name: "Unidad de Estudios y Diseños", reports: [ { name: "Parques - Tejiendo Hogares", keywords: ['parques', 'tejiendo hogares'], href: 'https://app.powerbi.com/view?r=eyJrIjoiN2Y1ZTQyNGQtOTkzZC00MjY4LTg5NzktZWY1NzNiYjE2NzBkIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver el impacto del proyecto 'Tejiendo Hogares'"] } ] }, gestion_contractual: { name: "Unidad de Gestión Contractual", reports: [ { name: "Proceso Precontractual", keywords: ['precontractual', 'contratos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMzE1MWNmMjQtYWEyMy00MGVjLWI4MjgtNzIzZTYxZDAzNDVhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué proyectos se van a contratar pronto?"] } ] } } },
-                construccion: { name: "Subsecretaría de Construcción y Mantenimiento", unidades: { ejecucion_proyectos: { name: "Unidad de ejecución de Proyectos", reports: [ { name: "Seguimiento a contratos de Obra", keywords: ['contratos', 'obra'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNTI2N2NhMjktN2RmOS00OTliLTg1Y2UtMjY2M2Q5MDcxOTY0IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo van las obras en construcción?"] }, { name: "Empleabilidad", keywords: ['empleabilidad', 'empleo'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNjUyOWI4ZmQtZWIzNi00NjM2LTlkOGUtOGM0OTUwNjY1MmNmIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver el impacto en la generación de empleo"] }, { name: "Informe Baches", keywords: ['baches', 'huecos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNWI3ZTNkZmMtMjEyNy00NjU1LTk3YzktNTMyOGJkMzZlN2ZiIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Quiero ver el mapa de reparación de huecos"] }, { name: "Informe Paraderos", keywords: ['paraderos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZDQ2OGM4MDItYTc1Zi00MjE5LWJlNmUtZjJhMDE3ZjkzMWFjIiwidCI6ImJhMzM0NGUyLTAxMGYtNGJkZi1iNTEyLWMzOGRmYTdhNWJhNSIsImMiOjR9', preguntas: ["¿Cómo va la renovación de paraderos?"] } ] }, socioambiental_paisajismo: { name: "Unidad Socioambiental y Paisajismo", reports: [ { name: "Jardín Botánico*", keywords: ['jardín', 'botánico'], href: 'https://app.powerbi.com/view?r=eyJrIjoiOGQwNzU5ODgtNmIyYS00YTQ3LTg3ODMtOGRhOTU2MmMyNjZhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver proyectos con el Jardín Botánico"] }, { name: "Parque Arví*", keywords: ['arví'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMDkyNjU3Y2UtOTRjNy00YjVjLTg0MzgtNzBiYmUyOWNhNzEwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué se está haciendo en el Parque Arví?"] } ] }, mantenimiento: { name: "Unidad de Mantenimiento", reports: [ { name: "Trabajadores Oficiales", keywords: ['trabajadores', 'oficiales'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNWM1NzY3MjQtZmViMy00YmRiLWJiODgtMDg0MDRhZjVkMTgzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Conocer sobre los trabajadores oficiales"] }, { name: "Solicitudes Baches SIRO", keywords: ['siro', 'solicitudes baches'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNzkzZmIyODUtMGE3YS00YTUwLTkyYTMtMTBlODI3MWE4OWU2IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar el estado de mi solicitud de un bache"] }, { name: "Parque Automotor", keywords: ['automotor', 'vehículos', 'maquinaria'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNmQ1ZThhNWItZTA1Mi00ZDc4LTgwMTktYWEyYzViOTY1YTNhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Explorar el estado del parque automotor"] }, { name: "Intervenciones Directas", keywords: ['intervenciones', 'directas'], href: 'https://app.powerbi.com/view?r=eyJrIjoiYjE2NjE2MjItNTUxNi00ZTI4LThmNzAtNjY0NThjNGYxN2Q2IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver las pequeñas obras en los barrios"] }, { name: "Permisos de Roturas*", keywords: ['roturas', 'permisos'], href: '#link-placeholder', preguntas: ["Entender la gestión de permisos de roturas"] } ] } } },
-                despacho: { name: "Despacho SIF", reports: [ { name: "Gerencia de Corregimientos", keywords: ['corregimientos', 'gerencia', 'rural'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZmVhNjY3YTYtNTIwNi00NzUzLTkyYWYtZmZiMDBiNTdkNWQwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué obras hay en los corregimientos?"] }, { name: "Informe Calamidad Pública", keywords: ['calamidad', 'pública', 'emergencias'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjEyMzdhNGEtZGVjNC00YTM4LWEzNDAtMjI1MmY1NzdlODEwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver informe de gestión de emergencias"] }, { name: "Plan de Contratación", keywords: ['plan', 'contratación', 'licitaciones'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjgzYmIxZTctMmM1Yi00YWEzLWIyYTktYjk3ODYxNGI3NTY4IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar el plan anual de adquisiciones"] }, { name: "Informe de Gestión", keywords: ['gestión', 'informe de gestión', 'resumen'], href: '#link-placeholder', preguntas: ["Quiero un resumen de la gestión"] } ] },
-                direccion: { name: "Dirección Técnica", reports: [ { name: "Estado proyectos estratégicos", keywords: ['estratégicos', 'proyectos', 'metro 80'], href: 'https://app.powerbi.com/view?r=eyJrIjoiYzEzZGI3ZTUtNDc1ZS00ODdjLTg1YTctYTA1OGZjYzdmMTVlIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo avanzan los proyectos estratégicos?"] } ] },
-                apoyo_juridico: { name: "Apoyo Jurídico", reports: [ { name: "Acciones Populares", keywords: ['acciones', 'populares', 'demandas'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZWY3ZDM3ODctMGFmYS00OTlmLWJlYTgtMmViNTE5NmZmYjA5IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar estado de acciones populares"] } ] },
-                comunicaciones: { name: "Comunicaciones", reports: [] },
-                unidad_administrativa: { name: "Unidad Administrativa", reports: [] }
-            };
-            const faqData = {
-                'huecos': { keywords: ['hueco', 'bache', 'malla vial'], answer: `¡Hemos trabajado sin descanso en la malla vial! A la fecha, la cifra es de <strong>+${pageData.stats.huecosTapados} huecos</strong> tapados en la ciudad y los corregimientos. ¡Seguimos sumando para mejorar tu movilidad! 🚧` },
-                'infraVerde': { keywords: ['verde', 'jardines', 'árboles'], answer: `¡Medellín es un jardín! Hemos creado <strong>${pageData.infraVerde.corredores} nuevos corredores verdes y ${pageData.infraVerde.puentes} puentes</strong>, que suman <strong>${pageData.infraVerde.metrosVerdes}</strong> de nuevos espacios para todos. Además, más de <strong>${pageData.infraVerde.jardineros} jardineros</strong> cuidan de ellos. 🌳` },
-                'puente4Sur': { keywords: ['4 sur', 'cuatro sur'], answer: `¡El puente de la 4 Sur está más verde que nunca! Invertimos más de <strong>${pageData.puente4Sur.inversion}</strong> en su renovación y sembramos más de <strong>${pageData.puente4Sur.plantas} plantas</strong> para embellecerlo. 🌉` },
-                'parques': { keywords: ['parque', 'juegos'], answer: `¡Claro que sí! Hemos renovado <strong>${pageData.stats.parquesRenovados} parques</strong> y espacios públicos. Y la buena noticia es que viene una inversión de más de <strong>${pageData.parques.inversionFutura}</strong> para mejorar y construir otros <strong>${pageData.parques.cantidadFuturos} parques</strong>. ¡Más lugares para disfrutar! 🏞️` },
-                'pui': { keywords: ['pui', 'proyectos urbanos'], answer: `Los Proyectos Urbanos Integrales (PUI) transforman barrios enteros. Ya entregamos <strong>${pageData.proyectosEstrategicos.puiEntregados}</strong> con una inversión de <strong>${pageData.proyectosEstrategicos.puiInversion}</strong>, beneficiando a más de <strong>${pageData.proyectosEstrategicos.puiHabitantes} personas</strong>. 💪` },
-                'cuadrillas': { keywords: ['cuadrillas', 'alcalde'], answer: `Las Cuadrillas del Alcalde son nuestros equipos de respuesta rápida. Con un contrato de <strong>${pageData.gestionEstrategica.cuadrillasContrato.split(" ")[4]}</strong>, ya han atendido <strong>${pageData.gestionEstrategica.cuadrillasPuntosAtendidos}</strong> de la ciudad para reparaciones y mantenimiento. 👷‍♂️` },
-                'licitacion': { keywords: ['licitación', 'licitaciones', 'contratación'], answer: `Para garantizar que las obras no paren, actualmente tenemos <strong>${pageData.gestionEstrategica.licitacionesActivas}</strong> abiertos para malla vial, parques, andenes y mucho más. ¡El futuro de Medellín se sigue construyendo! 🏗️` }
-            };
-            const fab = document.getElementById('chat-fab');
-            const chatWindow = document.getElementById('chat-window');
-            const closeBtn = document.getElementById('chat-close-btn');
-            
-            const ui = {
-                chatMessages: document.getElementById('chat-messages-container'),
-                chatInput: document.getElementById('chat-input'),
-                sendBtn: document.getElementById('send-btn'),
-                optionsGrid: document.getElementById('options-grid'),
-                breadcrumbContainer: document.getElementById('breadcrumb-container'),
-                backBtn: document.getElementById('back-btn'),
-            };
-            
-            let botTyping = false;
-            let navigationPath = [];
-            function addMessage(content, sender, options = {}) {
-                const bubble = document.createElement('div');
-                bubble.className = `max-w-xs md:max-w-lg p-3 rounded-xl ${sender === 'user' ? 'chat-bubble-user self-end' : 'chat-bubble-bot self-start'}`;
-                bubble.innerHTML = options.isHtml ? content : content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                ui.chatMessages.appendChild(bubble);
-                ui.chatMessages.scrollTop = ui.chatMessages.scrollHeight;
-            }
-            function addBotMessage(text, options = {}) {
-                if (botTyping) return;
-                botTyping = true;
-                const typingIndicator = document.createElement('div');
-                typingIndicator.className = 'chat-bubble-bot self-start p-3 rounded-xl flex items-center space-x-2';
-                typingIndicator.innerHTML = `<span class="block w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0s;"></span><span class="block w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></span><span class="block w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.4s;"></span>`;
-                ui.chatMessages.appendChild(typingIndicator);
-                ui.chatMessages.scrollTop = ui.chatMessages.scrollHeight;
-                setTimeout(() => {
-                    if (typingIndicator.parentNode) {
-                        ui.chatMessages.removeChild(typingIndicator);
-                    }
-                    addMessage(text, 'bot', options);
-                    botTyping = false;
-                }, 800 + Math.random() * 400);
-            }
-            function getCurrentLevelObject() {
-                let level = reportesSIF;
-                for (const key of navigationPath) {
-                    level = level[key];
-                    if (level && level.unidades) {
-                        level = level.unidades;
-                    }
-                }
-                return level;
-            }
-            function displayOptions() {
-                const currentLevel = getCurrentLevelObject();
-                ui.optionsGrid.innerHTML = '';
-                ui.backBtn.classList.toggle('hidden', navigationPath.length === 0);
-                updateBreadcrumbs();
-                if (Array.isArray(currentLevel)) {
-                    if (currentLevel.length === 0) addBotMessage('Aquí no hay más informes, ¡pero puedes volver y explorar otra sección! 😉');
-                    currentLevel.forEach(report => {
-                        const randomQuestion = report.preguntas[Math.floor(Math.random() * report.preguntas.length)];
-                        createButton(randomQuestion, 'report', { href: report.href, reportName: report.name });
-                    });
-                } else { 
-                    if (Object.keys(currentLevel).length === 0) addBotMessage('Parece que esta sección está vacía. ¡Intenta en otro lugar!');
-                    for (const [key, value] of Object.entries(currentLevel)) {
-                        createButton(value.name, 'dependency', { navKey: key });
-                    }
-                }
-            }
-            function createButton(name, type, data) {
-                const button = document.createElement('button');
-                button.className = 'option-btn bg-white text-slate-700 text-sm font-medium p-3 rounded-lg hover:bg-slate-50 text-left';
-                button.innerHTML = `<span class="font-bold">${name}</span>`;
-                button.dataset.type = type;
-                for (const [key, value] of Object.entries(data)) {
-                    button.dataset[key] = value;
-                }
-                ui.optionsGrid.appendChild(button);
-            }
-            function updateBreadcrumbs() {
-                if (navigationPath.length === 0) {
-                    ui.breadcrumbContainer.innerHTML = 'Inicio';
-                    return;
-                }
-                let pathText = `<a href="#" class="hover:underline" data-level="-1">Inicio</a>`;
-                let level = reportesSIF;
-                navigationPath.forEach((key) => {
-                    level = level[key];
-                    pathText += ` / ${level.name}`;
-                    if (level.unidades) level = level.unidades;
-                });
-                ui.breadcrumbContainer.innerHTML = pathText;
-            }
-            function searchAllReports(obj) {
-                let reports = [];
-                for (const key in obj) {
-                    if (key === 'reports') {
-                        reports = reports.concat(obj[key]);
-                    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-                        reports = reports.concat(searchAllReports(obj[key]));
-                    }
-                }
-                return reports;
-            }
-            function handleUserInput() {
-                const userInput = ui.chatInput.value.trim();
-                if (userInput === '' || botTyping) return;
-                addMessage(userInput, 'user');
-                ui.chatInput.value = '';
-                generateBotResponse(userInput);
-            }
-            function generateBotResponse(input) {
-                const lowerInput = input.toLowerCase();
-                const allReports = searchAllReports(reportesSIF);
-                const foundReport = allReports.find(report => 
-                    report.name.toLowerCase().includes(lowerInput) || 
-                    report.keywords.some(kw => lowerInput.includes(kw))
-                );
-                if (foundReport) {
-                    const message = `¡Excelente! Encontré justo lo que buscas. Aquí tienes el acceso directo al informe sobre <strong class="font-semibold">${foundReport.name}</strong>. ¡Espero que los datos te sean de mucha utilidad! <br><br><a href="${foundReport.href}" target="_blank" class="text-blue-600 font-bold hover:underline" onclick="reportOpened()">🚀 Abrir Tablero de Power BI</a>`;
-                    addBotMessage(message, { isHtml: true });
-                    return;
-                }
-                for (const key in faqData) {
-                    if (faqData[key].keywords.some(kw => lowerInput.includes(kw))) {
-                        addBotMessage(faqData[key].answer, { isHtml: true });
-                        return;
-                    }
-                }
-                const notFoundMessage = "Vaya, parece que no encontré nada con esas palabras exactas. 🤔 No te preocupes, a veces los términos técnicos pueden ser confusos. ¿Qué tal si intentas con una palabra más general como 'contratos', 'inversión' o 'parques'? O si prefieres, sigue explorando las opciones de abajo.";
-                addBotMessage(notFoundMessage, { isHtml: true });
-            }
-            window.reportOpened = () => {
-                addBotMessage("¡Perfecto! Abriendo el informe en una nueva pestaña. Si necesitas algo más, no dudes en preguntar. 😊");
-            };
-            fab.addEventListener('click', () => {
-                chatWindow.classList.toggle('visible');
-                if (chatWindow.classList.contains('visible') && ui.chatMessages.children.length === 0) {
-                     addBotMessage("¡Hola! Soy SIF, tu asistente virtual de la Secretaría de Infraestructura. 😊 Estoy aquí para ayudarte a navegar por todos nuestros datos y proyectos. ¿Qué información te interesa hoy? Puedes explorar las categorías de abajo o preguntarme directamente por algo como 'huecos tapados' o 'nuevos parques'.");
-                     displayOptions();
-                }
-            });
+            const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); observer.unobserve(e.target); } }); }, { threshold: 0.1 });
+            animatedElements.forEach(el => { observer.observe(el); });
+            const reportesSIF = { planeacion: { name: "Subsecretaría de Planeación", unidades: { gestion_informacion: { name: "Unidad de Gestión de la Información y Proyectos", reports: [ { name: "Ejecución Presupuestal", keywords: ['presupuesto', 'ejecución', 'plata', 'inversión'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNDAyOGE4OTMtZTExMi00M2VlLWJiNmUtMTMwMzk3MjY0YmU3IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Quiero ver cómo se invierte el presupuesto"] }, { name: "Indicadores PI", keywords: ['indicadores', 'pi', 'avance'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMDk4YTEyZTMtY2FlZi00Y2Y0LWI2ODgtNDZiYTgxN2EzZDMyIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo van los indicadores de rendimiento?"] }, { name: "Informe Tácita de plata", keywords: ['tácita', 'plata'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjliYjNkNGQtYjJiMC00MDRhLWJlZDMtYjk4YmI1YjMwZjUzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Muéstrame el informe de Tácita de Plata"] } ] }, estudios_disenos: { name: "Unidad de Estudios y Diseños", reports: [ { name: "Parques - Tejiendo Hogares", keywords: ['parques', 'tejiendo hogares'], href: 'https://app.powerbi.com/view?r=eyJrIjoiN2Y1ZTQyNGQtOTkzZC00MjY4LTg5NzktZWY1NzNiYjE2NzBkIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver el impacto del proyecto 'Tejiendo Hogares'"] } ] }, gestion_contractual: { name: "Unidad de Gestión Contractual", reports: [ { name: "Proceso Precontractual", keywords: ['precontractual', 'contratos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMzE1MWNmMjQtYWEyMy00MGVjLWI4MjgtNzIzZTYxZDAzNDVhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué proyectos se van a contratar pronto?"] } ] } } }, construccion: { name: "Subsecretaría de Construcción y Mantenimiento", unidades: { ejecucion_proyectos: { name: "Unidad de ejecución de Proyectos", reports: [ { name: "Seguimiento a contratos de Obra", keywords: ['contratos', 'obra'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNTI2N2NhMjktN2RmOS00OTliLTg1Y2UtMjY2M2Q5MDcxOTY0IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo van las obras en construcción?"] }, { name: "Empleabilidad", keywords: ['empleabilidad', 'empleo'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNjUyOWI4ZmQtZWIzNi00NjM2LTlkOGUtOGM0OTUwNjY1MmNmIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver el impacto en la generación de empleo"] }, { name: "Informe Baches", keywords: ['baches', 'huecos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNWI3ZTNkZmMtMjEyNy00NjU1LTk3YzktNTMyOGJkMzZlN2ZiIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Quiero ver el mapa de reparación de huecos"] }, { name: "Informe Paraderos", keywords: ['paraderos'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZDQ2OGM4MDItYTc1Zi00MjE5LWJlNmUtZjJhMDE3ZjkzMWFjIiwidCI6ImJhMzM0NGUyLTAxMGYtNGJkZi1iNTEyLWMzOGRmYTdhNWJhNSIsImMiOjR9', preguntas: ["¿Cómo va la renovación de paraderos?"] } ] }, socioambiental_paisajismo: { name: "Unidad Socioambiental y Paisajismo", reports: [ { name: "Jardín Botánico*", keywords: ['jardín', 'botánico'], href: 'https://app.powerbi.com/view?r=eyJrIjoiOGQwNzU5ODgtNmIyYS00YTQ3LTg3ODMtOGRhOTU2MmMyNjZhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver proyectos con el Jardín Botánico"] }, { name: "Parque Arví*", keywords: ['arví'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMDkyNjU3Y2UtOTRjNy00YjVjLTg0MzgtNzBiYmUyOWNhNzEwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué se está haciendo en el Parque Arví?"] } ] }, mantenimiento: { name: "Unidad de Mantenimiento", reports: [ { name: "Trabajadores Oficiales", keywords: ['trabajadores', 'oficiales'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNWM1NzY3MjQtZmViMy00YmRiLWJiODgtMDg0MDRhZjVkMTgzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Conocer sobre los trabajadores oficiales"] }, { name: "Solicitudes Baches SIRO", keywords: ['siro', 'solicitudes baches'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNzkzZmIyODUtMGE3YS00YTUwLTkyYTMtMTBlODI3MWE4OWU2IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar el estado de mi solicitud de un bache"] }, { name: "Parque Automotor", keywords: ['automotor', 'vehículos', 'maquinaria'], href: 'https://app.powerbi.com/view?r=eyJrIjoiNmQ1ZThhNWItZTA1Mi00ZDc4LTgwMTktYWEyYzViOTY1YTNhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Explorar el estado del parque automotor"] }, { name: "Intervenciones Directas", keywords: ['intervenciones', 'directas'], href: 'https://app.powerbi.com/view?r=eyJrIjoiYjE2NjE2MjItNTUxNi00ZTI4LThmNzAtNjY0NThjNGYxN2Q2IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver las pequeñas obras en los barrios"] }, { name: "Permisos de Roturas*", keywords: ['roturas', 'permisos'], href: '#link-placeholder', preguntas: ["Entender la gestión de permisos de roturas"] } ] } } }, despacho: { name: "Despacho SIF", reports: [ { name: "Gerencia de Corregimientos", keywords: ['corregimientos', 'gerencia', 'rural'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZmVhNjY3YTYtNTIwNi00NzUzLTkyYWYtZmZiMDBiNTdkNWQwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Qué obras hay en los corregimientos?"] }, { name: "Informe Calamidad Pública", keywords: ['calamidad', 'pública', 'emergencias'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjEyMzdhNGEtZGVjNC00YTM4LWEzNDAtMjI1MmY1NzdlODEwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Ver informe de gestión de emergencias"] }, { name: "Plan de Contratación", keywords: ['plan', 'contratación', 'licitaciones'], href: 'https://app.powerbi.com/view?r=eyJrIjoiMjgzYmIxZTctMmM1Yi00YWEzLWIyYTktYjk3ODYxNGI3NTY4IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar el plan anual de adquisiciones"] }, { name: "Informe de Gestión", keywords: ['gestión', 'informe de gestión', 'resumen'], href: '#link-placeholder', preguntas: ["Quiero un resumen de la gestión"] } ] }, direccion: { name: "Dirección Técnica", reports: [ { name: "Estado proyectos estratégicos", keywords: ['estratégicos', 'proyectos', 'metro 80'], href: 'https://app.powerbi.com/view?r=eyJrIjoiYzEzZGI3ZTUtNDc1ZS00ODdjLTg1YTctYTA1OGZjYzdmMTVlIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["¿Cómo avanzan los proyectos estratégicos?"] } ] }, apoyo_juridico: { name: "Apoyo Jurídico", reports: [ { name: "Acciones Populares", keywords: ['acciones', 'populares', 'demandas'], href: 'https://app.powerbi.com/view?r=eyJrIjoiZWY3ZDM3ODctMGFmYS00OTlmLWJlYTgtMmViNTE5NmZmYjA5IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9', preguntas: ["Consultar estado de acciones populares"] } ] }, comunicaciones: { name: "Comunicaciones", reports: [] }, unidad_administrativa: { name: "Unidad Administrativa", reports: [] } };
+            const faqData = { 'huecos': { keywords: ['hueco', 'bache', 'malla vial'], answer: `¡Hemos trabajado sin descanso en la malla vial! A la fecha, la cifra es de <strong>+${pageData.stats.huecosTapados} huecos</strong> tapados en la ciudad y los corregimientos. ¡Seguimos sumando para mejorar tu movilidad! 🚧` }, 'infraVerde': { keywords: ['verde', 'jardines', 'árboles'], answer: `¡Medellín es un jardín! Hemos creado <strong>${pageData.infraVerde.corredores} nuevos corredores verdes y ${pageData.infraVerde.puentes} puentes</strong>, que suman <strong>${pageData.infraVerde.metrosVerdes}</strong> de nuevos espacios para todos. Además, más de <strong>${pageData.infraVerde.jardineros} jardineros</strong> cuidan de ellos. 🌳` }, 'puente4Sur': { keywords: ['4 sur', 'cuatro sur'], answer: `¡El puente de la 4 Sur está más verde que nunca! Invertimos más de <strong>${pageData.puente4Sur.inversion}</strong> en su renovación y sembramos más de <strong>${pageData.puente4Sur.plantas} plantas</strong> para embellecerlo. 🌉` }, 'parques': { keywords: ['parque', 'juegos'], answer: `¡Claro que sí! Hemos renovado <strong>${pageData.stats.parquesRenovados} parques</strong> y espacios públicos. Y la buena noticia es que viene una inversión de más de <strong>${pageData.parques.inversionFutura}</strong> para mejorar y construir otros <strong>${pageData.parques.cantidadFuturos} parques</strong>. ¡Más lugares para disfrutar! 🏞️` }, 'pui': { keywords: ['pui', 'proyectos urbanos'], answer: `Los Proyectos Urbanos Integrales (PUI) transforman barrios enteros. Ya entregamos <strong>${pageData.proyectosEstrategicos.puiEntregados}</strong> con una inversión de <strong>${pageData.proyectosEstrategicos.puiInversion}</strong>, beneficiando a más de <strong>${pageData.proyectosEstrategicos.puiHabitantes} personas</strong>. 💪` }, 'cuadrillas': { keywords: ['cuadrillas', 'alcalde'], answer: `Las Cuadrillas del Alcalde son nuestros equipos de respuesta rápida. Con un contrato de <strong>${pageData.gestionEstrategica.cuadrillasContrato.split(" ")[4]}</strong>, ya han atendido <strong>${pageData.gestionEstrategica.cuadrillasPuntosAtendidos}</strong> de la ciudad para reparaciones y mantenimiento. 👷‍♂️` }, 'licitacion': { keywords: ['licitación', 'licitaciones', 'contratación'], answer: `Para garantizar que las obras no paren, actualmente tenemos <strong>${pageData.gestionEstrategica.licitacionesActivas}</strong> abiertos para malla vial, parques, andenes y mucho más. ¡El futuro de Medellín se sigue construyendo! 🏗️` } };
+            const fab = document.getElementById('chat-fab'), chatWindow = document.getElementById('chat-window'), closeBtn = document.getElementById('chat-close-btn');
+            const ui = { chatMessages: document.getElementById('chat-messages-container'), chatInput: document.getElementById('chat-input'), sendBtn: document.getElementById('send-btn'), optionsGrid: document.getElementById('options-grid'), breadcrumbContainer: document.getElementById('breadcrumb-container'), backBtn: document.getElementById('back-btn'), };
+            let botTyping = false, navigationPath = [];
+            function addMessage(content, sender, options = {}) { const bubble = document.createElement('div'); bubble.className = `max-w-xs md:max-w-md p-3 rounded-xl shadow-sm ${sender === 'user' ? 'bg-blue-600 text-white self-end rounded-br-lg' : 'bg-gray-200 text-gray-800 self-start rounded-bl-lg'}`; bubble.innerHTML = options.isHtml ? content : content.replace(/</g, "&lt;").replace(/>/g, "&gt;"); ui.chatMessages.appendChild(bubble); ui.chatMessages.scrollTop = ui.chatMessages.scrollHeight; }
+            function addBotMessage(text, options = {}) { if (botTyping) return; botTyping = true; const ti = document.createElement('div'); ti.className = 'self-start p-3 rounded-xl flex items-center space-x-2 bg-gray-200'; ti.innerHTML = `<span class="block w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0s"></span><span class="block w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.2s"></span><span class="block w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.4s"></span>`; ui.chatMessages.appendChild(ti); ui.chatMessages.scrollTop = ui.chatMessages.scrollHeight; setTimeout(() => { if (ti.parentNode) { ui.chatMessages.removeChild(ti); } addMessage(text, 'bot', options); botTyping = false; }, 800 + Math.random() * 400); }
+            function getCurrentLevelObject() { let level = reportesSIF; for (const key of navigationPath) { level = level[key]; if (level && level.unidades) { level = level.unidades; } } return level; }
+            function displayOptions() { const currentLevel = getCurrentLevelObject(); ui.optionsGrid.innerHTML = ''; ui.backBtn.classList.toggle('hidden', navigationPath.length === 0); updateBreadcrumbs(); if (Array.isArray(currentLevel)) { if (currentLevel.length === 0) addBotMessage('Aquí no hay más informes, ¡pero puedes volver y explorar otra sección! 😉'); currentLevel.forEach(r => { createButton(r.preguntas[Math.floor(Math.random() * r.preguntas.length)], 'report', { href: r.href, reportName: r.name }); }); } else { if (Object.keys(currentLevel).length === 0) addBotMessage('Parece que esta sección está vacía. ¡Intenta en otro lugar!'); for (const [key, value] of Object.entries(currentLevel)) { createButton(value.name, 'dependency', { navKey: key }); } } }
+            function createButton(name, type, data) { const btn = document.createElement('button'); btn.className = 'option-btn bg-white text-gray-700 text-sm font-medium p-3 rounded-lg hover:bg-gray-50 text-left border border-gray-300'; btn.innerHTML = `<span class="font-bold">${name}</span>`; btn.dataset.type = type; for (const [key, value] of Object.entries(data)) { btn.dataset[key] = value; } ui.optionsGrid.appendChild(btn); }
+            function updateBreadcrumbs() { if (navigationPath.length === 0) { ui.breadcrumbContainer.innerHTML = 'Inicio'; return; } let pathText = `<a href="#" class="hover:underline" data-level="-1">Inicio</a>`; let level = reportesSIF; navigationPath.forEach((key) => { level = level[key]; pathText += ` / ${level.name}`; if (level.unidades) level = level.unidades; }); ui.breadcrumbContainer.innerHTML = pathText; }
+            function searchAllReports(obj) { let reports = []; for (const key in obj) { if (key === 'reports') { reports = reports.concat(obj[key]); } else if (typeof obj[key] === 'object' && obj[key] !== null) { reports = reports.concat(searchAllReports(obj[key])); } } return reports; }
+            function handleUserInput() { const userInput = ui.chatInput.value.trim(); if (userInput === '' || botTyping) return; addMessage(userInput, 'user'); ui.chatInput.value = ''; generateBotResponse(userInput); }
+            function generateBotResponse(input) { const lowerInput = input.toLowerCase(); const allReports = searchAllReports(reportesSIF); const foundReport = allReports.find(r => r.name.toLowerCase().includes(lowerInput) || r.keywords.some(kw => lowerInput.includes(kw))); if (foundReport) { addBotMessage(`¡Excelente! Encontré justo lo que buscas. Aquí tienes el acceso directo al informe sobre <strong class="font-semibold">${foundReport.name}</strong>. ¡Espero que los datos te sean de mucha utilidad! <br><br><a href="${foundReport.href}" target="_blank" class="text-blue-600 font-bold hover:underline" onclick="reportOpened()">🚀 Abrir Tablero de Power BI</a>`, { isHtml: true }); return; } for (const key in faqData) { if (faqData[key].keywords.some(kw => lowerInput.includes(kw))) { addBotMessage(faqData[key].answer, { isHtml: true }); return; } } addBotMessage("Vaya, parece que no encontré nada con esas palabras exactas. 🤔 No te preocupes, a veces los términos técnicos pueden ser confusos. ¿Qué tal si intentas con una palabra más general como 'contratos', 'inversión' o 'parques'? O si prefieres, sigue explorando las opciones de abajo.", { isHtml: true }); }
+            window.reportOpened = () => { addBotMessage("¡Perfecto! Abriendo el informe en una nueva pestaña. Si necesitas algo más, no dudes en preguntar. 😊"); };
+            fab.addEventListener('click', () => { chatWindow.classList.toggle('visible'); if (chatWindow.classList.contains('visible') && ui.chatMessages.children.length === 0) { addBotMessage("¡Hola! Soy SIF, tu asistente virtual de la Secretaría de Infraestructura. 😊 Estoy aquí para ayudarte a navegar por todos nuestros datos y proyectos. ¿Qué información te interesa hoy? Puedes explorar las categorías de abajo o preguntarme directamente por algo como 'huecos tapados' o 'nuevos parques'."); displayOptions(); } });
             closeBtn.addEventListener('click', () => chatWindow.classList.remove('visible'));
             ui.sendBtn.addEventListener('click', handleUserInput);
             ui.chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserInput(); });
-            ui.optionsGrid.addEventListener('click', (e) => {
-                const button = e.target.closest('.option-btn');
-                if (!button) return;
-                const { type, navKey, href, reportName } = button.dataset;
-                if (type === 'dependency') {
-                    navigationPath.push(navKey);
-                    const nextLevel = getCurrentLevelObject();
-                    if (nextLevel && nextLevel.reports) { 
-                        navigationPath.push('reports');
-                    }
-                    displayOptions();
-                } else if (type === 'report') {
-                    const message = `¡Perfecto! Aquí tienes el acceso al informe: <br><strong class="font-semibold">${reportName}</strong>. <br><br><a href="${href}" target="_blank" class="text-blue-600 font-bold hover:underline" onclick="reportOpened()">🚀 Abrir Tablero de Power BI</a>`;
-                    addBotMessage(message, { isHtml: true });
-                }
-            });
-            ui.backBtn.addEventListener('click', () => {
-                if (navigationPath.length > 0) {
-                    if (navigationPath[navigationPath.length - 1] === 'reports') {
-                        navigationPath.pop();
-                    }
-                    navigationPath.pop();
-                    displayOptions();
-                }
-            });
-            ui.breadcrumbContainer.addEventListener('click', (e) => {
-                e.preventDefault();
-                const link = e.target.closest('a');
-                if (link && link.dataset.level === "-1") {
-                    navigationPath = [];
-                    displayOptions();
-                }
-            });
+            ui.optionsGrid.addEventListener('click', (e) => { const btn = e.target.closest('.option-btn'); if (!btn) return; const { type, navKey, href, reportName } = btn.dataset; if (type === 'dependency') { navigationPath.push(navKey); const nextLevel = getCurrentLevelObject(); if (nextLevel && nextLevel.reports) { navigationPath.push('reports'); } displayOptions(); } else if (type === 'report') { addBotMessage(`¡Perfecto! Aquí tienes el acceso al informe: <br><strong class="font-semibold">${reportName}</strong>. <br><br><a href="${href}" target="_blank" class="text-blue-600 font-bold hover:underline" onclick="reportOpened()">🚀 Abrir Tablero de Power BI</a>`, { isHtml: true }); } });
+            ui.backBtn.addEventListener('click', () => { if (navigationPath.length > 0) { if (navigationPath[navigationPath.length - 1] === 'reports') { navigationPath.pop(); } navigationPath.pop(); displayOptions(); } });
+            ui.breadcrumbContainer.addEventListener('click', (e) => { e.preventDefault(); const link = e.target.closest('a'); if (link && link.dataset.level === "-1") { navigationPath = []; displayOptions(); } });
         });
     </script>
 </body>
