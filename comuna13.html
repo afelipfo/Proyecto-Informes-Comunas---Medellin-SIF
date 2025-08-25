@@ -6,10 +6,9 @@
     <title>Reporte de Analítica de Datos Comuna 13 - San Javier</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXrd3NBGQVJClubNFl4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./html2canvas.min.js"></script>
+    <script src="./jspdf.umd.min.js"></script>
 
     <style>
         :root {
@@ -28,8 +27,6 @@
             margin: 0;
             padding: 0;
         }
-        
-        /* --- ESTILOS PARA LA BARRA DE ACCIONES FIJA --- */
         .actions-bar {
             position: sticky;
             top: 0;
@@ -74,8 +71,6 @@
             background-color: #e66300;
             border-color: #e66300;
         }
-        /* --- FIN DE ESTILOS DE LA BARRA --- */
-
         .container {
             max-width: 1400px;
             margin: auto;
@@ -156,76 +151,12 @@
             margin-top: 5px;
             line-height: 1.3;
         }
-        .stat-card.inversion {
-            grid-column: 1 / -1;
-            background: var(--color-azul-medio);
-            color: var(--color-blanco);
-        }
-        .stat-card.inversion .value, .stat-card.inversion .icon {
-            color: var(--color-blanco);
-        }
-         .stat-card.inversion .label {
-            color: var(--color-gris-claro);
-        }
         .chart-container {
             background: var(--color-blanco);
             padding: 20px;
             border-radius: 10px;
             box-shadow: var(--sombra-card);
             margin-top: 30px;
-        }
-        .contract-card {
-            background: var(--color-blanco);
-            border-radius: 10px;
-            box-shadow: var(--sombra-card);
-            margin-bottom: 25px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .contract-header {
-            background-color: var(--color-azul-oscuro);
-            color: var(--color-blanco);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .contract-header h3 {
-            margin: 0;
-            font-size: 1.2em;
-        }
-        .contract-header .status {
-            background-color: var(--color-naranja);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-        }
-        .contract-body {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .contract-body .detail-item {
-            font-size: 0.95em;
-        }
-        .contract-body .detail-item strong {
-            color: var(--color-azul-medio);
-            display: block;
-            margin-bottom: 5px;
-        }
-        .contract-body .full-width {
-            grid-column: 1 / -1;
-        }
-        .frentes-obra ul {
-            padding-left: 20px;
-            margin: 0;
-            list-style-type: square;
-        }
-        .frentes-obra li {
-            margin-bottom: 5px;
         }
         .summary-table-container {
             width: 100%;
@@ -254,12 +185,6 @@
         }
         .summary-table tbody tr:hover {
             background-color: #e0e0e0;
-        }
-        .intervention-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            align-items: stretch;
         }
         .detail-list {
             background-color: var(--color-blanco);
@@ -304,168 +229,11 @@
     <div class="container" id="report-content">
         <header class="header">
             <h1>Reporte de Analítica de Datos Comuna 13 - San Javier</h1>
-            <p>Fecha de corte al 31 de julio de 2025</p>
+            <p>Fecha de corte al 15 de agosto de 2025</p>
         </header>
-        
-        <section>
-            <h2 class="section-title"><i class="fas fa-leaf"></i>Mantenimiento de Zonas Verdes</h2>
-            <div class="grid-container" style="margin-top: 25px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                <div class="stat-card"><div class="value">87.592,56 m²</div><div class="label">Total Conservado</div></div>
-                <div class="stat-card"><div class="value">2.066</div><div class="label">Total de Plantas Establecidas</div></div>
-                <div class="stat-card"><div class="value">655</div><div class="label">Total de Individuos Arbóreos Intervenidos</div></div>
-                <div class="stat-card"><div class="value">395</div><div class="label">Conservación de Individuos Arbóreos Juveniles</div></div>
-                <div class="stat-card"><div class="value">13</div><div class="label">Tala de Árboles</div></div>
-                <div class="stat-card"><div class="value">2</div><div class="label">Poda de Árboles</div></div>
-                <div class="stat-card"><div class="value">19</div><div class="label">Establecimiento de Individuos Arbóreos y Palmas</div></div>
-            </div>
-        </section>
 
         <section>
-            <h2 class="section-title"><i class="fas fa-child"></i>Parques Tejiendo Hogares</h2>
-            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-                <div class="stat-card"><div class="value">1</div><div class="label">Parques Intervenidos</div></div>
-                <div class="stat-card"><div class="value">1.529 m²</div><div class="label">Área Total Intervenida</div></div>
-                <div class="stat-card"><div class="value">355</div><div class="label">Niños Beneficiados (Sisbenizados)</div></div>
-            </div>
-             <div class="detail-list" style="margin-top: 25px;">
-                <h3>Detalles de la Intervención</h3>
-                <ul>
-                    <li><span>Parque:</span> <strong>Parque Mirador de Calasanz</strong></li>
-                    <li><span>Actividad:</span> <strong>Parques Mejorados</strong></li>
-                    <li><span>Tipo de Intervención:</span> <strong>Mejoramientos Puntuales</strong></li>
-                    <li><span>Dirección:</span> <strong>Calle 58 con Carrera 88</strong></li>
-                </ul>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches</h2>
-            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-                <div class="stat-card">
-                    <div class="icon"><i class="fas fa-tools"></i></div>
-                    <div class="value">580</div>
-                    <div class="label">Baches Intervenidos en la Comuna</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
-                    <div class="value">$1.341.463.132</div>
-                    <div class="label">Costo Total de Intervención</div>
-                </div>
-            </div>
-             <div class="chart-container">
-                    <h3 style="text-align: center; color: var(--color-azul-oscuro);">Desglose por Barrio</h3>
-                     <div class="summary-table-container">
-                    <table class="summary-table">
-                         <thead>
-                            <tr>
-                                <th>Barrio</th>
-                                <th>Número de Baches</th>
-                                <th>Costo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Antonio Nariño</td><td>9</td><td>$9.130.928</td></tr>
-                            <tr><td>Belencito</td><td>35</td><td>$155.450.898</td></tr>
-                            <tr><td>Betania</td><td>28</td><td>$29.359.580</td></tr>
-                            <tr><td>Eduardo Santos</td><td>82</td><td>$222.325.081</td></tr>
-                            <tr><td>El Corazón</td><td>20</td><td>$70.466.557</td></tr>
-                            <tr><td>El Pesebre</td><td>6</td><td>$26.239.506</td></tr>
-                            <tr><td>El Salado</td><td>28</td><td>$36.250.509</td></tr>
-                            <tr><td>El Socorro</td><td>19</td><td>$63.783.003</td></tr>
-                            <tr><td>Juan XXIII La Quiebra</td><td>80</td><td>$141.027.241</td></tr>
-                            <tr><td>La Pradera</td><td>62</td><td>$155.275.439</td></tr>
-                            <tr><td>Las Independencias</td><td>12</td><td>$24.847.515</td></tr>
-                            <tr><td>Los Alcázares</td><td>54</td><td>$91.168.473</td></tr>
-                            <tr><td>Metropolitano</td><td>4</td><td>$15.440.702</td></tr>
-                            <tr><td>Nuevos Conquistadores</td><td>3</td><td>$7.164.130</td></tr>
-                            <tr><td>San Javier No.1</td><td>28</td><td>$59.602.425</td></tr>
-                            <tr><td>San Javier No.2</td><td>65</td><td>$156.660.973</td></tr>
-                            <tr><td>Veinte de Julio</td><td>45</td><td>$77.270.169</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas SIF - Vigencias 2024-2025</h2>
-             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-                <div class="stat-card">
-                    <div class="icon"><i class="fas fa-file-alt"></i></div>
-                    <div class="value">61</div>
-                    <div class="label">Total de Solicitudes</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon"><i class="fas fa-wallet"></i></div>
-                    <div class="value">$873.360.554</div>
-                    <div class="label">Costo Total de Obras</div>
-                </div>
-            </div>
-             <div class="intervention-section" style="margin-top: 25px;">
-                <div class="detail-list">
-                    <h3>Costo por Grupo de Obra</h3>
-                    <ul>
-                        <li><span>Pavimentos</span> <strong>$193 millones</strong></li>
-                        <li><span>Obras Civiles Menores</span> <strong>$178 millones</strong></li>
-                        <li><span>Parques y Cerrajería</span> <strong>$105 millones</strong></li>
-                        <li><span>Apoyo a Otras Entidades (EPM)</span> <strong>$397 mil</strong></li>
-                        <li><span>Otras Estabilizaciones</span> <strong>No especificado</strong></li>
-                    </ul>
-                </div>
-                <div class="detail-list">
-                    <h3>Distribución por Indicador</h3>
-                    <ul>
-                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>23</strong></li>
-                        <li><span>Limpieza de vías</span> <strong>11</strong></li>
-                        <li><span>Mantenimiento en vías urbanas</span> <strong>8</strong></li>
-                        <li><span>Mantenimiento de parques</span> <strong>6</strong></li>
-                        <li><span>Andenes y cordones</span> <strong>3</strong></li>
-                        <li><span>Andenes mantenidos</span> <strong>3</strong></li>
-                        <li><span>Espacios públicos mantenidos</span> <strong>3</strong></li>
-                        <li><span>Atención a la JEP</span> <strong>2</strong></li>
-                    </ul>
-                </div>
-             </div>
-             <div class="intervention-section" style="margin-top: 25px;">
-                <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra</h3>
-                    <canvas id="distribucionGrupoChart"></canvas>
-                </div>
-                 <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado Actual de Obras</h3>
-                    <canvas id="estadoObraChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-exchange-alt"></i>Comparativo de Intervenciones por Vigencia</h2>
-            <div class="summary-table-container">
-                <table class="summary-table">
-                    <thead>
-                        <tr>
-                            <th>Grupo de Obra</th>
-                            <th>2024</th>
-                            <th>2025</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Apoyo a Otras Entidades</td><td>3</td><td>0</td><td>3</td></tr>
-                        <tr><td>Obras Civiles Menores</td><td>2</td><td>0</td><td>2</td></tr>
-                        <tr><td>Obras Estabilización</td><td>11</td><td>5</td><td>16</td></tr>
-                        <tr><td>Parques y Cerrajería</td><td>2</td><td>0</td><td>2</td></tr>
-                        <tr><td>Pavimentos</td><td>17</td><td>15</td><td>32</td></tr>
-                        <tr style="background-color: var(--color-azul-oscuro); color: var(--color-blanco); font-weight: bold;">
-                            <td>Total General</td><td>41</td><td>20</td><td>61</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        
-        <section>
-            <h2 class="section-title"><i class="fas fa-tasks"></i>Resumen de Actividades Acumuladas SIF</h2>
+            <h2 class="section-title"><i class="fas fa-file-signature"></i>Seguimiento a Contratos de Obra</h2>
             <div class="summary-table-container">
                 <table class="summary-table">
                     <thead>
@@ -476,119 +244,199 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Andén Construido</td><td>2161</td><td>m</td></tr>
-                        <tr><td>Huecos Tapados (und)</td><td>568</td><td>un</td></tr>
-                        <tr><td>Obra de Estabilización</td><td>157</td><td>m</td></tr>
-                        <tr><td>Obra de Estabilización</td><td>4</td><td>un</td></tr>
-                        <tr><td>Parque y Plazoleta Construido</td><td>260</td><td>m²</td></tr>
-                        <tr><td>Pasamanos y Defensas Instalados</td><td>294</td><td>m</td></tr>
-                        <tr><td>Vía Asfalto Mantenida (fallos y repav.)</td><td>7954</td><td>m²</td></tr>
-                        <tr><td>Zona Verde Sembrada</td><td>716</td><td>m²</td></tr>
+                        <tr><td>Andén construido</td><td>2161</td><td>m</td></tr>
                         <tr><td>Diseño</td><td>286</td><td>%</td></tr>
+                        <tr><td>Huecos tapados</td><td>568</td><td>un</td></tr>
+                        <tr><td>Obra de estabilización</td><td>157</td><td>m</td></tr>
+                        <tr><td>Obra de estabilización</td><td>4</td><td>un</td></tr>
+                        <tr><td>Parque y plazoleta construido</td><td>260</td><td>m²</td></tr>
+                        <tr><td>Pasamanos y defensas instalados</td><td>294</td><td>m</td></tr>
+                        <tr><td>Vía asfalto mantenida (Fallos y Repav.)</td><td>7954</td><td>m²</td></tr>
+                        <tr><td>Zona verde sembrada</td><td>716</td><td>m²</td></tr>
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-tools"></i></div>
+                    <div class="value">591</div>
+                    <div class="label">Total de baches ejecutados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="value">$1.450.854.228</div>
+                    <div class="label">Costo total ejecutado</div>
+                </div>
+            </div>
+             <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Barrio</h3>
+                 <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Barrio</th>
+                                <th>No. Baches</th>
+                                <th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Eduardo Santos</td><td>81</td><td>$219.406.031</td></tr>
+                            <tr><td>Juan XXIII La Quiebra</td><td>80</td><td>$141.027.241</td></tr>
+                            <tr><td>La Pradera</td><td>75</td><td>$272.979.073</td></tr>
+                            <tr><td>San Javier No.2</td><td>65</td><td>$156.680.973</td></tr>
+                            <tr><td>Los Alcázares</td><td>52</td><td>$87.679.853</td></tr>
+                            <tr><td>Veinte de Julio</td><td>45</td><td>$77.270.169</td></tr>
+                            <tr><td>Belencito</td><td>37</td><td>$157.733.739</td></tr>
+                            <tr><td>El Salado</td><td>28</td><td>$35.230.509</td></tr>
+                            <tr><td>San Javier No.1</td><td>28</td><td>$59.602.425</td></tr>
+                            <tr><td>Betania</td><td>24</td><td>$26.431.632</td></tr>
+                            <tr><td>El Corazón</td><td>20</td><td>$70.466.557</td></tr>
+                            <tr><td>El Socorro</td><td>16</td><td>$58.398.781</td></tr>
+                            <tr><td>El Pesebre</td><td>14</td><td>$39.210.111</td></tr>
+                            <tr><td>Las Independencias</td><td>11</td><td>$19.463.254</td></tr>
+                            <tr><td>Antonio Nariño</td><td>9</td><td>$9.130.928</td></tr>
+                            <tr><td>Metropolitano</td><td>4</td><td>$15.440.702</td></tr>
+                            <tr><td>Nuevos Conquistadores</td><td>2</td><td>$3.702.209</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Contrato</h3>
+                 <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Contrato</th>
+                                <th>No. Baches</th>
+                                <th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>4600102144 - Malla Vial (2024 - 2025)</td><td>397</td><td>$1.076.016.554</td></tr>
+                            <tr><td>4600098664 - Malla Vial (2023 - 2024)</td><td>164</td><td>$220.943.440</td></tr>
+                            <tr><td>4600103229 - Suministro de Mezcla (2024 - 2025)</td><td>16</td><td>$132.217.574</td></tr>
+                            <tr><td>4600105052 - Malla Vial 2025</td><td>10</td><td>$15.539.439</td></tr>
+                            <tr><td>4600098513 - Suministro de Mezcla (2023 - 2024)</td><td>4</td><td>$6.137.221</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas</h2>
+             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="stat-card">
+                    <div class="value">61</div>
+                    <div class="label">Total de solicitudes (2024-2025)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">$873.360.554</div>
+                    <div class="label">Costo total de obra</div>
+                </div>
+            </div>
+            <div class="intervention-section" style="margin-top: 25px;">
+                <div class="detail-list">
+                    <h3>Distribución de Solicitudes</h3>
+                    <ul>
+                        <li><span>Vigencia 2024</span> <strong>41</strong></li>
+                        <li><span>Vigencia 2025</span> <strong>20</strong></li>
+                    </ul>
+                </div>
+                <div class="detail-list">
+                    <h3>Costo por Grupo de Obra</h3>
+                    <ul>
+                        <li><span>Apoyo a Otras Entidades</span> <strong>$387 millones</strong></li>
+                        <li><span>Obras Civiles Menores</span> <strong>$278 millones</strong></li>
+                        <li><span>Pavimentos</span> <strong>$193 millones</strong></li>
+                        <li><span>Parques y Cerrajería</span> <strong>$105 millones</strong></li>
+                    </ul>
+                </div>
+                <div class="detail-list">
+                    <h3>Distribución por Indicador</h3>
+                    <ul>
+                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>25</strong></li>
+                        <li><span>Mantenimiento en vías urbanas</span> <strong>11</strong></li>
+                        <li><span>Limpieza de vías</span> <strong>8</strong></li>
+                        <li><span>Mantenimiento de parques</span> <strong>6</strong></li>
+                        <li><span>Andenes y cordones</span> <strong>3</strong></li>
+                        <li><span>Infraestructura vial mantenida</span> <strong>3</strong></li>
+                        <li><span>Espacios públicos mantenidos</span> <strong>3</strong></li>
+                        <li><span>Andenes mantenidos</span> <strong>2</strong></li>
+                        <li><span>Atención a la comunidad</span> <strong>2</strong></li>
+                    </ul>
+                </div>
             </div>
         </section>
         
     </div>
 
-<script>
-    // Configuración de colores para Chart.js
-    const chartColors = {
-        blue: 'rgba(25, 118, 210, 0.85)',
-        orange: 'rgba(255, 111, 0, 0.85)',
-        blueDark: 'rgba(13, 71, 161, 0.85)',
-        orangeDark: 'rgba(239, 108, 0, 0.85)',
-        teal: 'rgba(0, 150, 136, 0.85)',
-        red: 'rgba(211, 47, 47, 0.85)',
-        purple: 'rgba(123, 31, 162, 0.85)',
-        green: 'rgba(56, 142, 60, 0.85)',
-        grey: 'rgba(158, 158, 158, 0.85)'
-    };
-    
-    // Gráficas Intervenciones
-    const distGrupoCtx = document.getElementById('distribucionGrupoChart').getContext('2d');
-    new Chart(distGrupoCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Parques y Cerrajería (52%)', 'Obras Civiles Menores (29%)', 'Pavimentos (10%)', 'Apoyo a Otras Entidades (5%)', 'Otras Estabilizaciones (3%)'],
-            datasets: [{
-                data: [32, 18, 6, 3, 2],
-                backgroundColor: Object.values(chartColors)
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    const estadoObraCtx = document.getElementById('estadoObraChart').getContext('2d');
-    new Chart(estadoObraCtx, {
-        type: 'pie',
-        data: {
-            labels: ['Terminado (85%)', 'En Ejecución (7%)', 'Por Iniciar (3%)', 'Traslado a Contratista (2%)', 'Traslado EPM (2%)', 'En Revisión (2%)'],
-            datasets: [{
-                data: [52, 4, 2, 1, 1, 1],
-                backgroundColor: Object.values(chartColors)
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    // Script para generar PDF
-    document.getElementById('download-pdf').addEventListener('click', function () {
-        const content = document.getElementById('report-content');
-        
-        const button = this;
-        button.innerText = 'Generando PDF...';
-        button.disabled = true;
-
-        html2canvas(content, {
-            scale: 2,
-            useCORS: true,
-            windowWidth: content.scrollWidth,
-            windowHeight: content.scrollHeight
-        }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
-
-            const pdf = new jsPDF({
-                orientation: 'p',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdf.internal.pageSize.getHeight();
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const ratio = canvasWidth / canvasHeight;
-
-            const imgHeight = pdfWidth / ratio;
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-            heightLeft -= pdfHeight;
-
-            while (heightLeft > 0) {
-                position -= pdfHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-                heightLeft -= pdfHeight;
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function () {
+            if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+                alert('Error: No se pudieron cargar las librerías para generar el PDF.\nPor favor, verifica tu conexión a internet e inténtalo de nuevo.');
+                return; 
             }
 
-            pdf.save('Reporte-Comuna-13-San-Javier.pdf');
+            const button = this;
+            const content = document.getElementById('report-content');
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+            button.disabled = true;
 
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
+            try {
+                html2canvas(content, {
+                    scale: 2,
+                    useCORS: true
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
 
-        }).catch(err => {
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
-            console.error("Error al generar el PDF:", err);
-            alert("Hubo un error al generar el PDF. Por favor, intenta de nuevo.");
+                    const pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const canvasWidth = canvas.width;
+                    const canvasHeight = canvas.height;
+                    const ratio = canvasWidth / canvasHeight;
+                    const imgHeight = pdfWidth / ratio;
+
+                    let heightLeft = imgHeight;
+                    let position = 0;
+
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                    heightLeft -= pdf.internal.pageSize.getHeight();
+
+                    while (heightLeft > 0) {
+                        position -= pdf.internal.pageSize.getHeight();
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                        heightLeft -= pdf.internal.pageSize.getHeight();
+                    }
+
+                    pdf.save('Reporte-Comuna-13-San-Javier.pdf');
+                }).catch(err => {
+                    console.error("Error durante la creación del canvas:", err);
+                    alert("Hubo un error al procesar el contenido del reporte.");
+                }).finally(() => {
+                    button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                    button.disabled = false;
+                });
+            } catch (error) {
+                console.error("Error inesperado al intentar generar el PDF:", error);
+                alert("Ocurrió un error inesperado. Revisa la consola del navegador para más detalles.");
+                button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                button.disabled = false;
+            }
         });
-    });
-</script>
-
+    </script>
 </body>
 </html>

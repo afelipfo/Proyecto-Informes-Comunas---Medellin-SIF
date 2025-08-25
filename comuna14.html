@@ -6,10 +6,9 @@
     <title>Reporte de Analítica de Datos Comuna 14 - El Poblado</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXrd3NBGQVJClubNFl4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./html2canvas.min.js"></script>
+    <script src="./jspdf.umd.min.js"></script>
 
     <style>
         :root {
@@ -28,8 +27,6 @@
             margin: 0;
             padding: 0;
         }
-        
-        /* --- ESTILOS PARA LA BARRA DE ACCIONES FIJA --- */
         .actions-bar {
             position: sticky;
             top: 0;
@@ -74,8 +71,6 @@
             background-color: #e66300;
             border-color: #e66300;
         }
-        /* --- FIN DE ESTILOS DE LA BARRA --- */
-
         .container {
             max-width: 1400px;
             margin: auto;
@@ -156,108 +151,12 @@
             margin-top: 5px;
             line-height: 1.3;
         }
-        .stat-card.inversion {
-            grid-column: 1 / -1;
-            background: var(--color-azul-medio);
-            color: var(--color-blanco);
-        }
-        .stat-card.inversion .value, .stat-card.inversion .icon {
-            color: var(--color-blanco);
-        }
-         .stat-card.inversion .label {
-            color: var(--color-gris-claro);
-        }
         .chart-container {
             background: var(--color-blanco);
             padding: 20px;
             border-radius: 10px;
             box-shadow: var(--sombra-card);
             margin-top: 30px;
-        }
-        .contract-card {
-            background: var(--color-blanco);
-            border-radius: 10px;
-            box-shadow: var(--sombra-card);
-            margin-bottom: 25px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .contract-header {
-            background-color: var(--color-azul-oscuro);
-            color: var(--color-blanco);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .contract-header h3 {
-            margin: 0;
-            font-size: 1.2em;
-        }
-        .contract-header .status {
-            background-color: var(--color-naranja);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-        }
-        .contract-body {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .contract-body .detail-item {
-            font-size: 0.95em;
-        }
-        .contract-body .detail-item strong {
-            color: var(--color-azul-medio);
-            display: block;
-            margin-bottom: 5px;
-        }
-        .contract-body .full-width {
-            grid-column: 1 / -1;
-        }
-        .frentes-obra ul {
-            padding-left: 20px;
-            margin: 0;
-            list-style-type: square;
-        }
-        .frentes-obra li {
-            margin-bottom: 5px;
-        }
-        .progress-section {
-            padding: 20px;
-            border-top: 1px solid var(--color-gris-claro);
-        }
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        .progress-bar-bg {
-            background-color: var(--color-gris-claro);
-            height: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-        .progress-bar {
-            height: 100%;
-            background-color: var(--color-azul-medio);
-            border-radius: 10px 0 0 10px;
-            text-align: center;
-            color: white;
-            font-weight: bold;
-        }
-        .progress-bar-programmed {
-            height: 100%;
-            background-color: var(--color-naranja);
-            position: absolute;
-            opacity: 0.5;
-            border-radius: 10px 0 0 10px;
         }
         .summary-table-container {
             width: 100%;
@@ -286,12 +185,6 @@
         }
         .summary-table tbody tr:hover {
             background-color: #e0e0e0;
-        }
-        .intervention-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            align-items: stretch;
         }
         .detail-list {
             background-color: var(--color-blanco);
@@ -336,305 +229,218 @@
     <div class="container" id="report-content">
         <header class="header">
             <h1>Reporte de Analítica de Datos Comuna 14 - El Poblado</h1>
-            <p>Fecha de corte al 31 de julio de 2025</p>
+            <p>Fecha de corte al 12 de agosto de 2025</p>
         </header>
-        
+
         <section>
-            <h2 class="section-title"><i class="fas fa-leaf"></i>Indicadores de Zonas Verdes y Arbolado</h2>
-            <div class="grid-container" style="margin-top: 25px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-                <div class="stat-card"><div class="value">1.133.675,06 m²</div><div class="label">Total de áreas verdes conservadas (Jardines y pisos duros)</div></div>
-                <div class="stat-card"><div class="value">74.835</div><div class="label">Total de plantas para establecimiento y resiembra de jardines</div></div>
-                <div class="stat-card"><div class="value">4.261</div><div class="label">Total de individuos arbóreos intervenidos (Conservación, tala, poda, etc.)</div></div>
+            <h2 class="section-title"><i class="fas fa-file-signature"></i>Seguimiento a Contratos de Obra</h2>
+            <div class="summary-table-container">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Cantidad Acumulada</th>
+                            <th>Unidad de Medida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Andenes construidos y mejorados</td><td>1291</td><td>m</td></tr>
+                        <tr><td>Cicloparqueaderos instalados</td><td>16</td><td>un</td></tr>
+                        <tr><td>Diseño</td><td>664</td><td>%</td></tr>
+                        <tr><td>Huecos tapados</td><td>870</td><td>un</td></tr>
+                        <tr><td>Obra de estabilización</td><td>134</td><td>m</td></tr>
+                        <tr><td>Pasamanos y defensas instalados</td><td>3470</td><td>m</td></tr>
+                        <tr><td>Vía asfalto mantenida (Fallos y Repav.)</td><td>20586</td><td>m²</td></tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
         <section>
-            <h2 class="section-title"><i class="fas fa-gavel"></i>Seguimiento a Acciones Populares</h2>
-            <div class="grid-container" style="grid-template-columns: 1fr 1fr;">
-                <div class="contract-card">
-                    <div class="contract-header"><h3>Radicado 2018-00075</h3></div>
-                    <div class="contract-body" style="grid-template-columns: 1fr;">
-                         <div class="detail-item"><strong>Ubicación:</strong> LA 17 CON 6B y Carrera 15 y 16 entre la 9 y la 14 que se encuentra en la urbanización Provenza.</div>
-                         <div class="detail-item"><strong>Juzgado:</strong> Juzgado Cuarto Administrativo Oral de Medellín - SEACI</div>
-                         <div class="detail-item"><strong>Acción / Alerta:</strong>
-                            <ul style="padding-left: 20px; margin-top: 5px;">
-                                <li>Fallo de primera instancia.</li>
-                                <li><b>Alerta:</b> Esta en el contrato de demolición acciones.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                 <div class="contract-card">
-                    <div class="contract-header"><h3>Radicado 2019-00285</h3></div>
-                    <div class="contract-body" style="grid-template-columns: 1fr;">
-                         <div class="detail-item"><strong>Ubicación:</strong> Inmediaciones de Urbanizaciones en Los Balsos.</div>
-                         <div class="detail-item"><strong>Juzgado:</strong> Juzgado 34 Administrativo Oral del Circuito</div>
-                         <div class="detail-item"><strong>Acción / Alerta:</strong>
-                             <ul style="padding-left: 20px; margin-top: 5px;">
-                                <li>Vinculación.</li>
-                                <li><b>Alerta:</b> Gestión de recursos para predios, estudios, diseños, permisos ambientales, de los dos tramos a anclarles.</li>
-                            </ul>
-                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section>
-            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches (Fuente SIRO)</h2>
+            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches</h2>
             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
                 <div class="stat-card">
                     <div class="icon"><i class="fas fa-tools"></i></div>
-                    <div class="value">841</div>
-                    <div class="label">Baches Intervenidos en la Comuna</div>
+                    <div class="value">922</div>
+                    <div class="label">Total de baches ejecutados</div>
                 </div>
                 <div class="stat-card">
                     <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
-                    <div class="value">$2.798.139.937</div>
-                    <div class="label">Costo Total de Intervención</div>
+                    <div class="value">$2.942.779.908</div>
+                    <div class="label">Costo total ejecutado</div>
                 </div>
             </div>
              <div class="chart-container">
-                    <h3 style="text-align: center; color: var(--color-azul-oscuro);">Desglose por Barrio</h3>
-                     <div class="summary-table-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Barrio</h3>
+                 <div class="summary-table-container">
                     <table class="summary-table">
                          <thead>
                             <tr>
                                 <th>Barrio</th>
-                                <th>Número de Baches</th>
+                                <th>No. Baches</th>
                                 <th>Costo</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>Alejandría</td><td>15</td><td>$62.511.557</td></tr>
-                            <tr><td>Altos del Poblado</td><td>10</td><td>$30.355.121</td></tr>
+                            <tr><td>El Poblado</td><td>113</td><td>$214.741.505</td></tr>
+                            <tr><td>Santa María de Los Ángeles</td><td>99</td><td>$246.801.027</td></tr>
+                            <tr><td>La Florida</td><td>83</td><td>$176.241.937</td></tr>
+                            <tr><td>Villa Carlota</td><td>78</td><td>$127.128.752</td></tr>
+                            <tr><td>Manila</td><td>73</td><td>$217.652.260</td></tr>
+                            <tr><td>Los Balsos No.1</td><td>72</td><td>$374.134.856</td></tr>
+                            <tr><td>Las Lomas No.1</td><td>53</td><td>$81.019.641</td></tr>
+                            <tr><td>Barrio Colombia</td><td>45</td><td>$120.179.908</td></tr>
+                            <tr><td>Los Naranjos</td><td>33</td><td>$316.626.243</td></tr>
+                            <tr><td>Castropol</td><td>32</td><td>$77.284.284</td></tr>
+                            <tr><td>El Tesoro</td><td>32</td><td>$93.061.264</td></tr>
+                            <tr><td>Patio Bonito</td><td>26</td><td>$102.198.408</td></tr>
+                            <tr><td>San Lucas</td><td>24</td><td>$80.392.232</td></tr>
+                            <tr><td>El Diamante No.2</td><td>24</td><td>$48.113.930</td></tr>
                             <tr><td>Astorga</td><td>23</td><td>$46.033.476</td></tr>
-                            <tr><td>Barrio Colombia</td><td>54</td><td>$150.619.683</td></tr>
-                            <tr><td>Castropol</td><td>32</td><td>$79.028.843</td></tr>
+                            <tr><td>Alejandría</td><td>20</td><td>$74.617.048</td></tr>
+                            <tr><td>Lalinde</td><td>20</td><td>$240.118.705</td></tr>
+                            <tr><td>Los Balsos No.2</td><td>19</td><td>$55.198.486</td></tr>
+                            <tr><td>Altos del Poblado</td><td>10</td><td>$30.355.121</td></tr>
+                            <tr><td>Las Lomas No.2</td><td>6</td><td>$28.811.177</td></tr>
                             <tr><td>El Castillo</td><td>5</td><td>$11.044.328</td></tr>
-                            <tr><td>El Diamante No.2</td><td>26</td><td>$53.053.175</td></tr>
-                            <tr><td>El Poblado</td><td>107</td><td>$205.331.814</td></tr>
-                            <tr><td>El Tesoro</td><td>33</td><td>$97.306.345</td></tr>
-                            <tr><td>La Aguacatala</td><td>28</td><td>$75.028.155</td></tr>
-                            <tr><td>La Florida</td><td>74</td><td>$184.824.398</td></tr>
-                            <tr><td>Lalinde</td><td>9</td><td>$317.885.300</td></tr>
-                            <tr><td>Las Lomas No.1</td><td>48</td><td>$70.656.477</td></tr>
-                            <tr><td>Las Lomas No.2</td><td>3</td><td>$18.198.640</td></tr>
-                            <tr><td>Los Balsos No.1</td><td>73</td><td>$380.158.844</td></tr>
-                            <tr><td>Los Balsos No.2</td><td>19</td><td>$55.198.496</td></tr>
-                            <tr><td>Los Naranjos</td><td>17</td><td>$286.603.659</td></tr>
-                            <tr><td>Manila</td><td>61</td><td>$201.027.207</td></tr>
-                            <tr><td>Patio Bonito</td><td>23</td><td>$96.837.398</td></tr>
-                            <tr><td>San Lucas</td><td>25</td><td>$76.036.411</td></tr>
-                            <tr><td>Santa María de Los Ángeles</td><td>94</td><td>$235.605.914</td></tr>
-                            <tr><td>Villa Carlota</td><td>62</td><td>$103.895.696</td></tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Contrato</h3>
+                 <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Contrato</th>
+                                <th>No. Baches</th>
+                                <th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>4600102144 - Malla Vial (2024 - 2025)</td><td>694</td><td>$2.641.095.979</td></tr>
+                            <tr><td>4600105052 - Malla Vial 2025</td><td>85</td><td>$167.793.285</td></tr>
+                            <tr><td>4600098664 - Malla Vial (2023 - 2024)</td><td>72</td><td>$69.802.532</td></tr>
+                            <tr><td>4600098513 - Suministro de Mezcla (2023 - 2024)</td><td>41</td><td>$16.163.061</td></tr>
+                            <tr><td>4600103229 - Suministro de Mezcla (2024 - 2025)</td><td>30</td><td>$47.925.051</td></tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
         </section>
 
         <section>
-            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Análisis de Intervenciones Directas (Vigencias 2024-2025)</h2>
+            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas</h2>
              <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
                 <div class="stat-card">
-                    <div class="icon"><i class="fas fa-file-alt"></i></div>
                     <div class="value">157</div>
-                    <div class="label">Solicitudes Gestionadas (110 en 2024 / 47 en 2025)</div>
+                    <div class="label">Total de solicitudes (2024-2025)</div>
                 </div>
                 <div class="stat-card">
-                    <div class="icon"><i class="fas fa-wallet"></i></div>
                     <div class="value">$742.401.748</div>
-                    <div class="label">Costo Total de Obras (2024 y 2025)</div>
+                    <div class="label">Costo total de obra</div>
                 </div>
             </div>
-             <div class="intervention-section" style="margin-top: 25px;">
+            <div class="intervention-section" style="margin-top: 25px;">
                 <div class="detail-list">
-                    <h3>Distribución por Grupo de Obra</h3>
+                    <h3>Distribución de Solicitudes</h3>
                     <ul>
-                        <li><span>Obras Civiles Menores</span> <strong>62 (39%)</strong></li>
-                        <li><span>Pavimentos</span> <strong>48 (31%)</strong></li>
-                        <li><span>Parques y Cerrajería</span> <strong>23 (15%)</strong></li>
-                        <li><span>Otros</span> <strong>24 (15%)</strong></li>
+                        <li><span>Vigencia 2024</span> <strong>110</strong></li>
+                        <li><span>Vigencia 2025</span> <strong>47</strong></li>
                     </ul>
                 </div>
                 <div class="detail-list">
-                    <h3>Distribución por Indicador Principal</h3>
-                     <ul>
-                        <li><span>Mantenimiento...</span> <strong>58</strong></li>
-                        <li><span>Infraestructura vial urbana</span> <strong>22</strong></li>
-                        <li><span>Andenes y cunetas</span> <strong>21</strong></li>
-                        <li><span>Pavimentos</span> <strong>21</strong></li>
-                        <li><span>Otros</span> <strong>35</strong></li>
+                    <h3>Costo por Grupo de Obra</h3>
+                    <ul>
+                        <li><span>Obras Civiles Menores</span> <strong>$422 millones</strong></li>
+                        <li><span>Pavimentos</span> <strong>$243 millones</strong></li>
+                        <li><span>Parques y Cerrajería</span> <strong>$67 millones</strong></li>
+                        <li><span>Apoyo a Otras Entidades</span> <strong>$5 millones</strong></li>
                     </ul>
                 </div>
-             </div>
-             <div class="intervention-section" style="margin-top: 25px;">
-                <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra (2024-2025)</h3>
-                    <canvas id="distribucionGrupoChart"></canvas>
-                </div>
-                 <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado Actual de Obras (2024-2025)</h3>
-                    <canvas id="estadoObraChart"></canvas>
-                </div>
-            </div>
-        </section>
-        
-        <section>
-            <h2 class="section-title"><i class="fas fa-file-signature"></i>Informe Detallado por Actividad y Contrato</h2>
-            
-            <div class="contract-card">
-                <div class="contract-header"><h3>Intervenciones por Contratistas (Vigencia 2025)</h3><span class="status">En ejecución</span></div>
-                <div class="contract-body">
-                    <div class="detail-item full-width"><strong>Objeto:</strong> INTERVENCIONES CON MAQUINARIA Y REMOCIÓN DE 48.208 M³ DE MATERIAL</div>
-                    <div class="detail-item"><strong>Tipo:</strong> Intervenciones Directas por Contratistas y Particulares</div>
-                    <div class="detail-item"><strong>No. Intervenciones:</strong> 162</div>
-                    <div class="detail-item"><strong>Vigencia:</strong> 2025</div>
-                    <div class="detail-item"><strong>Valor Contrato:</strong> $2.941.020.231</div>
-                    <div class="detail-item full-width frentes-obra"><strong>Frentes de obra:</strong> Castropol, El Poblado, Los Balíos</div>
+                <div class="detail-list">
+                    <h3>Distribución por Indicador</h3>
+                    <ul>
+                        <li><span>Mantenimiento en vías urbanas</span> <strong>58</strong></li>
+                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>22</strong></li>
+                        <li><span>Infraestructura vial urbana mantenida</span> <strong>21</strong></li>
+                        <li><span>Mantenimiento de parques</span> <strong>21</strong></li>
+                        <li><span>Limpieza de vías</span> <strong>11</strong></li>
+                        <li><span>Espacios públicos mantenidos</span> <strong>6</strong></li>
+                        <li><span>Andenes mantenidos</span> <strong>5</strong></li>
+                        <li><span>Apoyo a otras entidades</span> <strong>4</strong></li>
+                        <li><span>Andenes y cordones</span> <strong>3</strong></li>
+                        <li><span>Mantenimiento en vías rurales</span> <strong>3</strong></li>
+                        <li><span>Otros (Bomberos)</span> <strong>1</strong></li>
+                    </ul>
                 </div>
             </div>
-
-            <div class="contract-card">
-                <div class="contract-header"><h3>CONSTRUCCIÓN Y MEJORAMIENTO DE VÍAS PEATONALES</h3><span class="status">En ejecución</span></div>
-                <div class="contract-body">
-                    <div class="detail-item full-width"><strong>Objeto:</strong> CONSTRUCCIÓN, MEJORAMIENTO Y CONSERVACIÓN DE VÍAS PEATONALES Y OBRAS COMPLEMENTARIAS</div>
-                     <div class="detail-item full-width"><strong>Actividad Principal:</strong> Andenes construidos y mejorados (Cantidad Acumulada: 1.291 m)</div>
-                    <div class="detail-item full-width frentes-obra"><strong>Frentes de obra:</strong>
-                        <ul>
-                            <li>Barrio La Florida - Calle 7 entre carreras 33 y 35 (105 m)</li>
-                            <li>Barrio La Florida - Cra 30 entre calles 5F y 6 (496 m)</li>
-                            <li>Barrio La Florida - Cra 33 entre calles 6 y 7 (0 m)</li>
-                            <li>Barrio Las Lomas - Calle 11 entre carreras 30 y 31A (111 m)</li>
-                            <li>Barrio Las Lomas - Cra 31A entre calles 11 y 11A (162 m)</li>
-                            <li>Barrio Las Lomas - Cra 34 entre calles 11A y 11B (416 m)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="contract-card">
-                <div class="contract-header"><h3>MANTENIMIENTO DE MALLA VIAL Y SEGURIDAD</h3><span class="status">En ejecución</span></div>
-                <div class="contract-body">
-                    <div class="detail-item full-width"><strong>Objeto:</strong> MANTENIMIENTO GENERAL DE LA INFRAESTRUCTURA VIAL Y ELEMENTOS DE SEGURIDAD EN LA COMUNA.</div>
-                    <div class="detail-item full-width frentes-obra"><strong>Actividades Acumuladas:</strong>
-                        <ul>
-                            <li><b>Vía asfalto mantenida (Fallos y Repav.):</b> 20.586 m²</li>
-                            <li><b>Pasamanos y defensas instalados:</b> 3.470 m</li>
-                            <li><b>Huecos tapados (LIND):</b> 870 unidades</li>
-                            <li><b>Obra de estabilización:</b> 134 m</li>
-                            <li><b>Cicloparqueaderos instalados:</b> 16 unidades</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
         </section>
         
     </div>
 
-<script>
-    // Configuración de colores para Chart.js
-    const chartColors = {
-        blue: 'rgba(25, 118, 210, 0.85)',
-        orange: 'rgba(255, 111, 0, 0.85)',
-        blueDark: 'rgba(13, 71, 161, 0.85)',
-        green: 'rgba(56, 142, 60, 0.85)',
-        purple: 'rgba(123, 31, 162, 0.85)',
-        grey: 'rgba(158, 158, 158, 0.85)'
-    };
-    
-    // Gráfica de Distribución por Grupo de Obra (2024-2025)
-    const distGrupoCtx = document.getElementById('distribucionGrupoChart').getContext('2d');
-    new Chart(distGrupoCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Obras Civiles Menores (39%)', 'Pavimentos (31%)', 'Parques y Cerrajería (15%)', 'Otros (15%)'],
-            datasets: [{
-                data: [62, 48, 23, 24],
-                backgroundColor: [chartColors.blue, chartColors.orange, chartColors.green, chartColors.purple]
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    // Gráfica de Estado de Obra (2024-2025)
-    const estadoObraCtx = document.getElementById('estadoObraChart').getContext('2d');
-    new Chart(estadoObraCtx, {
-        type: 'pie',
-        data: {
-            labels: ['Terminada (57%)', 'Traslado a Contratista (11%)', 'En Ejecución (11%)', 'Otros (21%)'],
-            datasets: [{
-                data: [90, 18, 17, 32],
-                backgroundColor: [chartColors.green, chartColors.orange, chartColors.blue, chartColors.grey]
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-
-    // Script para generar PDF
-    document.getElementById('download-pdf').addEventListener('click', function () {
-        const content = document.getElementById('report-content');
-        const actionsBar = content.querySelector('.actions-bar');
-        
-        // Ocultar la barra de acciones para que no aparezca en el PDF
-        // La barra de acciones no es parte del 'content' en este HTML, por lo que no necesita ser ocultada.
-
-        const button = this;
-        button.innerText = 'Generando PDF...';
-        button.disabled = true;
-
-        html2canvas(content, {
-            scale: 2,
-            useCORS: true,
-            windowWidth: content.scrollWidth,
-            windowHeight: content.scrollHeight
-        }).then(canvas => {
-            
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
-
-            const pdf = new jsPDF({
-                orientation: 'p',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdf.internal.pageSize.getHeight();
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const ratio = canvasWidth / canvasHeight;
-
-            const imgHeight = pdfWidth / ratio;
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-            heightLeft -= pdfHeight;
-
-            while (heightLeft > 0) {
-                position -= pdfHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-                heightLeft -= pdfHeight;
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function () {
+            if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+                alert('Error: No se pudieron cargar las librerías para generar el PDF.\nPor favor, verifica tu conexión a internet e inténtalo de nuevo.');
+                return; 
             }
 
-            pdf.save('Reporte-Comuna-14-El-Poblado.pdf');
+            const button = this;
+            const content = document.getElementById('report-content');
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+            button.disabled = true;
 
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
+            try {
+                html2canvas(content, {
+                    scale: 2,
+                    useCORS: true
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
 
-        }).catch(err => {
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
-            console.error("Error al generar el PDF:", err);
-            alert("Hubo un error al generar el PDF. Por favor, intenta de nuevo.");
+                    const pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const canvasWidth = canvas.width;
+                    const canvasHeight = canvas.height;
+                    const ratio = canvasWidth / canvasHeight;
+                    const imgHeight = pdfWidth / ratio;
+
+                    let heightLeft = imgHeight;
+                    let position = 0;
+
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                    heightLeft -= pdf.internal.pageSize.getHeight();
+
+                    while (heightLeft > 0) {
+                        position -= pdf.internal.pageSize.getHeight();
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                        heightLeft -= pdf.internal.pageSize.getHeight();
+                    }
+
+                    pdf.save('Reporte-Comuna-14-El-Poblado.pdf');
+                }).catch(err => {
+                    console.error("Error durante la creación del canvas:", err);
+                    alert("Hubo un error al procesar el contenido del reporte.");
+                }).finally(() => {
+                    button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                    button.disabled = false;
+                });
+            } catch (error) {
+                console.error("Error inesperado al intentar generar el PDF:", error);
+                alert("Ocurrió un error inesperado. Revisa la consola del navegador para más detalles.");
+                button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                button.disabled = false;
+            }
         });
-    });
-</script>
-
+    </script>
 </body>
 </html>
