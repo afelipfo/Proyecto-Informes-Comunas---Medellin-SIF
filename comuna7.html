@@ -6,9 +6,9 @@
     <title>Reporte de Analítica de Datos Comuna 7 - Robledo</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXrd3NBGQVJClubNFl4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="./html2canvas.min.js"></script>
+    <script src="./jspdf.umd.min.js"></script>
 
     <style>
         :root {
@@ -27,7 +27,6 @@
             margin: 0;
             padding: 0;
         }
-        
         .actions-bar {
             position: sticky;
             top: 0;
@@ -72,7 +71,6 @@
             background-color: #e66300;
             border-color: #e66300;
         }
-
         .container {
             max-width: 1400px;
             margin: auto;
@@ -153,7 +151,6 @@
             margin-top: 5px;
             line-height: 1.3;
         }
-        
         .chart-container {
             background: var(--color-blanco);
             padding: 20px;
@@ -161,46 +158,6 @@
             box-shadow: var(--sombra-card);
             margin-top: 30px;
         }
-        .contract-card {
-            background: var(--color-blanco);
-            border-radius: 10px;
-            box-shadow: var(--sombra-card);
-            margin-bottom: 25px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .contract-header {
-            background-color: var(--color-azul-oscuro);
-            color: var(--color-blanco);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .contract-header h3 {
-            margin: 0;
-            font-size: 1.2em;
-        }
-        .contract-body {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            flex-grow: 1;
-        }
-        .contract-body .detail-item {
-            font-size: 0.95em;
-        }
-        .contract-body .detail-item strong {
-            color: var(--color-azul-medio);
-            display: block;
-            margin-bottom: 5px;
-        }
-        .contract-body .full-width {
-            grid-column: 1 / -1;
-        }
-        
         .summary-table-container {
             width: 100%;
             overflow-x: auto;
@@ -229,19 +186,11 @@
         .summary-table tbody tr:hover {
             background-color: #e0e0e0;
         }
-        .intervention-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            align-items: stretch;
-        }
         .detail-list {
             background-color: var(--color-blanco);
             padding: 25px;
             border-radius: 10px;
             box-shadow: var(--sombra-card);
-            display: flex;
-            flex-direction: column;
         }
         .detail-list h3 {
              margin-top: 0;
@@ -253,7 +202,6 @@
             list-style: none;
             padding: 0;
             margin: 0;
-            flex-grow: 1;
         }
         .detail-list li {
             padding: 8px 0;
@@ -281,61 +229,108 @@
     <div class="container" id="report-content">
         <header class="header">
             <h1>Reporte de Analítica de Datos Comuna 7 - Robledo</h1>
-            <p>Fecha de corte al 11 de julio de 2025</p>
+            <p>Fecha de corte al 11 de agosto de 2025</p>
         </header>
-        
+
         <section>
-            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches (Fuente SIRO)</h2>
+            <h2 class="section-title"><i class="fas fa-file-signature"></i>Seguimiento a Contratos de Obra</h2>
+            <div class="summary-table-container">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Cantidad Acumulada</th>
+                            <th>Unidad de Medida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Diseño</td><td>804</td><td>%</td></tr>
+                        <tr><td>Gestión predial</td><td>398</td><td>%</td></tr>
+                        <tr><td>Huecos tapados</td><td>1099</td><td>un</td></tr>
+                        <tr><td>Obra de estabilización</td><td>310</td><td>m</td></tr>
+                        <tr><td>Pasamanos y defensas instalados</td><td>1039</td><td>m</td></tr>
+                        <tr><td>Pavimento rígido</td><td>1973</td><td>m²</td></tr>
+                        <tr><td>Puente construido</td><td>1</td><td>un</td></tr>
+                        <tr><td>Vía asfalto mantenida (Fallos y Repav.)</td><td>25800</td><td>m²</td></tr>
+                        <tr><td>Vía construida</td><td>5645</td><td>m²</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches</h2>
             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
                 <div class="stat-card">
                     <div class="icon"><i class="fas fa-tools"></i></div>
-                    <div class="value">1.082</div>
-                    <div class="label">Baches Intervenidos en la Comuna</div>
+                    <div class="value">1.110</div>
+                    <div class="label">Total de baches ejecutados</div>
                 </div>
                 <div class="stat-card">
                     <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
-                    <div class="value">$3.205.019.693</div>
-                    <div class="label">Costo Total de Intervención</div>
+                    <div class="value">$3.258.350.991</div>
+                    <div class="label">Costo total ejecutado</div>
                 </div>
             </div>
              <div class="chart-container">
-                    <h3 style="text-align: center; color: var(--color-azul-oscuro);">Desglose por Barrio</h3>
-                     <div class="summary-table-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Barrio</h3>
+                 <div class="summary-table-container">
                     <table class="summary-table">
                          <thead>
                             <tr>
                                 <th>Barrio</th>
-                                <th>Número de Baches</th>
+                                <th>No. Baches</th>
                                 <th>Costo</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>Altamira</td><td>13</td><td>$20.163.027</td></tr>
-                            <tr><td>Aures No.1</td><td>71</td><td>$480.900.976</td></tr>
                             <tr><td>Aures No.2</td><td>139</td><td>$506.021.485</td></tr>
-                            <tr><td>B. Cerro El Volador</td><td>1</td><td>$1.387.716</td></tr>
-                            <tr><td>Bello Horizonte</td><td>134</td><td>$358.322.188</td></tr>
-                            <tr><td>Bosques de San Pablo</td><td>7</td><td>$10.474.758</td></tr>
-                            <tr><td>Córdoba</td><td>19</td><td>$24.874.407</td></tr>
-                            <tr><td>Cucaracho</td><td>104</td><td>$228.527.750</td></tr>
-                            <tr><td>Ecoparque Cerro El Volador</td><td>32</td><td>$43.598.846</td></tr>
-                            <tr><td>El Diamante</td><td>69</td><td>$130.271.250</td></tr>
-                            <tr><td>Facultad de Minas</td><td>39</td><td>$84.268.501</td></tr>
-                            <tr><td>Facultad de Minas U. Nacional</td><td>2</td><td>$10.100.978</td></tr>
-                            <tr><td>Facultad Veterinaria y Zootecnia U.de.A.</td><td>8</td><td>$9.641.272</td></tr>
-                            <tr><td>Fuente Clara</td><td>30</td><td>$73.815.238</td></tr>
+                            <tr><td>Bello Horizonte</td><td>133</td><td>$354.246.199</td></tr>
+                            <tr><td>Cucaracho</td><td>112</td><td>$238.435.375</td></tr>
+                            <tr><td>Aures No.1</td><td>71</td><td>$483.213.553</td></tr>
+                            <tr><td>El Diamante</td><td>71</td><td>$136.306.214</td></tr>
+                            <tr><td>Robledo</td><td>73</td><td>$200.082.839</td></tr>
+                            <tr><td>San Germán</td><td>59</td><td>$129.720.658</td></tr>
+                            <tr><td>Universidad Nacional</td><td>58</td><td>$74.463.259</td></tr>
                             <tr><td>La Pilarica</td><td>47</td><td>$79.001.589</td></tr>
-                            <tr><td>López de Mesa</td><td>25</td><td>$49.537.043</td></tr>
-                            <tr><td>Monteclaro</td><td>8</td><td>$33.070.690</td></tr>
+                            <tr><td>Santa Margarita</td><td>43</td><td>$395.737.991</td></tr>
+                            <tr><td>Olaya Herrera</td><td>40</td><td>$132.640.454</td></tr>
+                            <tr><td>Facultad de Minas</td><td>39</td><td>$84.268.501</td></tr>
+                            <tr><td>Palenque</td><td>39</td><td>$86.013.666</td></tr>
+                            <tr><td>Ecoparque Cerro El Volador</td><td>31</td><td>$43.385.257</td></tr>
+                            <tr><td>Fuente Clara</td><td>28</td><td>$68.558.213</td></tr>
+                            <tr><td>López de Mesa</td><td>25</td><td>$48.941.744</td></tr>
+                            <tr><td>Pajarito</td><td>18</td><td>$27.799.688</td></tr>
+                            <tr><td>Córdoba</td><td>18</td><td>$22.417.942</td></tr>
                             <tr><td>Nueva Villa de La Iguaná</td><td>16</td><td>$35.980.852</td></tr>
-                            <tr><td>Olaya Herrera</td><td>49</td><td>$145.180.805</td></tr>
-                            <tr><td>Pajarito</td><td>20</td><td>$27.206.140</td></tr>
-                            <tr><td>Palenque</td><td>28</td><td>$51.474.941</td></tr>
-                            <tr><td>Robledo</td><td>59</td><td>$182.847.383</td></tr>
-                            <tr><td>San Germán</td><td>59</td><td>$124.943.451</td></tr>
-                            <tr><td>Santa Margarita</td><td>42</td><td>$387.802.603</td></tr>
-                            <tr><td>Universidad Nacional</td><td>51</td><td>$73.192.244</td></tr>
-                            <tr><td>Villa Flora</td><td>10</td><td>$32.413.560</td></tr>
+                            <tr><td>Altamira</td><td>13</td><td>$20.163.027</td></tr>
+                            <tr><td>Villa Flora</td><td>9</td><td>$25.881.598</td></tr>
+                            <tr><td>Facultad Veterinaria y Zootecnia U.de.A.</td><td>8</td><td>$9.641.272</td></tr>
+                            <tr><td>Monteclaro</td><td>8</td><td>$33.070.690</td></tr>
+                            <tr><td>Bosques de San Pablo</td><td>7</td><td>$10.474.758</td></tr>
+                            <tr><td>B. Cerro El Volador</td><td>3</td><td>$1.783.191</td></tr>
+                            <tr><td>Facultad de Minas U. Nacional</td><td>2</td><td>$10.100.978</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Contrato</h3>
+                 <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Contrato</th>
+                                <th>No. Baches</th>
+                                <th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>4600102144 - Malla Vial (2024 - 2025)</td><td>896</td><td>$3.014.772.681</td></tr>
+                            <tr><td>4600098664 - Malla Vial (2023 - 2024)</td><td>84</td><td>$73.565.957</td></tr>
+                            <tr><td>4600105052 - Malla Vial 2025</td><td>73</td><td>$118.256.032</td></tr>
+                            <tr><td>4600098513 - Suministro de Mezcla (2023 - 2024)</td><td>31</td><td>$10.300.761</td></tr>
+                            <tr><td>4600103229 - Suministro de Mezcla (2024 - 2025)</td><td>26</td><td>$41.455.560</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -343,74 +338,30 @@
         </section>
 
         <section>
-            <h2 class="section-title"><i class="fas fa-tree"></i>Parques - Tejiendo Hogares</h2>
-            <div class="grid-container" style="margin-bottom: 25px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-                <div class="stat-card"><div class="icon"><i class="fas fa-park"></i></div><div class="value">2</div><div class="label">Parques Intervenidos (Transformación Total)</div></div>
-                <div class="stat-card"><div class="icon"><i class="fas fa-ruler-combined"></i></div><div class="value">1.567 m²</div><div class="label">Área Total Intervenida</div></div>
-                <div class="stat-card"><div class="icon"><i class="fas fa-child"></i></div><div class="value">1.399</div><div class="label">Niños Sisbenizados Beneficiados</div></div>
-            </div>
-            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); align-items: stretch;">
-                <div class="contract-card">
-                    <div class="contract-header"><h3>Parque Principal Bosques De San Pablo 2</h3></div>
-                    <div class="contract-body" style="grid-template-columns: 1fr;">
-                         <div class="detail-item"><strong>Actividad:</strong> PARQUES MEJORADOS</div>
-                         <div class="detail-item"><strong>Dirección:</strong> Calle 78A 71-03</div>
-                         <div class="detail-item"><strong>Área de Intervención:</strong> 827 m²</div>
-                         <div class="detail-item"><strong>Niños Sisbenizados:</strong> 50</div>
-                    </div>
-                </div>
-                 <div class="contract-card">
-                    <div class="contract-header"><h3>Parque Recreativo Cancha De Arenilla Bello Horizonte</h3></div>
-                    <div class="contract-body" style="grid-template-columns: 1fr;">
-                         <div class="detail-item"><strong>Actividad:</strong> PARQUES MEJORADOS</div>
-                         <div class="detail-item"><strong>Dirección:</strong> Carrera 86A 77D-43</div>
-                         <div class="detail-item"><strong>Área de Intervención:</strong> 740 m²</div>
-                         <div class="detail-item"><strong>Niños Sisbenizados:</strong> 1.349</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section>
-            <h2 class="section-title"><i class="fas fa-leaf"></i>Indicadores Jardín Botánico</h2>
-            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                <div class="stat-card"><div class="value">48.006,57 m²</div><div class="label">Total Área Componente Conservación</div></div>
-                <div class="stat-card"><div class="value">2.781</div><div class="label">Total Plantas (Componente Jardines)</div></div>
-                <div class="stat-card"><div class="value">579</div><div class="label">Total Individuos (Componente Árboles)</div></div>
-                <div class="stat-card"><div class="value">4.322 m²</div><div class="label">Área Intervenida (Parque Arví)</div></div>
-                <div class="stat-card"><div class="value">182</div><div class="label">Individuos Conservados (Parque Arví)</div></div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-couch"></i>Mantenimiento Mobiliario</h2>
-            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-                <div class="stat-card"><div class="value">33</div><div class="label">Cantidad Total</div></div>
-                <div class="stat-card"><div class="value">2</div><div class="label">Cantidad Intervenida</div></div>
-                <div class="stat-card"><div class="value">6.1%</div><div class="label">% de Intervención</div></div>
-            </div>
-        </section>
-        
-        <section>
-            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas SIF - Vigencia 2024</h2>
+            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas</h2>
              <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
                 <div class="stat-card">
-                    <div class="icon"><i class="fas fa-file-alt"></i></div>
-                    <div class="value">47</div>
-                    <div class="label">Solicitudes Gestionadas</div>
+                    <div class="value">63</div>
+                    <div class="label">Total de solicitudes (2024-2025)</div>
                 </div>
                 <div class="stat-card">
-                    <div class="icon"><i class="fas fa-wallet"></i></div>
-                    <div class="value">$293.839.358</div>
-                    <div class="label">Costo Total de Obras</div>
+                    <div class="value">$307.930.483</div>
+                    <div class="label">Costo total de obra</div>
                 </div>
             </div>
-             <div class="intervention-section" style="margin-top: 25px;">
+            <div class="intervention-section" style="margin-top: 25px;">
+                <div class="detail-list">
+                    <h3>Distribución de Solicitudes</h3>
+                    <ul>
+                        <li><span>Vigencia 2024</span> <strong>47</strong></li>
+                        <li><span>Vigencia 2025</span> <strong>16</strong></li>
+                    </ul>
+                </div>
                 <div class="detail-list">
                     <h3>Costo por Grupo de Obra</h3>
                     <ul>
-                        <li><span>Obras Civiles Menores</span> <strong>$199 millones</strong></li>
-                        <li><span>Parques y Cerrajería</span> <strong>$80 millones</strong></li>
+                        <li><span>Obras Civiles Menores</span> <strong>$209 millones</strong></li>
+                        <li><span>Parques y Cerrajería</span> <strong>$84 millones</strong></li>
                         <li><span>Pavimentos</span> <strong>$15 millones</strong></li>
                     </ul>
                 </div>
@@ -418,314 +369,80 @@
                     <h3>Distribución por Indicador</h3>
                     <ul>
                         <li><span>Mantenimiento en vías urbanas</span> <strong>18</strong></li>
-                        <li><span>Mantenimiento en parques</span> <strong>13</strong></li>
-                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>8</strong></li>
-                        <li><span>Limpieza de vías</span> <strong>6</strong></li>
+                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>13</strong></li>
+                        <li><span>Mantenimiento de parques</span> <strong>11</strong></li>
+                        <li><span>Limpieza de vías y quebradas</span> <strong>8</strong></li>
+                        <li><span>Infraestructura vial mantenida</span> <strong>5</strong></li>
+                        <li><span>Andenes mantenidos</span> <strong>3</strong></li>
                         <li><span>Andenes y cordones</span> <strong>2</strong></li>
                     </ul>
-                </div>
-             </div>
-             <div class="intervention-section" style="margin-top: 25px;">
-                <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra (2024)</h3>
-                    <canvas id="distribucionGrupo2024Chart"></canvas>
-                </div>
-                 <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado Actual de Obras (2024)</h3>
-                    <canvas id="estadoObra2024Chart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-calendar-alt"></i>Intervenciones Directas SIF - Vigencia 2025</h2>
-             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-                <div class="stat-card">
-                    <div class="icon"><i class="fas fa-file-alt"></i></div>
-                    <div class="value">16</div>
-                    <div class="label">Solicitudes Gestionadas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon"><i class="fas fa-wallet"></i></div>
-                    <div class="value">$14.091.125</div>
-                    <div class="label">Costo Total de Obras</div>
-                </div>
-            </div>
-            <div class="intervention-section" style="margin-top: 25px;">
-                 <div class="detail-list">
-                    <h3>Costo por Grupo de Obra</h3>
-                    <ul>
-                        <li><span>Obras Civiles Menores</span> <strong>$9,9 millones</strong></li>
-                        <li><span>Parques y Cerrajería</span> <strong>$4,1 millones</strong></li>
-                    </ul>
-                </div>
-                 <div class="detail-list">
-                    <h3>Distribución por Indicador</h3>
-                    <ul>
-                        <li><span>Infraestructura vial urbana mantenida</span> <strong>5</strong></li>
-                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>5</strong></li>
-                        <li><span>Andenes mantenidos</span> <strong>3</strong></li>
-                        <li><span>Limpieza de vías</span> <strong>2</strong></li>
-                        <li><span>(En blanco)</span> <strong>1</strong></li>
-                    </ul>
-                </div>
-            </div>
-             <div class="intervention-section" style="margin-top: 25px;">
-                <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra (2025)</h3>
-                    <canvas id="distribucionGrupo2025Chart"></canvas>
-                </div>
-                 <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado Actual de Obras (2025)</h3>
-                    <canvas id="estadoObra2025Chart"></canvas>
-                </div>
-            </div>
-        </section>
-        
-        <section>
-            <h2 class="section-title"><i class="fas fa-exchange-alt"></i>SIF: Comparativo de Intervenciones por Vigencia</h2>
-            <div class="summary-table-container">
-                <table class="summary-table">
-                    <thead>
-                        <tr>
-                            <th>Vigencia</th>
-                            <th>Epm</th>
-                            <th>Obras Civiles Menores</th>
-                            <th>Parques y Cerrajería</th>
-                            <th>Pavimentos</th>
-                            <th>Traslado a Contratos</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>2024</strong></td><td>7</td><td>11</td><td>18</td><td>9</td><td>2</td><td><strong>47</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>2025</strong></td><td>-</td><td>6</td><td>5</td><td>5</td><td>-</td><td><strong>16</strong></td>
-                        </tr>
-                        <tr style="background-color: var(--color-azul-oscuro); color: var(--color-blanco); font-weight: bold;">
-                            <td>Total General</td><td>7</td><td>17</td><td>23</td><td>14</td><td>2</td><td><strong>63</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-clipboard-list"></i>Seguimiento al Avance de Contratos SIF</h2>
-             <div class="chart-container">
-                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Resumen de Cantidades Acumuladas por Actividad</h3>
-                 <div class="summary-table-container">
-                    <table class="summary-table">
-                        <thead>
-                            <tr>
-                                <th>Actividad</th>
-                                <th>Cantidad Acumulada</th>
-                                <th>Unidad de Medida</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>ANDEN CONSTRUIDO</td><td>0</td><td>m</td></tr>
-                            <tr><td>ANDEN MANTENIDO</td><td>0</td><td>m</td></tr>
-                            <tr><td>ANDENES CONSTRUIDOS Y MEJORADOS</td><td>0</td><td>m</td></tr>
-                            <tr><td>ANDENES MANTENIDOS</td><td>0</td><td>m</td></tr>
-                            <tr><td>BARANDAS Y PASAMANOS</td><td>0</td><td>m</td></tr>
-                            <tr><td>BORDILLOS-CUNETAS</td><td>0</td><td>m</td></tr>
-                            <tr><td>DEFENSA VIAL</td><td>0</td><td>m</td></tr>
-                            <tr><td>DISEÑO</td><td>804</td><td>%</td></tr>
-                            <tr><td>GESTION PREDIAL</td><td>398</td><td>%</td></tr>
-                            <tr><td>HUECOS TAPADOS (UND)</td><td>1099</td><td>un</td></tr>
-                            <tr><td>JARDIN SEMBRADO</td><td>0</td><td>m2</td></tr>
-                            <tr><td>JUEGO INFANTIL O ELEMENTO DE GIMNASIO MANTENIDO</td><td>0</td><td>un</td></tr>
-                            <tr><td>OBRA DE ESTABILIZACION</td><td>310</td><td>m</td></tr>
-                            <tr><td>OBRA DE ESTABILIZACION</td><td>0</td><td>un</td></tr>
-                            <tr><td>OBRAS DE ESTABILIIZACIÓN</td><td>0</td><td>un</td></tr>
-                            <tr><td>PARCHEO DE HUECOS</td><td>0</td><td>un</td></tr>
-                            <tr><td>PARQUES Y PLAZOLETA MANTENIDO</td><td>0</td><td>m2</td></tr>
-                            <tr><td>PASAMANOS Y DEFENSAS INSTALADOS</td><td>1039</td><td>m</td></tr>
-                            <tr><td>PAVIMENTO RIGIDO</td><td>1973</td><td>m2</td></tr>
-                            <tr><td>PUENTE CONSTRUIDO</td><td>1</td><td>un</td></tr>
-                            <tr><td>VIA ASFALTO MANTENIDA (Fallos y Repav.)</td><td>25800</td><td>m2</td></tr>
-                            <tr><td>VIA CONSTRUIDA</td><td>5645</td><td>m2</td></tr>
-                            <tr><td>VÍAS URBANAS MANTENIDAS</td><td>0</td><td>KM</td></tr>
-                            <tr><td>ZONA VERDE SEMBRADA</td><td>0</td><td>m2</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-users-cog"></i>Intervenciones Directas por Contratistas</h2>
-            <div class="grid-container" style="margin-bottom: 25px; grid-template-columns: 1fr;">
-                 <div class="detail-list">
-                    <h3>Resumen (Secretaría de Infraestructura Física)</h3>
-                    <ul>
-                        <li><span>Tipo de Obra</span> <strong>Obras por Contrato de Obra</strong></li>
-                        <li><span>Costo Total</span> <strong>$2.118.840</strong></li>
-                        <li><span>Total de Material Removido</span> <strong>10 m³</strong></li>
-                    </ul>
-                </div>
-            </div>
-             <div class="chart-container">
-                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle de Maquinaria y Personal</h3>
-                 <div class="summary-table-container">
-                    <table class="summary-table">
-                        <thead>
-                            <tr>
-                                <th>Maquinaria/Herramienta/Personal</th>
-                                <th>Cantidad</th>
-                                <th>Días de Intervención</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Minicargador</td><td>1</td><td>N/A</td></tr>
-                            <tr><td>Trabajadores</td><td>5</td><td>N/A</td></tr>
-                            <tr><td>Volqueta sencilla</td><td>2</td><td>1</td></tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </section>
         
     </div>
 
-<script>
-    // Configuración de colores para Chart.js
-    const chartColors = {
-        blue: 'rgba(25, 118, 210, 0.85)',
-        orange: 'rgba(255, 111, 0, 0.85)',
-        blueDark: 'rgba(13, 71, 161, 0.85)',
-        orangeDark: 'rgba(239, 108, 0, 0.85)',
-        teal: 'rgba(0, 150, 136, 0.85)',
-        red: 'rgba(211, 47, 47, 0.85)',
-        purple: 'rgba(123, 31, 162, 0.85)',
-        green: 'rgba(56, 142, 60, 0.85)',
-        grey: 'rgba(158, 158, 158, 0.85)'
-    };
-    
-    // Gráficas Intervenciones 2024
-    const distGrupo2024Ctx = document.getElementById('distribucionGrupo2024Chart').getContext('2d');
-    new Chart(distGrupo2024Ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Obras Civiles Menores (38%)', 'Pavimentos (23%)', 'Esm (19%)', 'Traslado a Contratista (15%)', 'Parques y Cerrajería (4%)'],
-            datasets: [{
-                data: [18, 11, 9, 7, 2],
-                backgroundColor: Object.values(chartColors)
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    const estadoObra2024Ctx = document.getElementById('estadoObra2024Chart').getContext('2d');
-    new Chart(estadoObra2024Ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Terminada (64%)', 'Traslado a contratista (17%)', 'Atendido (11%)', 'Traslado BPM (4%)', 'Suspendida la obra (4%)'],
-            datasets: [{
-                data: [30, 8, 5, 2, 2],
-                backgroundColor: Object.values(chartColors)
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    // Gráficas Intervenciones 2025
-    const distGrupo2025Ctx = document.getElementById('distribucionGrupo2025Chart').getContext('2d');
-    new Chart(distGrupo2025Ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Obras Civiles Menores (38%)', 'Parques y Cerrajería (31%)', 'Pavimentos (31%)'],
-            datasets: [{
-                data: [6, 5, 5],
-                backgroundColor: [chartColors.blue, chartColors.orange, chartColors.green, chartColors.red]
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    const estadoObra2025Ctx = document.getElementById('estadoObra2025Chart').getContext('2d');
-    new Chart(estadoObra2025Ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Terminada (50%)', 'En ejecución (31%)', 'Por iniciar (13%)', 'Suspendida la obra (6%)'],
-            datasets: [{
-                data: [8, 5, 2, 1],
-                backgroundColor: [chartColors.green, chartColors.blue, chartColors.grey, chartColors.orange]
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    // Script para generar PDF
-    document.getElementById('download-pdf').addEventListener('click', function () {
-        const content = document.getElementById('report-content');
-        const actionsBar = document.querySelector('.actions-bar');
-        
-        if (actionsBar) {
-            actionsBar.style.display = 'none';
-        }
-
-        const button = this;
-        button.innerText = 'Generando PDF...';
-        button.disabled = true;
-
-        html2canvas(content, {
-            scale: 2,
-            useCORS: true,
-            windowWidth: content.scrollWidth,
-            windowHeight: content.scrollHeight
-        }).then(canvas => {
-            if (actionsBar) {
-                actionsBar.style.display = 'flex';
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function () {
+            if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+                alert('Error: No se pudieron cargar las librerías para generar el PDF.\nPor favor, verifica tu conexión a internet e inténtalo de nuevo.');
+                return; 
             }
+
+            const button = this;
+            const content = document.getElementById('report-content');
             
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+            button.disabled = true;
 
-            const pdf = new jsPDF({
-                orientation: 'p',
-                unit: 'mm',
-                format: 'a4'
-            });
+            try {
+                html2canvas(content, {
+                    scale: 2,
+                    useCORS: true
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
 
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const ratio = canvasWidth / canvasHeight;
+                    const pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
 
-            let imgHeight = pdfWidth / ratio;
-            let heightLeft = imgHeight;
-            let position = 0;
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const canvasWidth = canvas.width;
+                    const canvasHeight = canvas.height;
+                    const ratio = canvasWidth / canvasHeight;
+                    const imgHeight = pdfWidth / ratio;
 
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-            heightLeft -= pdf.internal.pageSize.getHeight();
+                    let heightLeft = imgHeight;
+                    let position = 0;
 
-            while (heightLeft > 0) {
-                position -= pdf.internal.pageSize.getHeight();
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-                heightLeft -= pdf.internal.pageSize.getHeight();
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                    heightLeft -= pdf.internal.pageSize.getHeight();
+
+                    while (heightLeft > 0) {
+                        position -= pdf.internal.pageSize.getHeight();
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                        heightLeft -= pdf.internal.pageSize.getHeight();
+                    }
+
+                    pdf.save('Reporte-Comuna-7-Robledo.pdf');
+                }).catch(err => {
+                    console.error("Error durante la creación del canvas:", err);
+                    alert("Hubo un error al procesar el contenido del reporte.");
+                }).finally(() => {
+                    button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                    button.disabled = false;
+                });
+            } catch (error) {
+                console.error("Error inesperado al intentar generar el PDF:", error);
+                alert("Ocurrió un error inesperado. Revisa la consola del navegador para más detalles.");
+                button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                button.disabled = false;
             }
-
-            pdf.save('Reporte-Comuna-07-Robledo.pdf');
-
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
-
-        }).catch(err => {
-            if (actionsBar) {
-                actionsBar.style.display = 'flex';
-            }
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
-            console.error("Error al generar el PDF:", err);
-            alert("Hubo un error al generar el PDF. Por favor, intenta de nuevo.");
         });
-    });
-</script>
-
+    </script>
 </body>
 </html>

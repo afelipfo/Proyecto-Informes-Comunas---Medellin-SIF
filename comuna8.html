@@ -6,10 +6,9 @@
     <title>Reporte de Analítica de Datos Comuna 8 - Villa Hermosa</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXrd3NBGQVJClubNFl4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./html2canvas.min.js"></script>
+    <script src="./jspdf.umd.min.js"></script>
 
     <style>
         :root {
@@ -28,7 +27,6 @@
             margin: 0;
             padding: 0;
         }
-        
         .actions-bar {
             position: sticky;
             top: 0;
@@ -73,7 +71,6 @@
             background-color: #e66300;
             border-color: #e66300;
         }
-
         .container {
             max-width: 1400px;
             margin: auto;
@@ -112,13 +109,6 @@
         .section-title i {
             margin-right: 15px;
             font-size: 1.2em;
-        }
-        .subsection-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: var(--color-azul-medio);
-            margin-top: 25px;
-            margin-bottom: 15px;
         }
         .grid-container, .intervention-section {
             display: grid;
@@ -161,7 +151,6 @@
             margin-top: 5px;
             line-height: 1.3;
         }
-        
         .chart-container {
             background: var(--color-blanco);
             padding: 20px;
@@ -172,7 +161,6 @@
         .summary-table-container {
             width: 100%;
             overflow-x: auto;
-            margin-top: 20px;
          }
         .summary-table {
             width: 100%;
@@ -197,12 +185,6 @@
         }
         .summary-table tbody tr:hover {
             background-color: #e0e0e0;
-        }
-        .intervention-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            align-items: stretch;
         }
         .detail-list {
             background-color: var(--color-blanco);
@@ -238,7 +220,7 @@
 <body>
 
     <div class="actions-bar">
-        <a href="#" class="back-button">← Volver</a>
+        <a href="index.html" class="back-button">← Volver</a>
         <button id="download-pdf" class="download-button">
             <i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)
         </button>
@@ -247,162 +229,106 @@
     <div class="container" id="report-content">
         <header class="header">
             <h1>Reporte de Analítica de Datos Comuna 8 - Villa Hermosa</h1>
-            <p>Fecha de corte al 25 de julio de 2025</p>
+            <p>Fecha de corte al 26 de julio de 2025</p>
         </header>
-        
+
         <section>
-            <h2 class="section-title"><i class="fas fa-leaf"></i>Indicadores Jardín Botánico</h2>
-            <div class="grid-container" style="margin-top: 25px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                <div class="stat-card"><div class="value">20.698,52 m²</div><div class="label">Área verde de corredores fortalecida</div></div>
-                <div class="stat-card"><div class="value">14.813,96 m²</div><div class="label">Conservación de jardines</div></div>
-                <div class="stat-card"><div class="value">514</div><div class="label">Conservación de individuos arbóreos juveniles</div></div>
-                <div class="stat-card"><div class="value">592,38 m²</div><div class="label">Área de conservación de pisos duros</div></div>
-                <div class="stat-card"><div class="value">117</div><div class="label">Establecimiento de jardines (plantas)</div></div>
-                <div class="stat-card"><div class="value">30</div><div class="label">Tala de árboles</div></div>
-            </div>
-
+            <h2 class="section-title"><i class="fas fa-file-signature"></i>Seguimiento a Contratos de Obra</h2>
             <div class="summary-table-container">
-                <h3 class="subsection-title">Detalle de Actividades de Conservación y Establecimiento</h3>
                 <table class="summary-table">
                     <thead>
-                        <tr><th>Año</th><th>Mes</th><th>#Contrato</th><th>Actividad</th><th>Unidad</th><th>Cantidad</th></tr>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Cantidad Acumulada</th>
+                            <th>Unidad de Medida</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr><td>2024</td><td>marzo</td><td>4600097551</td><td>Área de conservación de pisos duros</td><td>m2</td><td>190,30</td></tr>
-                        <tr><td>2024</td><td>marzo</td><td>4600097551</td><td>Conservación de jardines</td><td>m2</td><td>4.412,56</td></tr>
-                        <tr><td>2024</td><td>marzo</td><td>4600097551</td><td>Establecimiento de gramas cultivadas</td><td>m2</td><td>8,00</td></tr>
-                        <tr><td>2024</td><td>septiembre</td><td>4600102026</td><td>Conservación de jardines</td><td>m2</td><td>934,20</td></tr>
-                        <tr><td>2024</td><td>octubre</td><td>4600102026</td><td>Conservación de jardines</td><td>m2</td><td>4.747,20</td></tr>
-                        <tr><td>2024</td><td>noviembre</td><td>4600102026</td><td>Conservación de jardines</td><td>m2</td><td>84,00</td></tr>
-                        <tr><td>2025</td><td>abril</td><td></td><td>Área de conservación de pisos duros</td><td>m2</td><td>161,28</td></tr>
-                        <tr><td>2025</td><td>abril</td><td></td><td>Área verde de corredores...</td><td>m2</td><td>5.913,67</td></tr>
-                        <tr><td>2025</td><td>abril</td><td></td><td>Conservación de jardines</td><td>m2</td><td>732,91</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td></td><td>Área de conservación de pisos duros</td><td>m2</td><td>95,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td></td><td>Área verde de corredores...</td><td>m2</td><td>5.190,20</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td></td><td>Conservación de jardines</td><td>m2</td><td>2.916,20</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td></td><td>Establecimiento área de jardines</td><td>m2</td><td>39,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td></td><td>Establecimiento de jardines</td><td>Plantas</td><td>117,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td></td><td>Área de conservación de pisos duros</td><td>m2</td><td>145,80</td></tr>
-                        <tr><td>2025</td><td>junio</td><td></td><td>Área verde de corredores...</td><td>m2</td><td>9.594,65</td></tr>
-                        <tr><td>2025</td><td>junio</td><td></td><td>Conservación de jardines</td><td>m2</td><td>986,89</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="summary-table-container">
-                <h3 class="subsection-title">Detalle de Actividades en Individuos Arbóreos</h3>
-                <table class="summary-table">
-                    <thead>
-                        <tr><th>Año</th><th>Mes</th><th>#Contrato</th><th>Actividad</th><th>Unidad</th><th>Cantidad</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>2025</td><td>marzo</td><td></td><td>Poda de árboles</td><td>Individuo</td><td>2,00</td></tr>
-                        <tr><td>2025</td><td>marzo</td><td></td><td>Recolección de árboles volcados</td><td>Individuo</td><td>1,00</td></tr>
-                        <tr><td>2025</td><td>marzo</td><td></td><td>Tala de árboles</td><td>Individuo</td><td>8,00</td></tr>
-                        <tr><td>2025</td><td>abril</td><td></td><td>Conservación de individuos arbóreos juveniles</td><td>Individuo</td><td>60,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td></td><td>Conservación de individuos arbóreos juveniles</td><td>Individuo</td><td>219,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td></td><td>Establecimiento de individuos arbóreos y palmas</td><td>Individuo</td><td>1,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td></td><td>Recolección de árboles volcados</td><td>Individuo</td><td>1,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td></td><td>Tala de árboles</td><td>Individuo</td><td>12,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td></td><td>Conservación de individuos arbóreos juveniles</td><td>Individuo</td><td>235,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td></td><td>Establecimiento de individuos arbóreos y palmas</td><td>Individuo</td><td>5,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td></td><td>Tala de árboles</td><td>Individuo</td><td>8,00</td></tr>
-                        <tr><td>2025</td><td>enero</td><td>4600102026</td><td>Tala de árboles</td><td>Individuo</td><td>2,00</td></tr>
-                        <tr><td>2025</td><td>abril</td><td>4600104350</td><td>Aplicaciones por drench</td><td>Individuo</td><td>3,00</td></tr>
-                        <tr><td>2025</td><td>abril</td><td>4600104350</td><td>Conservación de árboles patrimoniales</td><td>Individuo</td><td>3,00</td></tr>
-                        <tr><td>2025</td><td>abril</td><td>4600104350</td><td>Diagnóstico de árboles patrimoniales</td><td>Individuo</td><td>3,00</td></tr>
-                        <tr><td>2025</td><td>abril</td><td>4600104350</td><td>Manejo y tratamiento de raíces...</td><td>Individuo</td><td>60,88</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td>4600104350</td><td>Cicatrización de heridas en árboles</td><td>Individuo</td><td>5,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td>4600104350</td><td>Conservación de árboles adultos comunes</td><td>Individuo</td><td>6,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td>4600104350</td><td>Control Fitosanitario en árboles</td><td>Individuo</td><td>1,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td>4600104350</td><td>Dendrocirugía en árboles</td><td>Individuo</td><td>2,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td>4600104350</td><td>Limpieza de epifitas en árboles</td><td>Individuo</td><td>3,00</td></tr>
-                        <tr><td>2025</td><td>mayo</td><td>4600104350</td><td>Limpieza de fuste de árboles</td><td>Individuo</td><td>1,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td>4600104350</td><td>Cicatrización de heridas en árboles</td><td>Individuo</td><td>4,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td>4600104350</td><td>Conservación de árboles adultos comunes</td><td>Individuo</td><td>5,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td>4600104350</td><td>Limpieza de epifitas en árboles</td><td>Individuo</td><td>2,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td>4600104350</td><td>Limpieza de fuste de árboles</td><td>Individuo</td><td>2,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td>4600104350</td><td>Poda fitosanitaria de árboles</td><td>Individuo</td><td>2,00</td></tr>
-                        <tr><td>2025</td><td>junio</td><td>4600104350</td><td>Retiro de cuerpos extraños en árboles</td><td>Individuo</td><td>3,00</td></tr>
+                        <tr><td>Andén construido</td><td>681</td><td>m</td></tr>
+                        <tr><td>Andén mantenido</td><td>389</td><td>m</td></tr>
+                        <tr><td>Andenes mantenidos</td><td>560</td><td>m</td></tr>
+                        <tr><td>Barandas y pasamanos</td><td>532</td><td>m</td></tr>
+                        <tr><td>Bordillos-cunetas</td><td>102</td><td>m</td></tr>
+                        <tr><td>Diseño</td><td>788</td><td>%</td></tr>
+                        <tr><td>Gestión predial</td><td>100</td><td>%</td></tr>
+                        <tr><td>Huecos tapados</td><td>767</td><td>un</td></tr>
+                        <tr><td>Jardín sembrado</td><td>155</td><td>m²</td></tr>
+                        <tr><td>Obra de estabilización</td><td>153</td><td>m</td></tr>
+                        <tr><td>Obra de estabilización</td><td>2</td><td>un</td></tr>
+                        <tr><td>Parcheo de huecos</td><td>5</td><td>un</td></tr>
+                        <tr><td>Parque y plazoleta construido</td><td>263</td><td>m²</td></tr>
+                        <tr><td>Pasamanos y defensas instalados</td><td>25</td><td>m</td></tr>
+                        <tr><td>Pavimento rígido</td><td>1018</td><td>m²</td></tr>
+                        <tr><td>Vía asfalto mantenida (Fallos y Repav.)</td><td>9923</td><td>m²</td></tr>
+                        <tr><td>Zona verde sembrada</td><td>821</td><td>m²</td></tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
         <section>
-            <h2 class="section-title"><i class="fas fa-users-cog"></i>Intervenciones por Contratistas (EMVARIAS y SIF)</h2>
-            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-                <div class="stat-card"><div class="icon"><i class="fas fa-money-bill-wave"></i></div><div class="value">$16.858.717</div><div class="label">Inversión Total</div></div>
-                 <div class="stat-card"><div class="icon"><i class="fas fa-hard-hat"></i></div><div class="value">$16.158.459</div><div class="label">Aporte SIF</div></div>
-                <div class="stat-card"><div class="icon"><i class="fas fa-truck"></i></div><div class="value">$700.257</div><div class="label">Aporte EMVARIAS</div></div>
-                <div class="stat-card"><div class="icon"><i class="fas fa-mountain"></i></div><div class="value">130 m³</div><div class="label">Tierra Removida</div></div>
-            </div>
-             <div class="summary-table-container">
-                <h3 class="subsection-title">Detalle de Intervenciones por Barrio</h3>
-                <table class="summary-table">
-                     <thead>
-                        <tr><th>Barrio</th><th>Maquinaria/Personal</th><th>Cantidad</th><th>Días de Intervención</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Llanaditas</td><td>Minicargador</td><td>1</td><td>1</td></tr>
-                        <tr><td>Llanaditas</td><td>Retroexcavadora</td><td>1</td><td>2</td></tr>
-                        <tr><td>Llanaditas</td><td>Trabajadores</td><td>5</td><td>3</td></tr>
-                        <tr><td>Llanaditas</td><td>Volqueta sencilla</td><td>2</td><td>3</td></tr>
-                        <tr><td>Los Mangos</td><td>Cargador</td><td>1</td><td>1</td></tr>
-                        <tr><td>Los Mangos</td><td>Trabajadores</td><td>5</td><td>2</td></tr>
-                        <tr><td>Los Mangos</td><td>Volqueta sencilla</td><td>2</td><td>2</td></tr>
-                        <tr><td>Villa Turbay</td><td>Minicargador</td><td>1</td><td>1</td></tr>
-                        <tr><td>Villa Turbay</td><td>Trabajadores</td><td>5</td><td>1</td></tr>
-                        <tr><td>Villa Turbay</td><td>Volqueta sencilla</td><td>2</td><td>1</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="summary-table-container">
-                <h3 class="subsection-title">Cantidad de Maquinaria Asumida por Contratista</h3>
-                <table class="summary-table">
-                    <thead>
-                        <tr><th>Contratista/Responsable</th><th>Cargador</th><th>Minicargador</th><th>Retroexcavadora</th><th>Volqueta sencilla</th><th>Total Maquinaria</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>EMVARIAS</td><td></td><td></td><td></td><td>1</td><td>1</td></tr>
-                        <tr><td>Secretaría de Infraestructura Física</td><td>1</td><td>2</td><td>1</td><td>6</td><td>10</td></tr>
-                        <tr style="font-weight: bold;"><td>Total</td><td>1</td><td>2</td><td>1</td><td>7</td><td>11</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches (SIRO)</h2>
+            <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches</h2>
             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-                <div class="stat-card"><div class="icon"><i class="fas fa-tools"></i></div><div class="value">772</div><div class="label">Baches Intervenidos en la Comuna</div></div>
-                <div class="stat-card"><div class="icon"><i class="fas fa-money-bill-wave"></i></div><div class="value">$2.719.883.600</div><div class="label">Costo Total de Intervención</div></div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-tools"></i></div>
+                    <div class="value">763</div>
+                    <div class="label">Total de baches ejecutados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="value">$2.694.460.324</div>
+                    <div class="label">Costo total ejecutado</div>
+                </div>
             </div>
              <div class="chart-container">
-                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Desglose por Barrio</h3>
-                 <div class="summary-table-container" style="margin-top:0;">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Barrio</h3>
+                 <div class="summary-table-container">
                     <table class="summary-table">
                          <thead>
-                            <tr><th>Barrio</th><th>Número de Baches</th><th>Costo</th></tr>
+                            <tr>
+                                <th>Barrio</th>
+                                <th>No. Baches</th>
+                                <th>Costo</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            <tr><td>El Pinal</td><td>126</td><td>$392.244.019</td></tr>
-                            <tr><td>Los Mangos</td><td>126</td><td>$511.027.491</td></tr>
-                            <tr><td>Enciso</td><td>81</td><td>$130.221.224</td></tr>
-                            <tr><td>La Mansión</td><td>78</td><td>$113.856.027</td></tr>
-                            <tr><td>La Ladera</td><td>75</td><td>$27.823.762</td></tr>
-                            <tr><td>Villatina</td><td>73</td><td>$461.159.239</td></tr>
-                            <tr><td>Villa Hermosa</td><td>57</td><td>$81.664.832</td></tr>
-                            <tr><td>San Miguel</td><td>55</td><td>$99.511.665</td></tr>
-                            <tr><td>La Libertad</td><td>45</td><td>$107.292.835</td></tr>
-                            <tr><td>Las Estancias</td><td>27</td><td>$551.790.333</td></tr>
-                            <tr><td>Sucre</td><td>22</td><td>$88.978.012</td></tr>
-                            <tr><td>Trece de Noviembre</td><td>16</td><td>$27.521.455</td></tr>
-                            <tr><td>Villa Liliam</td><td>13</td><td>$10.039.038</td></tr>
-                            <tr><td>La Sierra</td><td>12</td><td>$21.177.007</td></tr>
-                            <tr><td>Llanaditas</td><td>12</td><td>$19.709.633</td></tr>
-                            <tr><td>San Antonio</td><td>2</td><td>$36.165.831</td></tr>
-                            <tr><td>Villa Turbay</td><td>2</td><td>$39.309.471</td></tr>
+                            <tr><td>Los Mangos</td><td>128</td><td>$315.002.493</td></tr>
+                            <tr><td>El Pinal</td><td>123</td><td>$378.583.865</td></tr>
+                            <tr><td>Villatina</td><td>78</td><td>$463.611.118</td></tr>
+                            <tr><td>Enciso</td><td>77</td><td>$122.256.488</td></tr>
+                            <tr><td>La Mansión</td><td>75</td><td>$107.702.235</td></tr>
+                            <tr><td>San Miguel</td><td>60</td><td>$105.115.519</td></tr>
+                            <tr><td>Villa Hermosa</td><td>57</td><td>$84.894.827</td></tr>
+                            <tr><td>La Libertad</td><td>35</td><td>$97.040.585</td></tr>
+                            <tr><td>Las Estancias</td><td>29</td><td>$53.170.533</td></tr>
+                            <tr><td>Sucre</td><td>24</td><td>$48.959.628</td></tr>
+                            <tr><td>La Ladera</td><td>22</td><td>$51.265.842</td></tr>
+                            <tr><td>Trece de Noviembre</td><td>16</td><td>$33.533.468</td></tr>
+                            <tr><td>Villa Lilliam</td><td>14</td><td>$205.619.558</td></tr>
+                            <tr><td>Llanaditas</td><td>12</td><td>$18.706.833</td></tr>
+                            <tr><td>La Sierra</td><td>9</td><td>$14.933.429</td></tr>
+                            <tr><td>Villa Turbay</td><td>2</td><td>$59.368.471</td></tr>
+                            <tr><td>San Antonio</td><td>2</td><td>$36.165.431</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Contrato</h3>
+                 <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Contrato</th>
+                                <th>No. Baches</th>
+                                <th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>4600102144 - Malla Vial (2024 - 2025)</td><td>657</td><td>$2.527.978.859</td></tr>
+                            <tr><td>4600098664 - Malla Vial (2023 - 2024)</td><td>97</td><td>$142.751.581</td></tr>
+                            <tr><td>4600105052 - Malla Vial 2025</td><td>8</td><td>$20.718.909</td></tr>
+                            <tr><td>4600103229 - Suministro de Mezcla (2024 - 2025)</td><td>1</td><td>$3.009.975</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -410,270 +336,113 @@
         </section>
 
         <section>
-            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas SIF (Vigencias 2024-2025)</h2>
+            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas</h2>
              <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-                <div class="stat-card"><div class="icon"><i class="fas fa-file-alt"></i></div><div class="value">56</div><div class="label">Total Solicitudes Gestionadas (24/25)</div></div>
-                <div class="stat-card"><div class="icon"><i class="fas fa-wallet"></i></div><div class="value">$110.486.932</div><div class="label">Costo Total de Obras (24/25)</div></div>
-            </div>
-            
-            <div class="summary-table-container">
-                <h3 class="subsection-title">Detalle de Solicitudes Gestionadas (2024-2025)</h3>
-                <table class="summary-table">
-                    <thead>
-                        <tr><th>Dirección</th><th>Vereda o Barrio</th><th>No. intervenciones</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>CL 57 FF CR 22 C</td><td>Enciso</td><td>3</td></tr>
-                        <tr><td>CL 54 CR 26 B</td><td>Las Perlas</td><td>2</td></tr>
-                        <tr><td>CL 55 CR 12</td><td>Villatina</td><td>2</td></tr>
-                        <tr><td>CL 55 CR 25</td><td>Las Perlas</td><td>2</td></tr>
-                        <tr><td>CL 59 # 39A -18, 20 Y 22</td><td>Villa Hermosa Los Angeles</td><td>2</td></tr>
-                        <tr><td>CL 52 CR 10</td><td>Las Estancias</td><td>1</td></tr>
-                        <tr><td>CL 52 CR 10 A</td><td>Enciso</td><td>1</td></tr>
-                        <tr><td>CL 53 B CR 17 B</td><td>Villatina</td><td>1</td></tr>
-                        <tr><td>CL 54 A #30 - 01</td><td>Sucre</td><td>1</td></tr>
-                        <tr><td>CL 54 CR 11</td><td>Villatina</td><td>1</td></tr>
-                        <tr><td>CL 54 CR 16</td><td>Villatina</td><td>1</td></tr>
-                        <tr><td>CL 55 CR 13</td><td>Villa Tina</td><td>1</td></tr>
-                        <tr><td>CL 55 CR 26</td><td>Las Perlas</td><td>1</td></tr>
-                        <tr><td>CL 56 # 31-02</td><td>Sucre</td><td>1</td></tr>
-                        <tr><td>CI 56 #28 - 30 Estación policia Villa Hermosa</td><td>Sucre</td><td>1</td></tr>
-                        <tr><td>CL 56 A CR 25 B</td><td>El Pinal</td><td>1</td></tr>
-                        <tr><td>CL 56 E # 17B - 22</td><td>Villa Tina</td><td>1</td></tr>
-                        <tr><td>CL 56 E CR 24 B</td><td>Villatina</td><td>1</td></tr>
-                        <tr><td>CL 56ee CR 17b</td><td>La Sierra</td><td>1</td></tr>
-                        <tr><td>CL 57 C CR 3 ESTE</td><td>La Sierra</td><td>1</td></tr>
-                        <tr><td>CL 57 D # 29 - 79</td><td>Enciso</td><td>1</td></tr>
-                        <tr><td>CL 57C # 24 A - 05</td><td>Enciso</td><td>1</td></tr>
-                        <tr><td>CL 59 CR 29</td><td>Enciso</td><td>1</td></tr>
-                        <tr><td>CL 62 CR 39</td><td>Villa Hermosa</td><td>1</td></tr>
-                        <tr><td>CL 63 B CR 45 C</td><td>La Mansión</td><td>1</td></tr>
-                        <tr><td>CL 64 A # 45 - 54</td><td>La Mansión</td><td>1</td></tr>
-                        <tr><td>CL 67 CR 28</td><td>Batallón Girardot</td><td>1</td></tr>
-                        <tr><td>CL56 ff CR 17 c</td><td>Trece de noviembre</td><td>1</td></tr>
-                        <tr><td>CL57 por CR 24</td><td>Los Mangos</td><td>1</td></tr>
-                        <tr><td>CLL 42 # 21-59</td><td>Balcón de Miraflores</td><td>1</td></tr>
-                        <tr><td>CR 10 A # 52 - 37</td><td>Villatina</td><td>1</td></tr>
-                        <tr><td>CR 17 A # 57 - 76</td><td>Llanaditas</td><td>1</td></tr>
-                        <tr><td>CR 18 A No 63 - 45</td><td>El Faro</td><td>1</td></tr>
-                        <tr><td>CR 21 CL 35 y 37</td><td>Miraflores</td><td>1</td></tr>
-                        <tr><td>CR 21 CL 59</td><td>Los Mangos</td><td>1</td></tr>
-                        <tr><td>CR 35 A 65 - 54</td><td>Villa Hermosa</td><td>1</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="intervention-section" style="margin-top: 25px;">
-                <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra (2024)</h3>
-                    <canvas id="distribucionGrupo2024Chart"></canvas>
+                <div class="stat-card">
+                    <div class="value">56</div>
+                    <div class="label">Total de solicitudes (2024-2025)</div>
                 </div>
-                 <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado Actual de Obras (2024)</h3>
-                    <canvas id="estadoObra2024Chart"></canvas>
+                <div class="stat-card">
+                    <div class="value">$171.122.651</div>
+                    <div class="label">Costo total de obra</div>
                 </div>
             </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-calendar-alt"></i>Intervenciones Directas SIF - Vigencia 2025</h2>
-             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-                <div class="stat-card"><div class="icon"><i class="fas fa-file-alt"></i></div><div class="value">14</div><div class="label">Solicitudes Gestionadas</div></div>
-                <div class="stat-card"><div class="icon"><i class="fas fa-wallet"></i></div><div class="value">$60.635.719</div><div class="label">Costo Total de Obras</div></div>
-            </div>
             <div class="intervention-section" style="margin-top: 25px;">
-                 <div class="detail-list">
+                <div class="detail-list">
+                    <h3>Distribución de Solicitudes</h3>
+                    <ul>
+                        <li><span>Vigencia 2024</span> <strong>42</strong></li>
+                        <li><span>Vigencia 2025</span> <strong>14</strong></li>
+                    </ul>
+                </div>
+                <div class="detail-list">
                     <h3>Costo por Grupo de Obra</h3>
                     <ul>
-                        <li><span>Parques y Cerrajería</span> <strong>$41 millones</strong></li>
-                        <li><span>Obras Civiles Menores</span> <strong>$20 millones</strong></li>
-                        <li><span>Pavimentos</span> <strong>No especificado</strong></li>
+                        <li><span>Parques y Cerrajería</span> <strong>$99 millones</strong></li>
+                        <li><span>Obras Civiles Menores</span> <strong>$72 millones</strong></li>
+                        <li><span>Apoyo a Otras Entidades</span> <strong>$1 millón</strong></li>
                     </ul>
                 </div>
-                 <div class="detail-list">
+                <div class="detail-list">
                     <h3>Distribución por Indicador</h3>
                     <ul>
-                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>7</strong></li>
+                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>16</strong></li>
+                        <li><span>Mantenimiento en vías urbanas</span> <strong>13</strong></li>
+                        <li><span>Mantenimiento de parques</span> <strong>11</strong></li>
+                        <li><span>Andenes y cordones</span> <strong>5</strong></li>
+                        <li><span>Limpieza de vías</span> <strong>5</strong></li>
                         <li><span>Andenes mantenidos</span> <strong>2</strong></li>
                         <li><span>Espacios públicos mantenidos</span> <strong>2</strong></li>
-                        <li><span>Limpieza de vías</span> <strong>2</strong></li>
-                        <li><span>Infraestructura vial urbana mantenida</span> <strong>1</strong></li>
+                        <li><span>Infraestructura vial mantenida</span> <strong>1</strong></li>
+                        <li><span>Mantenimiento vías rurales</span> <strong>1</strong></li>
                     </ul>
                 </div>
-            </div>
-             <div class="intervention-section" style="margin-top: 25px;">
-                <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Distribución por Grupo de Obra (2025)</h3>
-                    <canvas id="distribucionGrupo2025Chart"></canvas>
-                </div>
-                 <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado Actual de Obras (2025)</h3>
-                    <canvas id="estadoObra2025Chart"></canvas>
-                </div>
-            </div>
-            <div class="summary-table-container">
-                <h3 class="subsection-title">Detalle de Intervenciones (2025)</h3>
-                <table class="summary-table">
-                    <thead>
-                        <tr><th>Dirección</th><th>Vereda o Barrio</th><th>No. Intervenciones</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>CL 54 CR 15</td><td>Villatina</td><td>2</td></tr>
-                        <tr><td>CL 55 CR 15 A</td><td>Villatina</td><td>2</td></tr>
-                        <tr><td>CL 57 CR 29</td><td>Sucre</td><td>2</td></tr>
-                        <tr><td>CL 55 CR 27</td><td>El Pinal</td><td>1</td></tr>
-                        <tr><td>CL 56 # 29-79</td><td>Enciso</td><td>1</td></tr>
-                        <tr><td>CL 66 # 40</td><td>Villa Hermosa</td><td>1</td></tr>
-                        <tr><td>CL 66 C CR 40</td><td>Villa Hermosa</td><td>1</td></tr>
-                        <tr><td>CR 17 # 56 - 13</td><td>Villatina</td><td>1</td></tr>
-                        <tr><td>CR 18 D # 62 - 103</td><td>Llanaditas</td><td>1</td></tr>
-                        <tr><td>CR 19 CL 59 C</td><td>Llanaditas</td><td>1</td></tr>
-                        <tr><td>CR 9 ESTE CL 54</td><td>La Sierra</td><td>1</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        
-        <section>
-            <h2 class="section-title"><i class="fas fa-exchange-alt"></i>Comparativo de Intervenciones por Vigencia</h2>
-            <div class="summary-table-container">
-                <table class="summary-table">
-                    <thead>
-                        <tr>
-                            <th>Vigencia</th><th>Apoyo A Otras Entidades</th><th>Epm</th><th>Obras Civiles Menores</th>
-                            <th>Obras Estabilización</th><th>Parques Y Cerrajería</th><th>Pavimentos</th><th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong>2024</strong></td><td>2</td><td>4</td><td>9</td><td>1</td><td>21</td><td>5</td><td><strong>42</strong></td></tr>
-                        <tr><td><strong>2025</strong></td><td>-</td><td>-</td><td>4</td><td>-</td><td>9</td><td>1</td><td><strong>14</strong></td></tr>
-                        <tr style="background-color: var(--color-azul-oscuro); color: var(--color-blanco); font-weight: bold;">
-                            <td>Total General</td><td>2</td><td>4</td><td>13</td><td>1</td><td>30</td><td>6</td><td><strong>56</strong></td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-clipboard-list"></i>Resumen de Actividades Acumuladas SIF</h2>
-            <div class="summary-table-container">
-                <table class="summary-table">
-                    <thead>
-                        <tr><th>Actividad</th><th>Cantidad Acumulada</th><th>Unidad de Medida</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>VIA ASFALTO MANTENIDA (Fallos y Repav.)</td><td>9923</td><td>m2</td></tr>
-                        <tr><td>PAVIMENTO RIGIDO</td><td>1018</td><td>m2</td></tr>
-                        <tr><td>ZONA VERDE SEMBRADA</td><td>821</td><td>m2</td></tr>
-                        <tr><td>DISEÑO</td><td>788</td><td>%</td></tr>
-                        <tr><td>HUECOS TAPADOS (UND)</td><td>767</td><td>un</td></tr>
-                        <tr><td>ANDEN CONSTRUIDO</td><td>681</td><td>m</td></tr>
-                        <tr><td>ANDENES MANTENIDOS</td><td>560</td><td>m</td></tr>
-                        <tr><td>BARANDAS y PASAMANOS</td><td>532</td><td>m</td></tr>
-                        <tr><td>ANDEN MANTENIDO</td><td>389</td><td>m</td></tr>
-                        <tr><td>PARQUE Y PLAZOLETA CONSTRUIDO</td><td>263</td><td>m2</td></tr>
-                        <tr><td>JARDIN SEMBRADO</td><td>155</td><td>m2</td></tr>
-                        <tr><td>OBRA DE ESTABILIZACION</td><td>153</td><td>m</td></tr>
-                        <tr><td>BORDILLOS-CUNETAS</td><td>102</td><td>m</td></tr>
-                        <tr><td>GESTION PREDIAL</td><td>100</td><td>%</td></tr>
-                        <tr><td>PASAMANOS Y DEFENSAS INSTALADOS</td><td>25</td><td>m</td></tr>
-                        <tr><td>PARCHEO DE HUECOS</td><td>5</td><td>un</td></tr>
-                        <tr><td>OBRA DE ESTABILIZACION</td><td>2</td><td>un</td></tr>
-                    </tbody>
-                </table>
             </div>
         </section>
         
     </div>
 
-<script>
-    const chartColors = {
-        blue: 'rgba(25, 118, 210, 0.85)', orange: 'rgba(255, 111, 0, 0.85)',
-        blueDark: 'rgba(13, 71, 161, 0.85)', orangeDark: 'rgba(239, 108, 0, 0.85)',
-        teal: 'rgba(0, 150, 136, 0.85)', red: 'rgba(211, 47, 47, 0.85)',
-        purple: 'rgba(123, 31, 162, 0.85)', green: 'rgba(56, 142, 60, 0.85)',
-        grey: 'rgba(158, 158, 158, 0.85)'
-    };
-    
-    const distGrupo2024Ctx = document.getElementById('distribucionGrupo2024Chart').getContext('2d');
-    new Chart(distGrupo2024Ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Parques y Cerrajería (50%)', 'Obras Civiles Menores (21%)', 'Pavimentos (12%)', 'Epm (10%)', 'Apoyo a Otras Entidades (5%)', 'Obras Estabilización (2%)'],
-            datasets: [{ data: [21, 9, 5, 4, 2, 1], backgroundColor: Object.values(chartColors) }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    const estadoObra2024Ctx = document.getElementById('estadoObra2024Chart').getContext('2d');
-    new Chart(estadoObra2024Ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Terminada (71%)', 'Buen estado (14%)', 'ATENDIDO (7%)', 'Traslado a contratista (2%)', 'Traslado EPM (2%)', 'Por iniciar (2%)'],
-            datasets: [{ data: [30, 6, 3, 1, 1, 1], backgroundColor: Object.values(chartColors) }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    const distGrupo2025Ctx = document.getElementById('distribucionGrupo2025Chart').getContext('2d');
-    new Chart(distGrupo2025Ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Parques y Cerrajería (64%)', 'Obras Civiles Menores (29%)', 'Pavimentos (7%)'],
-            datasets: [{ data: [9, 4, 1], backgroundColor: [chartColors.blue, chartColors.orange, chartColors.green] }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    const estadoObra2025Ctx = document.getElementById('estadoObra2025Chart').getContext('2d');
-    new Chart(estadoObra2025Ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Terminada (79%)', 'Por iniciar (21%)'],
-            datasets: [{ data: [11, 3], backgroundColor: [chartColors.green, chartColors.grey] }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-    document.getElementById('download-pdf').addEventListener('click', function () {
-        const content = document.getElementById('report-content');
-        const button = this;
-        button.innerText = 'Generando PDF...';
-        button.disabled = true;
-
-        html2canvas(content, {
-            scale: 2, useCORS: true, windowWidth: content.scrollWidth, windowHeight: content.scrollHeight
-        }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdf.internal.pageSize.getHeight();
-            const ratio = canvas.width / canvas.height;
-            const imgHeight = pdfWidth / ratio;
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-            heightLeft -= pdfHeight;
-
-            while (heightLeft > 0) {
-                position -= pdfHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-                heightLeft -= pdfHeight;
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function () {
+            if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+                alert('Error: No se pudieron cargar las librerías para generar el PDF.\nPor favor, verifica tu conexión a internet e inténtalo de nuevo.');
+                return; 
             }
-            pdf.save('Reporte-Comuna-8-Villa-Hermosa.pdf');
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
-        }).catch(err => {
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
-            console.error("Error al generar el PDF:", err);
-            alert("Hubo un error al generar el PDF. Por favor, intenta de nuevo.");
-        });
-    });
-</script>
 
+            const button = this;
+            const content = document.getElementById('report-content');
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+            button.disabled = true;
+
+            try {
+                html2canvas(content, {
+                    scale: 2,
+                    useCORS: true
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+
+                    const pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const canvasWidth = canvas.width;
+                    const canvasHeight = canvas.height;
+                    const ratio = canvasWidth / canvasHeight;
+                    const imgHeight = pdfWidth / ratio;
+
+                    let heightLeft = imgHeight;
+                    let position = 0;
+
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                    heightLeft -= pdf.internal.pageSize.getHeight();
+
+                    while (heightLeft > 0) {
+                        position -= pdf.internal.pageSize.getHeight();
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                        heightLeft -= pdf.internal.pageSize.getHeight();
+                    }
+
+                    pdf.save('Reporte-Comuna-8-Villa-Hermosa.pdf');
+                }).catch(err => {
+                    console.error("Error durante la creación del canvas:", err);
+                    alert("Hubo un error al procesar el contenido del reporte.");
+                }).finally(() => {
+                    button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                    button.disabled = false;
+                });
+            } catch (error) {
+                console.error("Error inesperado al intentar generar el PDF:", error);
+                alert("Ocurrió un error inesperado. Revisa la consola del navegador para más detalles.");
+                button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                button.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>
