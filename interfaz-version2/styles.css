@@ -1,0 +1,82 @@
+:root {
+    --primary-hue: 210;
+    --secondary-hue: 30;
+    --primary-color: hsl(var(--primary-hue), 90%, 55%);
+    --primary-color-dark: hsl(var(--primary-hue), 90%, 35%);
+    --primary-color-light: hsl(var(--primary-hue), 90%, 96%);
+    --secondary-color: hsl(var(--secondary-hue), 100%, 55%);
+    --secondary-color-dark: hsl(var(--secondary-hue), 100%, 45%);
+    --text-color-dark: #1a202c;
+    --text-color: #2d3748;
+    --text-color-light: #4a5568;
+    --bg-color: #f7fafc;
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+
+.card {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+    z-index: 10;
+}
+
+.comuna-label {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 5px;
+    border: 1px solid #777;
+    color: #1a202c;
+    font-size: 1.5rem;
+    font-weight: 800;
+    padding: 8px 15px;
+    text-shadow: 1px 1px 2px white;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.report-link {
+    transition: all 0.2s ease-in-out;
+}
+
+.report-link:hover {
+    background-color: var(--primary-color-light);
+    transform: translateX(4px);
+}

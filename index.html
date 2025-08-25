@@ -3,216 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RUTASIF - Portal de Consulta Estratégica</title>
+    <title>Portal de Consulta SIF | Alcaldía de Medellín</title>
+    
+    <meta name="description" content="Consulta de manera interactiva las obras y reportes de la Secretaría de Infraestructura Física de Medellín. Gestión 2025.">
+    <meta name="author" content="Alcaldía de Medellín">
+
+    <meta property="og:title" content="Portal de Consulta SIF | Alcaldía de Medellín">
+    <meta property="og:description" content="Explora los proyectos de infraestructura por comunas y accede a reportes detallados.">
+    <meta property="og:image" content="https://www.medellin.gov.co/content/uploads/2023/12/alcaldia-de-medellin-logo.png">
+    <meta property="og:url" content="https://www.medellin.gov.co/sif-portal/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_CO">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Portal de Consulta SIF | Alcaldía de Medellín">
+    <meta name="twitter:description" content="Explora los proyectos de infraestructura por comunas y accede a reportes detallados.">
+    <meta name="twitter:image" content="https://www.medellin.gov.co/content/uploads/2023/12/alcaldia-de-medellin-logo.png">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-    <style>
-        :root {
-            --primary-hue: 210;
-            --secondary-hue: 30;
-            --primary-color: hsl(var(--primary-hue), 90%, 55%);
-            --primary-color-dark: hsl(var(--primary-hue), 90%, 35%);
-            --primary-color-light: hsl(var(--primary-hue), 90%, 96%);
-            --secondary-color: hsl(var(--secondary-hue), 100%, 55%);
-            --secondary-color-dark: hsl(var(--secondary-hue), 100%, 45%);
-            --text-color-dark: #1a202c;
-            --text-color: #2d3748;
-            --text-color-light: #4a5568;
-            --bg-color: #f7fafc;
-            --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-        }
-        .card {
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
-                        box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-        }
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        #map {
-            height: 500px;
-            width: 100%;
-            border-radius: 0.75rem;
-            border: 1px solid var(--border-color);
-            z-index: 10;
-        }
-        .comuna-label {
-            background-color: rgba(255, 255, 255, 0.85);
-            border-radius: 5px;
-            border: 1px solid #777;
-            color: #1a202c;
-            font-size: 1.5rem;
-            font-weight: 800;
-            padding: 8px 15px;
-            text-shadow: 1px 1px 2px white;
-            white-space: nowrap;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        .reveal-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-            will-change: opacity, transform;
-        }
-        .reveal-on-scroll.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .report-link {
-            transition: all 0.2s ease-in-out;
-        }
-        .report-link:hover {
-            background-color: var(--primary-color-light);
-            transform: translateX(4px);
-        }
-    </style>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css' rel='stylesheet' />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="html2canvas.min.js"></script>
+    <script src="jspdf.umd.min.js"></script>
+
 </head>
 <body class="bg-gray-50">
 
-    <header style="background: linear-gradient(135deg, var(--primary-color-dark), var(--primary-color));" class="text-white text-center py-12 px-5 shadow-lg">
-        <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="max-w-[280px] mx-auto mb-6">
+    <header style="background: linear-gradient(135deg, hsl(210, 60%, 25%), hsl(210, 90%, 55%));" class="text-white text-center py-12 px-5 shadow-lg">
+        <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="max-w-[280px] mx-auto mb-6" width="280" height="75">
         <h1 class="text-5xl font-extrabold tracking-tight">Portal de Consulta SIF</h1>
         <p class="text-lg font-light opacity-90 mt-2 max-w-2xl mx-auto">Secretaría de Infraestructura Física | Gestión 2025</p>
     </header>
 
     <main class="max-w-screen-xl mx-auto p-5 md:p-8">
-        <div class="intro-block reveal-on-scroll bg-white border-l-4 border-blue-600 p-8 my-12 rounded-lg shadow-md max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">¡Te damos la bienvenida!</h2>
-            <p class="text-lg text-gray-600 leading-relaxed">Usa el buscador para centrar el mapa en tu comuna o haz clic directamente sobre el mapa para consultar las obras.</p>
+
+        <div class="intro-block bg-white border-l-4 border-blue-600 p-8 my-12 rounded-lg shadow-md max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">¡Bienvenido al Geovisor Inteligente!</h2>
+            <p class="text-lg text-gray-600 leading-relaxed">Explora un mapa 3D de Medellín. Usa el buscador o haz clic directamente sobre una comuna para ver su información detallada.</p>
         </div>
 
-        <section id="consulta-comuna" class="reveal-on-scroll my-12">
-            <div class="card bg-white rounded-xl shadow-lg p-8 md:p-10">
-                <div class="flex items-center gap-4 mb-6">
-                    <i class="fa-solid fa-map-location-dot text-3xl text-blue-600"></i>
-                    <h3 class="text-2xl font-bold text-gray-800">Buscador por Comunas</h3>
-                </div>
-                
-                <div class="flex flex-col md:flex-row gap-4 mb-6">
-                    <div class="flex-grow">
-                        <label for="comuna-search-select" class="font-semibold text-gray-700 block mb-2">1. Selecciona una comuna:</label>
-                        <select id="comuna-search-select" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 cursor-pointer focus:border-blue-500 transition-colors">
-                            <option value="" disabled selected>-- Elige una comuna del listado --</option>
-                        </select>
+        <div id="geovisor-container" class="relative">
+            <aside id="info-sidebar" class="absolute top-0 left-0 h-full w-full max-w-md bg-white shadow-2xl z-30 transform -translate-x-full transition-transform duration-500 ease-in-out overflow-y-auto">
+                <button id="close-sidebar-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors z-50">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+                <div id="report-content" class="p-6">
                     </div>
-                    <button id="zoom-to-comuna-btn" class="w-full md:w-auto self-end bg-blue-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-800 transition-colors flex items-center justify-center gap-3">
-                        <i class="fa-solid fa-search-location"></i> Ir a la Comuna
-                    </button>
-                </div>
+            </aside>
 
-                <p class="text-gray-600 mt-2 mb-8">2. O navega por el mapa interactivo y haz clic en una comuna para abrir su reporte.</p>
-                <div id="map" class="shadow-inner"></div>
-            </div>
-        </section>
+            <section id="consulta-comuna" class="my-12" aria-labelledby="buscador-titulo">
+                <div class="card bg-white rounded-xl shadow-lg p-8 md:p-10">
+                    <div class="flex items-center gap-4 mb-6">
+                        <i class="fa-solid fa-map-location-dot text-3xl text-blue-600"></i>
+                        <h3 id="buscador-titulo" class="text-2xl font-bold text-gray-800">Buscador por Comunas</h3>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row gap-4 mb-6">
+                        <div class="flex-grow relative">
+                            <label for="comuna-search-input" class="font-semibold text-gray-700 block mb-2">1. Escribe el nombre o número de la comuna:</label>
+                            <input type="text" id="comuna-search-input" placeholder="Ej: 'Comuna 13' o 'San Javier'" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                            <div id="search-results" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg hidden"></div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-600 mt-2 mb-8">2. O navega por el mapa interactivo y haz clic en una comuna para abrir su reporte.</p>
+                    <div id="map" class="shadow-inner bg-gray-200"></div>
+                </div>
+            </section>
+        </div>
         
-        <section id="acceso-reportes" class="reveal-on-scroll my-16">
-            <div class="flex items-center gap-4 border-b-2 border-orange-500 pb-4 mb-10">
-                <i class="fa-solid fa-chart-simple text-4xl text-blue-800"></i>
-                <h2 class="text-4xl font-extrabold text-blue-900">Reportes</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                 <div class="card bg-white rounded-xl shadow-lg p-6 flex flex-col">
-                    <h3 class="text-xl font-bold text-blue-900 mb-4 border-b pb-3">Subsecretaría de Planeación</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-2">Unidad de Gestión de la Información y Proyectos</h4>
-                            <div class="flex flex-col space-y-2">
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiNDAyOGE4OTMtZTExMi00M2VlLWJiNmUtMTMwMzk3MjY0YmU3IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-wallet fa-fw text-blue-600"></i><span>Ejecución Presupuestal</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiMDk4YTEyZTMtY2FlZi00Y2Y0LWI2ODgtNDZiYTgxN2EzZDMyIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-chart-line fa-fw text-blue-600"></i><span>Indicadores PI</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiMjliYjNkNGQtYjJiMC00MDRhLWJlZDMtYjk4YmI1YjMwZjUzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-money-bill-transfer fa-fw text-blue-600"></i><span>Informe Tácita de plata</span></a>
-                            </div>
-                        </div>
-                        <div class="border-t pt-4">
-                            <h4 class="font-semibold text-gray-800 mb-2">Unidad de Estudios y Diseños</h4>
-                             <a href="https://app.powerbi.com/view?r=eyJrIjoiN2Y1ZTQyNGQtOTkzZC00MjY4LTg5NzktZWY1NzNiYjE2NzBkIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-tree-city fa-fw text-green-600"></i><span>Parques - Tejiendo Hogares</span></a>
-                        </div>
-                        <div class="border-t pt-4">
-                            <h4 class="font-semibold text-gray-800 mb-2">Unidad de Gestión Contractual</h4>
-                             <a href="https://app.powerbi.com/view?r=eyJrIjoiMzE1MWNmMjQtYWEyMy00MGVjLWI4MjgtNzIzZTYxZDAzNDVhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-file-signature fa-fw text-gray-600"></i><span>Proceso Precontractual</span></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card bg-white rounded-xl shadow-lg p-6 flex flex-col">
-                    <h3 class="text-xl font-bold text-blue-900 mb-4 border-b pb-3">Sub. de Construcción y Mantenimiento</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-2">Unidad de Ejecución de Proyectos</h4>
-                            <div class="flex flex-col space-y-2">
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiNTI2N2NhMjktN2RmOS00OTliLTg1Y2UtMjY2M2Q5MDcxOTY0IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-helmet-safety fa-fw text-orange-600"></i><span>Seguimiento a Contratos de Obra</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiNjUyOWI4ZmQtZWIzNi00NjM2LTlkOGUtOGM0OTUwNjY1MmNmIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-users fa-fw text-orange-600"></i><span>Empleabilidad</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiNWI3ZTNkZmMtMjEyNy00NjU1LTk3YzktNTMyOGJkMzZlN2ZiIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-road-circle-xmark fa-fw text-orange-600"></i><span>Informe Baches</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiZDQ2OGM4MDItYTc1Zi00MjE5LWJlNmUtZjJhMDE3ZjkzMWFjIiwidCI6ImJhMzM0NGUyLTAxMGYtNGJkZi1iNTEyLWMzOGRmYTdhNWJhNSIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-bus-simple fa-fw text-orange-600"></i><span>Informe Paraderos</span></a>
-                            </div>
-                        </div>
-                        <div class="border-t pt-4">
-                            <h4 class="font-semibold text-gray-800 mb-2">Unidad Socioambiental y Paisajismo</h4>
-                            <div class="flex flex-col space-y-2">
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiOGQwNzU5ODgtNmIyYS00YTQ3LTg3ODMtOGRhOTU2MmMyNjZhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-leaf fa-fw text-green-600"></i><span>Jardín Botánico*</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiMDkyNjU3Y2UtOTRjNy00YjVjLTg0MzgtNzBiYmUyOWNhNzEwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-mountain-sun fa-fw text-green-600"></i><span>Parque Arví*</span></a>
-                            </div>
-                        </div>
-                         <div class="border-t pt-4">
-                            <h4 class="font-semibold text-gray-800 mb-2">Unidad de Mantenimiento</h4>
-                             <div class="flex flex-col space-y-2">
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiNWM1NzY3MjQtZmViMy00YmRiLWJiODgtMDg0MDRhZjVkMTgzIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-person-digging fa-fw text-gray-600"></i><span>Trabajadores Oficiales</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiNzkzZmIyODUtMGE3YS00YTUwLTkyYTMtMTBlODI3MWE4OWU2IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-inbox fa-fw text-gray-600"></i><span>Solicitudes Baches SIRO</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiNmQ1ZThhNWItZTA1Mi00ZDc4LTgwMTktYWEyYzViOTY1YTNhIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-truck-pickup fa-fw text-gray-600"></i><span>Parque Automotor</span></a>
-                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card bg-white rounded-xl shadow-lg p-6 flex flex-col">
-                    <h3 class="text-xl font-bold text-blue-900 mb-4 border-b pb-3">Gestión Estratégica y Apoyo</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="font-semibold text-gray-800 mb-2">Despacho SIF</h4>
-                            <div class="flex flex-col space-y-2">
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiZmVhNjY3YTYtNTIwNi00NzUzLTkyYWYtZmZiMDBiNTdkNWQwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-signs-post fa-fw text-cyan-600"></i><span>Gerencia de Corregimientos</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiMjEyMzdhNGEtZGVjNC00YTM4LWEzNDAtMjI1MmY1NzdlODEwIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-house-flood-water fa-fw text-cyan-600"></i><span>Informe Calamidad Pública</span></a>
-                                <a href="https://app.powerbi.com/view?r=eyJrIjoiMjgzYmIxZTctMmM1Yi00YWEzLWIyYTktYjk3ODYxNGI3NTY4IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-calendar-days fa-fw text-cyan-600"></i><span>Plan de Contratación</span></a>
-                            </div>
-                        </div>
-                        <div class="border-t pt-4">
-                            <h4 class="font-semibold text-gray-800 mb-2">Dirección Técnica</h4>
-                            <a href="https://app.powerbi.com/view?r=eyJrIjoiYzEzZGI3ZTUtNDc1ZS00ODdjLTg1YTctYTA1OGZjYzdmMTVlIiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-star fa-fw text-yellow-500"></i><span>Estado Proyectos Estratégicos</span></a>
-                        </div>
-                        <div class="border-t pt-4">
-                            <h4 class="font-semibold text-gray-800 mb-2">Apoyo Jurídico</h4>
-                            <a href="https://app.powerbi.com/view?r=eyJrIjoiZWY3ZDM3ODctMGFmYS00OTlmLWJlYTgtMmViNTE5NmZmYjA5IiwidCI6IjljNDhlMDg4LTVlNDQtNGIwZC05M2EwLWVlYjJjNjEyN2MzZCIsImMiOjR9" target="_blank" class="report-link p-2 rounded-md flex items-center gap-3"><i class="fa-solid fa-gavel fa-fw text-gray-600"></i><span>Acciones Populares</span></a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
     </main>
 
     <footer class="text-center mt-12 p-8 border-t border-gray-200 text-gray-500">
@@ -220,108 +87,6 @@
         <p class="text-sm mt-1">Alcaldía de Medellín - Secretaría de Infraestructura Física</p>
     </footer>
     
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            
-            // --- DATOS DE COMUNAS EMBEBIDOS (VERSIÓN CORREGIDA) ---
-            const comunasGeoJsonData = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"IDENTIFICADOR":"1","NOMBRE":"Comuna 1 - Popular"},"geometry":{"type":"Polygon","coordinates":[[[-75.552,6.297],[-75.554,6.295],[-75.555,6.294],[-75.556,6.292],[-75.558,6.29],[-75.558,6.289],[-75.558,6.286],[-75.559,6.286],[-75.56,6.285],[-75.561,6.283],[-75.561,6.282],[-75.56,6.281],[-75.558,6.279],[-75.554,6.276],[-75.551,6.275],[-75.55,6.275],[-75.548,6.276],[-75.547,6.277],[-75.545,6.278],[-75.544,6.278],[-75.544,6.279],[-75.543,6.279],[-75.542,6.281],[-75.542,6.284],[-75.541,6.285],[-75.541,6.287],[-75.542,6.289],[-75.548,6.29],[-75.551,6.292],[-75.552,6.297]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"2","NOMBRE":"Comuna 2 - Santa Cruz"},"geometry":{"type":"Polygon","coordinates":[[[-75.56,6.287],[-75.563,6.288],[-75.565,6.289],[-75.566,6.289],[-75.568,6.288],[-75.568,6.287],[-75.568,6.286],[-75.568,6.284],[-75.566,6.28],[-75.562,6.278],[-75.561,6.278],[-75.561,6.28],[-75.56,6.28],[-75.56,6.281],[-75.561,6.282],[-75.561,6.283],[-75.56,6.285],[-75.559,6.285],[-75.559,6.286],[-75.558,6.286],[-75.56,6.287]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"3","NOMBRE":"Comuna 3 - Manrique"},"geometry":{"type":"Polygon","coordinates":[[[-75.55,6.275],[-75.551,6.275],[-75.554,6.276],[-75.554,6.274],[-75.554,6.273],[-75.555,6.272],[-75.556,6.271],[-75.556,6.27],[-75.557,6.269],[-75.558,6.267],[-75.558,6.266],[-75.558,6.265],[-75.556,6.264],[-75.555,6.263],[-75.554,6.262],[-75.552,6.261],[-75.551,6.26],[-75.548,6.258],[-75.547,6.258],[-75.545,6.259],[-75.54,6.266],[-75.538,6.269],[-75.537,6.272],[-75.535,6.274],[-75.535,6.277],[-75.534,6.28],[-75.538,6.283],[-75.539,6.284],[-75.541,6.285],[-75.542,6.284],[-75.542,6.281],[-75.543,6.279],[-75.544,6.279],[-75.544,6.278],[-75.545,6.278],[-75.547,6.277],[-75.548,6.276],[-75.55,6.275]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"4","NOMBRE":"Comuna 4 - Aranjuez"},"geometry":{"type":"Polygon","coordinates":[[[-75.562,6.259],[-75.56,6.256],[-75.558,6.255],[-75.556,6.255],[-75.554,6.255],[-75.55,6.256],[-75.548,6.257],[-75.547,6.258],[-75.548,6.258],[-75.551,6.26],[-75.552,6.261],[-75.554,6.262],[-75.555,6.263],[-75.556,6.264],[-75.558,6.265],[-75.558,6.266],[-75.558,6.267],[-75.557,6.269],[-75.556,6.27],[-75.556,6.271],[-75.555,6.272],[-75.554,6.273],[-75.554,6.274],[-75.554,6.276],[-75.558,6.279],[-75.56,6.281],[-75.56,6.28],[-75.561,6.28],[-75.561,6.278],[-75.562,6.278],[-75.566,6.28],[-75.567,6.278],[-75.568,6.276],[-75.568,6.274],[-75.567,6.272],[-75.566,6.27],[-75.566,6.268],[-75.565,6.265],[-75.563,6.261],[-75.562,6.259]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"5","NOMBRE":"Comuna 5 - Castilla"},"geometry":{"type":"Polygon","coordinates":[[[-75.57,6.289],[-75.572,6.289],[-75.574,6.288],[-75.576,6.286],[-75.577,6.284],[-75.579,6.282],[-75.579,6.279],[-75.58,6.277],[-75.579,6.274],[-75.578,6.272],[-75.577,6.27],[-75.576,6.268],[-75.575,6.267],[-75.572,6.264],[-75.569,6.264],[-75.565,6.265],[-75.566,6.268],[-75.566,6.27],[-75.567,6.272],[-75.568,6.274],[-75.568,6.276],[-75.567,6.278],[-75.566,6.28],[-75.568,6.284],[-75.568,6.286],[-75.568,6.287],[-75.568,6.288],[-75.57,6.289]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"6","NOMBRE":"Comuna 6 - Doce de Octubre"},"geometry":{"type":"Polygon","coordinates":[[[-75.58,6.297],[-75.583,6.296],[-75.585,6.295],[-75.586,6.293],[-75.587,6.29],[-75.587,6.287],[-75.586,6.284],[-75.583,6.28],[-75.58,6.277],[-75.579,6.279],[-75.579,6.282],[-75.577,6.284],[-75.576,6.286],[-75.574,6.288],[-75.572,6.289],[-75.57,6.289],[-75.57,6.291],[-75.572,6.293],[-75.574,6.295],[-75.577,6.297],[-75.58,6.297]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"7","NOMBRE":"Comuna 7 - Robledo"},"geometry":{"type":"Polygon","coordinates":[[[-75.592,6.266],[-75.591,6.265],[-75.59,6.263],[-75.59,6.26],[-75.591,6.257],[-75.592,6.254],[-75.593,6.251],[-75.594,6.248],[-75.595,6.245],[-75.596,6.242],[-75.597,6.239],[-75.598,6.236],[-75.599,6.233],[-75.6,6.23],[-75.601,6.227],[-75.602,6.224],[-75.602,6.221],[-75.602,6.219],[-75.593,6.226],[-75.591,6.228],[-75.589,6.23],[-75.587,6.232],[-75.585,6.234],[-75.583,6.236],[-75.582,6.238],[-75.584,6.241],[-75.586,6.244],[-75.587,6.247],[-75.587,6.25],[-75.586,6.253],[-75.583,6.257],[-75.58,6.256],[-75.577,6.257],[-75.573,6.26],[-75.57,6.263],[-75.569,6.264],[-75.572,6.264],[-75.575,6.267],[-75.576,6.268],[-75.577,6.27],[-75.578,6.272],[-75.579,6.274],[-75.58,6.277],[-75.583,6.28],[-75.586,6.284],[-75.589,6.282],[-75.591,6.28],[-75.593,6.278],[-75.594,6.275],[-75.594,6.272],[-75.593,6.269],[-75.592,6.266]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"8","NOMBRE":"Comuna 8 - Villa Hermosa"},"geometry":{"type":"Polygon","coordinates":[[[-75.542,6.256],[-75.54,6.257],[-75.539,6.259],[-75.537,6.262],[-75.535,6.265],[-75.533,6.268],[-75.531,6.271],[-75.53,6.274],[-75.529,6.277],[-75.53,6.279],[-75.534,6.28],[-75.535,6.277],[-75.535,6.274],[-75.537,6.272],[-75.538,6.269],[-75.54,6.266],[-75.545,6.259],[-75.542,6.256]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"9","NOMBRE":"Comuna 9 - Buenos Aires"},"geometry":{"type":"Polygon","coordinates":[[[-75.54,6.244],[-75.541,6.242],[-75.542,6.24],[-75.543,6.238],[-75.544,6.236],[-75.545,6.234],[-75.546,6.232],[-75.547,6.23],[-75.548,6.228],[-75.549,6.226],[-75.55,6.224],[-75.551,6.222],[-75.552,6.22],[-75.553,6.218],[-75.554,6.216],[-75.555,6.214],[-75.556,6.212],[-75.557,6.21],[-75.558,6.208],[-75.559,6.206],[-75.56,6.204],[-75.56,6.202],[-75.56,6.2],[-75.56,6.198],[-75.56,6.196],[-75.559,6.199],[-75.558,6.203],[-75.557,6.207],[-75.556,6.211],[-75.555,6.215],[-75.554,6.219],[-75.553,6.223],[-75.552,6.227],[-75.551,6.231],[-75.55,6.235],[-75.549,6.239],[-75.548,6.243],[-75.547,6.247],[-75.546,6.251],[-75.544,6.255],[-75.543,6.259],[-75.541,6.263],[-75.539,6.267],[-75.536,6.271],[-75.532,6.275],[-75.529,6.277],[-75.53,6.274],[-75.531,6.271],[-75.533,6.268],[-75.535,6.265],[-75.537,6.262],[-75.539,6.259],[-75.54,6.257],[-75.54,6.256],[-75.54,6.254],[-75.54,6.252],[-75.54,6.25],[-75.54,6.248],[-75.54,6.246],[-75.54,6.244]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"10","NOMBRE":"Comuna 10 - La Candelaria"},"geometry":{"type":"Polygon","coordinates":[[[-75.58,6.235],[-75.58,6.236],[-75.577,6.237],[-75.574,6.238],[-75.571,6.239],[-75.568,6.24],[-75.565,6.241],[-75.562,6.242],[-75.559,6.243],[-75.556,6.244],[-75.553,6.245],[-75.55,6.246],[-75.55,6.247],[-75.553,6.248],[-75.556,6.249],[-75.559,6.25],[-75.562,6.251],[-75.563,6.252],[-75.562,6.253],[-75.562,6.255],[-75.56,6.256],[-75.558,6.255],[-75.556,6.255],[-75.554,6.255],[-75.55,6.256],[-75.548,6.257],[-75.547,6.258],[-75.545,6.259],[-75.542,6.256],[-75.54,6.257],[-75.54,6.256],[-75.54,6.254],[-75.54,6.252],[-75.54,6.25],[-75.54,6.248],[-75.54,6.246],[-75.54,6.244],[-75.541,6.242],[-75.542,6.24],[-75.543,6.238],[-75.544,6.236],[-75.545,6.234],[-75.546,6.232],[-75.547,6.23],[-75.548,6.228],[-75.549,6.226],[-75.55,6.224],[-75.551,6.222],[-75.552,6.22],[-75.553,6.218],[-75.554,6.216],[-75.555,6.214],[-75.556,6.212],[-75.557,6.21],[-75.558,6.208],[-75.559,6.206],[-75.56,6.204],[-75.56,6.202],[-75.56,6.2],[-75.56,6.198],[-75.56,6.196],[-75.56,6.195],[-75.561,6.197],[-75.562,6.199],[-75.563,6.201],[-75.564,6.203],[-75.565,6.205],[-75.566,6.207],[-75.567,6.209],[-75.568,6.211],[-75.569,6.213],[-75.57,6.215],[-75.571,6.217],[-75.572,6.219],[-75.573,6.221],[-75.574,6.223],[-75.575,6.225],[-75.576,6.227],[-75.577,6.229],[-75.578,6.231],[-75.579,6.233],[-75.58,6.235]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"11","NOMBRE":"Comuna 11 - Laureles Estadio"},"geometry":{"type":"Polygon","coordinates":[[[-75.58,6.256],[-75.583,6.257],[-75.586,6.253],[-75.587,6.25],[-75.587,6.247],[-75.586,6.244],[-75.584,6.241],[-75.582,6.238],[-75.58,6.236],[-75.577,6.237],[-75.574,6.238],[-75.571,6.239],[-75.568,6.24],[-75.565,6.241],[-75.562,6.242],[-75.559,6.243],[-75.556,6.244],[-75.553,6.245],[-75.55,6.246],[-75.55,6.247],[-75.553,6.248],[-75.556,6.249],[-75.559,6.25],[-75.562,6.251],[-75.563,6.252],[-75.562,6.253],[-75.562,6.255],[-75.56,6.256],[-75.562,6.259],[-75.563,6.261],[-75.565,6.265],[-75.569,6.264],[-75.57,6.263],[-75.573,6.26],[-75.577,6.257],[-75.58,6.256]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"12","NOMBRE":"Comuna 12 - La America"},"geometry":{"type":"Polygon","coordinates":[[[-75.601,6.227],[-75.6,6.23],[-75.599,6.233],[-75.598,6.236],[-75.597,6.239],[-75.596,6.242],[-75.595,6.245],[-75.594,6.248],[-75.593,6.251],[-75.592,6.254],[-75.591,6.257],[-75.59,6.26],[-75.59,6.263],[-75.591,6.265],[-75.592,6.266],[-75.593,6.269],[-75.594,6.272],[-75.593,6.226],[-75.591,6.228],[-75.589,6.23],[-75.587,6.232],[-75.585,6.234],[-75.583,6.236],[-75.582,6.238],[-75.584,6.241],[-75.586,6.244],[-75.587,6.247],[-75.587,6.25],[-75.586,6.253],[-75.594,6.275],[-75.597,6.222],[-75.599,6.22],[-75.601,6.218],[-75.602,6.219],[-75.602,6.221],[-75.602,6.224],[-75.601,6.227]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"13","NOMBRE":"Comuna 13 - San Javier"},"geometry":{"type":"Polygon","coordinates":[[[-75.617,6.241],[-75.615,6.24],[-75.613,6.239],[-75.612,6.238],[-75.611,6.237],[-75.609,6.235],[-75.608,6.234],[-75.607,6.233],[-75.606,6.232],[-75.605,6.231],[-75.604,6.23],[-75.603,6.229],[-75.602,6.228],[-75.602,6.227],[-75.602,6.226],[-75.602,6.225],[-75.602,6.224],[-75.602,6.222],[-75.602,6.221],[-75.602,6.219],[-75.601,6.218],[-75.599,6.22],[-75.597,6.222],[-75.595,6.224],[-75.593,6.226],[-75.591,6.228],[-75.589,6.23],[-75.587,6.232],[-75.585,6.234],[-75.583,6.236],[-75.58,6.235],[-75.581,6.232],[-75.582,6.229],[-75.583,6.226],[-75.584,6.223],[-75.585,6.22],[-75.586,6.217],[-75.587,6.214],[-75.588,6.211],[-75.589,6.208],[-75.59,6.205],[-75.591,6.202],[-75.592,6.199],[-75.593,6.196],[-75.617,6.241]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"14","NOMBRE":"Comuna 14 - El Poblado"},"geometry":{"type":"Polygon","coordinates":[[[-75.56,6.195],[-75.561,6.197],[-75.562,6.199],[-75.563,6.201],[-75.564,6.203],[-75.565,6.205],[-75.566,6.207],[-75.567,6.209],[-75.568,6.211],[-75.569,6.213],[-75.57,6.215],[-75.571,6.217],[-75.572,6.219],[-75.573,6.221],[-75.574,6.223],[-75.575,6.225],[-75.576,6.227],[-75.577,6.229],[-75.578,6.231],[-75.579,6.233],[-75.58,6.235],[-75.581,6.232],[-75.582,6.229],[-75.583,6.226],[-75.584,6.223],[-75.585,6.22],[-75.586,6.217],[-75.587,6.214],[-75.588,6.211],[-75.589,6.208],[-75.59,6.205],[-75.591,6.202],[-75.592,6.199],[-75.593,6.196],[-75.59,6.18],[-75.588,6.18],[-75.584,6.179],[-75.573,6.179],[-75.572,6.173],[-75.56,6.195]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"15","NOMBRE":"Comuna 15 - Guayabal"},"geometry":{"type":"Polygon","coordinates":[[[-75.58,6.235],[-75.581,6.232],[-75.582,6.229],[-75.583,6.226],[-75.584,6.223],[-75.585,6.22],[-75.586,6.217],[-75.587,6.214],[-75.588,6.211],[-75.589,6.208],[-75.59,6.205],[-75.591,6.202],[-75.592,6.199],[-75.591,6.201],[-75.589,6.199],[-75.587,6.197],[-75.585,6.195],[-75.583,6.193],[-75.582,6.192],[-75.581,6.192],[-75.58,6.195],[-75.573,6.179],[-75.584,6.179],[-75.588,6.18],[-75.59,6.18],[-75.593,6.196],[-75.572,6.19],[-75.571,6.217],[-75.572,6.219],[-75.573,6.221],[-75.574,6.223],[-75.575,6.225],[-75.576,6.227],[-75.577,6.229],[-75.578,6.231],[-75.579,6.233],[-75.58,6.235]]]}},{"type":"Feature","properties":{"IDENTIFICADOR":"16","NOMBRE":"Comuna 16 - Belen"},"geometry":{"type":"Polygon","coordinates":[[[-75.594,6.193],[-75.595,6.19],[-75.596,6.187],[-75.597,6.184],[-75.598,6.181],[-75.599,6.178],[-75.6,6.175],[-75.59,6.18],[-75.588,6.18],[-75.584,6.179],[-75.573,6.179],[-75.572,6.173],[-75.58,6.195],[-75.581,6.192],[-75.582,6.192],[-75.583,6.193],[-75.585,6.195],[-75.587,6.197],[-75.589,6.199],[-75.591,6.201],[-75.592,6.199],[-75.593,6.196],[-75.594,6.193]]]}}]};
-
-            const map = L.map('map').setView([6.2518, -75.5636], 12);
-            const comunaSearchSelect = document.getElementById('comuna-search-select');
-            const zoomToComunaBtn = document.getElementById('zoom-to-comuna-btn');
-            const communeLayers = {};
-            let lastHighlightedLayer = null;
-
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            }).addTo(map);
-            
-            // --- PALETA DE COLORES PARA LAS COMUNAS ---
-            const colorPalette = [
-                '#E57373', '#81C784', '#64B5F6', '#FFD54F', '#BA68C8',
-                '#FF8A65', '#4DB6AC', '#7986CB', '#90A4AE', '#A1887F',
-                '#F06292', '#AED581', '#4FC3F7', '#FFB74D', '#DCE775', '#BCAAA4'
-            ];
-
-            const highlightStyle = {
-                weight: 5,
-                color: '#333',
-                dashArray: '',
-                fillOpacity: 0.7
-            };
-            
-            const geoJsonLayer = L.geoJSON(comunasGeoJsonData, {
-                style: function(feature) {
-                    const comunaId = parseInt(feature.properties.IDENTIFICADOR, 10);
-                    const color = colorPalette[comunaId - 1] || '#757575'; // Color por defecto
-                    return {
-                        color: '#FFFFFF', // Borde blanco
-                        weight: 2,
-                        opacity: 1,
-                        fillColor: color,
-                        fillOpacity: 0.6
-                    };
-                },
-                onEachFeature: function(feature, layer) {
-                    const comunaName = feature.properties.NOMBRE;
-                    const comunaId = feature.properties.IDENTIFICADOR;
-
-                    const option = document.createElement('option');
-                    option.value = comunaId;
-                    option.textContent = comunaName;
-                    comunaSearchSelect.appendChild(option);
-                    
-                    communeLayers[comunaId] = layer;
-
-                    layer.bindTooltip(comunaName, {
-                        permanent: false,
-                        direction: 'center',
-                        className: 'comuna-label'
-                    });
-
-                    layer.on({
-                        mouseover: (e) => e.target.setStyle(highlightStyle),
-                        mouseout: (e) => geoJsonLayer.resetStyle(e.target),
-                        click: (e) => {
-                            if (comunaId) window.open(`comuna${comunaId}.html`, '_blank');
-                        }
-                    });
-                }
-            }).addTo(map);
-
-            map.fitBounds(geoJsonLayer.getBounds());
-
-            zoomToComunaBtn.addEventListener('click', () => {
-                const selectedId = comunaSearchSelect.value;
-                if (selectedId && communeLayers[selectedId]) {
-                    const selectedLayer = communeLayers[selectedId];
-                    map.fitBounds(selectedLayer.getBounds());
-
-                    if(lastHighlightedLayer) {
-                        geoJsonLayer.resetStyle(lastHighlightedLayer);
-                    }
-                    selectedLayer.setStyle(highlightStyle);
-                    lastHighlightedLayer = selectedLayer;
-                    
-                    setTimeout(() => {
-                        geoJsonLayer.resetStyle(selectedLayer);
-                        lastHighlightedLayer = null;
-                    }, 2000);
-                }
-            });
-
-            const animatedElements = document.querySelectorAll('.reveal-on-scroll');
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        e.target.classList.add('is-visible');
-                        observer.unobserve(e.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            animatedElements.forEach(el => { observer.observe(el); });
-
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
