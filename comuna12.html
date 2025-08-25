@@ -6,10 +6,9 @@
     <title>Reporte de Analítica de Datos Comuna 12 - La América</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXrd3NBGQVJClubNFl4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./html2canvas.min.js"></script>
+    <script src="./jspdf.umd.min.js"></script>
 
     <style>
         :root {
@@ -28,7 +27,6 @@
             margin: 0;
             padding: 0;
         }
-        
         .actions-bar {
             position: sticky;
             top: 0;
@@ -73,7 +71,6 @@
             background-color: #e66300;
             border-color: #e66300;
         }
-
         .container {
             max-width: 1400px;
             margin: auto;
@@ -154,7 +151,6 @@
             margin-top: 5px;
             line-height: 1.3;
         }
-        
         .chart-container {
             background: var(--color-blanco);
             padding: 20px;
@@ -162,7 +158,6 @@
             box-shadow: var(--sombra-card);
             margin-top: 30px;
         }
-       
         .summary-table-container {
             width: 100%;
             overflow-x: auto;
@@ -190,12 +185,6 @@
         }
         .summary-table tbody tr:hover {
             background-color: #e0e0e0;
-        }
-        .intervention-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            align-items: stretch;
         }
         .detail-list {
             background-color: var(--color-blanco);
@@ -240,267 +229,210 @@
     <div class="container" id="report-content">
         <header class="header">
             <h1>Reporte de Analítica de Datos Comuna 12 - La América</h1>
-            <p>Fecha de corte al 31 de julio de 2025</p>
+            <p>Fecha de corte al 15 de agosto de 2025</p>
         </header>
-        
+
         <section>
-            <h2 class="section-title"><i class="fas fa-leaf"></i>Indicadores de Zonas Verdes y Arborización</h2>
-            <div class="grid-container" style="margin-top: 25px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                <div class="stat-card"><div class="value">115.656,84 m²</div><div class="label">Conservación de áreas (Jardines, pisos duros, etc.)</div></div>
-                <div class="stat-card"><div class="value">20.301 m²</div><div class="label">Zona verde sembrada</div></div>
-                <div class="stat-card"><div class="value">5.700</div><div class="label">Establecimiento de jardines (plantas)</div></div>
-                <div class="stat-card"><div class="value">1.121</div><div class="label">Intervención de individuos arbóreos (Conservación, talas, podas)</div></div>
-                <div class="stat-card"><div class="value">690 m²</div><div class="label">Jardín sembrado</div></div>
-                <div class="stat-card"><div class="value">0</div><div class="label">Árboles sembrados (unidad)</div></div>
+            <h2 class="section-title"><i class="fas fa-file-signature"></i>Seguimiento a Contratos de Obra</h2>
+            <div class="summary-table-container">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Cantidad Acumulada</th>
+                            <th>Unidad de Medida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Andén construido</td><td>3835</td><td>m</td></tr>
+                        <tr><td>Andenes construidos y mejorados</td><td>1334</td><td>m</td></tr>
+                        <tr><td>Andenes mantenidos</td><td>248</td><td>m</td></tr>
+                        <tr><td>Ciclo infraestructura urbana mantenida</td><td>1</td><td>KM</td></tr>
+                        <tr><td>Diseño</td><td>188</td><td>%</td></tr>
+                        <tr><td>Huecos tapados</td><td>620</td><td>un</td></tr>
+                        <tr><td>Jardín sembrado</td><td>690</td><td>m²</td></tr>
+                        <tr><td>Juego infantil o elemento de gimnasio nuevo</td><td>1</td><td>un</td></tr>
+                        <tr><td>Parque y plazoleta construido</td><td>1213</td><td>m²</td></tr>
+                        <tr><td>Puente construido</td><td>2</td><td>un</td></tr>
+                        <tr><td>Vía asfalto mantenida (Fallos y Repav.)</td><td>16239</td><td>m²</td></tr>
+                        <tr><td>Vía construida</td><td>3123</td><td>m²</td></tr>
+                        <tr><td>Zona verde sembrada</td><td>20301</td><td>m²</td></tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
-        <section>
-            <h2 class="section-title"><i class="fas fa-tools"></i>Seguimiento a Contratos de Obra (Acumulado)</h2>
-            <div class="intervention-section">
-                <div class="detail-list">
-                    <h3>Indicadores de Infraestructura Vial</h3>
-                    <ul>
-                        <li><span>Anden Construido</span> <strong>3.835 m</strong></li>
-                        <li><span>Andenes Construidos y Mejorados</span> <strong>1.334 m</strong></li>
-                        <li><span>Andenes Mantenidos</span> <strong>248 m</strong></li>
-                        <li><span>Vía Asfalto Mantenida (Fallos y Repav.)</span> <strong>16.239 m²</strong></li>
-                        <li><span>Vía Construida</span> <strong>3.123 m²</strong></li>
-                        <li><span>Ciclo Infraestructura Urbana Mantenida</span> <strong>1 km</strong></li>
-                        <li><span>Puente Construido</span> <strong>2 un</strong></li>
-                        <li><span>Huecos Tapados</span> <strong>620 un</strong></li>
-                        <li><span>Bordillos-Cunetas</span> <strong>0 m</strong></li>
-                         <li><span>Vías Urbanas Mantenidas</span> <strong>0 km</strong></li>
-                        <li><span>Obras de Estabilización</span> <strong>0 un</strong></li>
-                        <li><span>Parcheo de Huecos</span> <strong>0 un</strong></li>
-                    </ul>
-                </div>
-                <div class="detail-list">
-                    <h3>Indicadores de Espacio Público y Otros</h3>
-                     <ul>
-                        <li><span>Diseño</span> <strong>188 %</strong></li>
-                        <li><span>Parque y Plazoleta Construido</span> <strong>1.213 m²</strong></li>
-                        <li><span>Juego Infantil o Elemento de Gimnasio Nuevo</span> <strong>1 un</strong></li>
-                        <li><span>Jardín Sembrado</span> <strong>690 m²</strong></li>
-                        <li><span>Zona Verde Sembrada</span> <strong>20.301 m²</strong></li>
-                        <li><span>Árbol Sembrado</span> <strong>0 un</strong></li>
-                    </ul>
-                </div>
-             </div>
-        </section>
-        
         <section>
             <h2 class="section-title"><i class="fas fa-road"></i>Ejecución de Baches</h2>
             <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
                 <div class="stat-card">
                     <div class="icon"><i class="fas fa-tools"></i></div>
-                    <div class="value">622</div>
-                    <div class="label">Baches Intervenidos en la Comuna</div>
+                    <div class="value">646</div>
+                    <div class="label">Total de baches ejecutados</div>
                 </div>
                 <div class="stat-card">
                     <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
-                    <div class="value">$1.719.046.196</div>
-                    <div class="label">Costo Total de Intervención</div>
+                    <div class="value">$1.769.176.137</div>
+                    <div class="label">Costo total ejecutado</div>
                 </div>
             </div>
              <div class="chart-container">
-                    <h3 style="text-align: center; color: var(--color-azul-oscuro);">Desglose por Barrio</h3>
-                     <div class="summary-table-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Barrio</h3>
+                 <div class="summary-table-container">
                     <table class="summary-table">
                          <thead>
                             <tr>
                                 <th>Barrio</th>
-                                <th>Número de Baches</th>
+                                <th>No. Baches</th>
                                 <th>Costo</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>Santa Mónica</td><td>86</td><td>$208.336.027</td></tr>
-                            <tr><td>Barrio Cristobal</td><td>72</td><td>$168.699.582</td></tr>
-                            <tr><td>La América</td><td>71</td><td>$114.314.360</td></tr>
+                            <tr><td>Santa Mónica</td><td>88</td><td>$209.944.978</td></tr>
+                            <tr><td>Barrio Cristóbal</td><td>72</td><td>$168.699.682</td></tr>
+                            <tr><td>La América</td><td>72</td><td>$116.803.568</td></tr>
                             <tr><td>Los Pinos</td><td>59</td><td>$69.138.559</td></tr>
-                            <tr><td>Campo Alegre</td><td>53</td><td>$138.459.344</td></tr>
-                            <tr><td>Calasanz</td><td>52</td><td>$113.746.548</td></tr>
+                            <tr><td>El Danubio</td><td>58</td><td>$130.612.927</td></tr>
+                            <tr><td>Campo Alegre</td><td>56</td><td>$144.506.279</td></tr>
+                            <tr><td>Calasanz</td><td>52</td><td>$113.246.648</td></tr>
                             <tr><td>Santa Lucía</td><td>46</td><td>$73.034.115</td></tr>
-                            <tr><td>Santa Teresita</td><td>43</td><td>$57.959.194</td></tr>
-                            <tr><td>El Danubio</td><td>42</td><td>$92.291.622</td></tr>
+                            <tr><td>Santa Teresita</td><td>42</td><td>$54.764.259</td></tr>
                             <tr><td>Simón Bolívar</td><td>36</td><td>$59.660.817</td></tr>
-                            <tr><td>La Floresta</td><td>31</td><td>$69.665.254</td></tr>
-                            <tr><td>Calasanz Parte Alta</td><td>17</td><td>$39.470.870</td></tr>
+                            <tr><td>La Floresta</td><td>30</td><td>$68.472.716</td></tr>
+                            <tr><td>Calasanz Parte Alta</td><td>21</td><td>$397.581.584</td></tr>
                             <tr><td>Ferrini</td><td>14</td><td>$162.710.005</td></tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="chart-container">
+                <h3 style="text-align: center; color: var(--color-azul-oscuro);">Detalle por Contrato</h3>
+                 <div class="summary-table-container">
+                    <table class="summary-table">
+                         <thead>
+                            <tr>
+                                <th>Contrato</th>
+                                <th>No. Baches</th>
+                                <th>Costo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>4600102144 - Malla Vial (2024 - 2025)</td><td>542</td><td>$1.634.471.620</td></tr>
+                            <tr><td>4600098664 - Malla Vial (2023 - 2024)</td><td>75</td><td>$59.364.185</td></tr>
+                            <tr><td>4600105052 - Malla Vial 2025</td><td>27</td><td>$74.621.474</td></tr>
+                            <tr><td>4600098513 - Suministro de Mezcla (2023 - 2024)</td><td>2</td><td>$718.857</td></tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
         </section>
 
         <section>
-            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas SIF - Vigencias 2024 y 2025</h2>
+            <h2 class="section-title"><i class="fas fa-hard-hat"></i>Intervenciones Directas</h2>
              <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
                 <div class="stat-card">
-                    <div class="icon"><i class="fas fa-file-alt"></i></div>
                     <div class="value">35</div>
-                    <div class="label">Solicitudes Gestionadas (2024-2025)</div>
+                    <div class="label">Total de solicitudes (2024-2025)</div>
                 </div>
                 <div class="stat-card">
-                    <div class="icon"><i class="fas fa-wallet"></i></div>
                     <div class="value">$522.822.044</div>
-                    <div class="label">Costo Total de Obras (2024-2025)</div>
+                    <div class="label">Costo total de obra</div>
                 </div>
             </div>
             <div class="intervention-section" style="margin-top: 25px;">
                 <div class="detail-list">
-                    <h3>Distribución de Intervenciones por Barrio</h3>
+                    <h3>Distribución de Solicitudes</h3>
                     <ul>
-                        <li><span>La Floresta</span> <strong>10</strong></li>
-                        <li><span>Santa Lucía</span> <strong>9</strong></li>
-                        <li><span>Santa Mónica</span> <strong>4</strong></li>
-                        <li><span>Simón Bolívar</span> <strong>4</strong></li>
-                        <li><span>Santa Teresita</span> <strong>2</strong></li>
-                        <li><span>Calasanz Parte Alta</span> <strong>1</strong></li>
-                        <li><span>Ferrini</span> <strong>1</strong></li>
-                        <li><span>La Castellana</span> <strong>1</strong></li>
-                        <li><span>La América</span> <strong>1</strong></li>
-                        <li><span>San Juan llegando a la 80</span> <strong>1</strong></li>
-                        <li><span>Sin información de barrio</span> <strong>1</strong></li>
+                        <li><span>Vigencia 2024</span> <strong>30</strong></li>
+                        <li><span>Vigencia 2025</span> <strong>5</strong></li>
                     </ul>
                 </div>
-                 <div class="chart-container">
-                     <h3 style="text-align: center; color: var(--color-azul-oscuro);">Estado Actual de Obras (2024-2025)</h3>
-                     <p style="text-align: center; font-size: 0.8em; color: #666;">Nota: La suma de los estados (34) presenta una leve diferencia con el total general de 35.</p>
-                    <canvas id="estadoObraChart"></canvas>
+                <div class="detail-list">
+                    <h3>Costo por Grupo de Obra</h3>
+                    <ul>
+                        <li><span>Pavimentos</span> <strong>$396 millones</strong></li>
+                        <li><span>Parques y Cerrajería</span> <strong>$75 millones</strong></li>
+                        <li><span>Obras Civiles Menores</span> <strong>$52 millones</strong></li>
+                    </ul>
                 </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title"><i class="fas fa-exchange-alt"></i>Comparativo de Intervenciones por Vigencia</h2>
-            <div class="summary-table-container">
-                <table class="summary-table">
-                    <thead>
-                        <tr>
-                            <th>Grupo de Obra</th>
-                            <th>2024</th>
-                            <th>2025</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Pavimentos</strong></td><td>16</td><td>2</td><td><strong>18</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Parques y Cerrajería</strong></td><td>6</td><td>2</td><td><strong>8</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Obras Civiles Menores</strong></td><td>3</td><td>1</td><td><strong>4</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>EPM</strong></td><td>4</td><td>0</td><td><strong>4</strong></td>
-                        </tr>
-                        <tr>
-                           <td><strong>Traslado a Contratos</strong></td><td>1</td><td>0</td><td><strong>1</strong></td>
-                        </tr>
-                        <tr style="background-color: var(--color-azul-oscuro); color: var(--color-blanco); font-weight: bold;">
-                            <td>Total General</td><td>30</td><td>5</td><td><strong>35</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="detail-list">
+                    <h3>Distribución por Indicador</h3>
+                    <ul>
+                        <li><span>Mantenimiento en vías urbanas</span> <strong>21</strong></li>
+                        <li><span>Mantenimiento de parques</span> <strong>4</strong></li>
+                        <li><span>Andenes y cordones</span> <strong>3</strong></li>
+                        <li><span>Espacios públicos mantenidos</span> <strong>2</strong></li>
+                        <li><span>Infraestructura vial mantenida</span> <strong>2</strong></li>
+                        <li><span>Pasamanos, defensas viales y rejas</span> <strong>2</strong></li>
+                        <li><span>Andenes mantenidos</span> <strong>1</strong></li>
+                    </ul>
+                </div>
             </div>
         </section>
         
     </div>
 
-<script>
-    const chartColors = {
-        blue: 'rgba(25, 118, 210, 0.85)',
-        orange: 'rgba(255, 111, 0, 0.85)',
-        blueDark: 'rgba(13, 71, 161, 0.85)',
-        orangeDark: 'rgba(239, 108, 0, 0.85)',
-        teal: 'rgba(0, 150, 136, 0.85)',
-        red: 'rgba(211, 47, 47, 0.85)',
-        purple: 'rgba(123, 31, 162, 0.85)',
-        green: 'rgba(56, 142, 60, 0.85)',
-        grey: 'rgba(158, 158, 158, 0.85)'
-    };
-    
-    // Gráfica de Estado de Obras (Combinado 2024-2025)
-    const estadoObraCtx = document.getElementById('estadoObraChart').getContext('2d');
-    new Chart(estadoObraCtx, {
-        type: 'pie',
-        data: {
-            labels: ['Terminada (71%)', 'Traslado a EPM (11%)', 'Traslado a Contratista (9%)', 'Por Iniciar (6%)'],
-            datasets: [{
-                data: [25, 4, 3, 2],
-                backgroundColor: [chartColors.green, chartColors.teal, chartColors.orange, chartColors.grey]
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-    });
-
-
-    // Script para generar PDF
-    document.getElementById('download-pdf').addEventListener('click', function () {
-        const content = document.getElementById('report-content');
-        const actionsBar = document.querySelector('.actions-bar');
-        
-        if(actionsBar) actionsBar.style.display = 'none';
-
-        const button = this;
-        button.innerText = 'Generando PDF...';
-        button.disabled = true;
-
-        html2canvas(content, {
-            scale: 2,
-            useCORS: true,
-            windowWidth: content.scrollWidth,
-            windowHeight: content.scrollHeight
-        }).then(canvas => {
-            if(actionsBar) actionsBar.style.display = 'flex';
-            
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
-
-            const pdf = new jsPDF({
-                orientation: 'p',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdf.internal.pageSize.getHeight();
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const ratio = canvasWidth / canvasHeight;
-
-            const imgHeight = pdfWidth / ratio;
-            let heightLeft = imgHeight;
-            let position = 0;
-
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-            heightLeft -= pdfHeight;
-
-            while (heightLeft > 0) {
-                position -= pdfHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-                heightLeft -= pdfHeight;
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function () {
+            if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+                alert('Error: No se pudieron cargar las librerías para generar el PDF.\nPor favor, verifica tu conexión a internet e inténtalo de nuevo.');
+                return; 
             }
 
-            pdf.save('Reporte-Comuna-12-La-America.pdf');
+            const button = this;
+            const content = document.getElementById('report-content');
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+            button.disabled = true;
 
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
+            try {
+                html2canvas(content, {
+                    scale: 2,
+                    useCORS: true
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
 
-        }).catch(err => {
-            if(actionsBar) actionsBar.style.display = 'flex';
-            button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
-            button.disabled = false;
-            console.error("Error al generar el PDF:", err);
-            alert("Hubo un error al generar el PDF. Por favor, intenta de nuevo.");
+                    const pdf = new jsPDF({
+                        orientation: 'p',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const canvasWidth = canvas.width;
+                    const canvasHeight = canvas.height;
+                    const ratio = canvasWidth / canvasHeight;
+                    const imgHeight = pdfWidth / ratio;
+
+                    let heightLeft = imgHeight;
+                    let position = 0;
+
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                    heightLeft -= pdf.internal.pageSize.getHeight();
+
+                    while (heightLeft > 0) {
+                        position -= pdf.internal.pageSize.getHeight();
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                        heightLeft -= pdf.internal.pageSize.getHeight();
+                    }
+
+                    pdf.save('Reporte-Comuna-12-La-America.pdf');
+                }).catch(err => {
+                    console.error("Error durante la creación del canvas:", err);
+                    alert("Hubo un error al procesar el contenido del reporte.");
+                }).finally(() => {
+                    button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                    button.disabled = false;
+                });
+            } catch (error) {
+                console.error("Error inesperado al intentar generar el PDF:", error);
+                alert("Ocurrió un error inesperado. Revisa la consola del navegador para más detalles.");
+                button.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar Reporte (PDF)';
+                button.disabled = false;
+            }
         });
-    });
-</script>
-
+    </script>
 </body>
 </html>
