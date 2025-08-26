@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Consulta SIF | Alcaldía de Medellín (v2-geolocation)</title>
+    <meta name="description" content="Consulta de manera interactiva las obras y reportes de la Secretaría de Infraestructura Física de Medellín. Gestión 2025.">
+    <meta name="theme-color" content="#005baa">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Portal SIF Medellín">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body class="bg-gray-50 font-[Inter] h-screen flex flex-col">
+    <div id="loader" class="fixed inset-0 flex items-center justify-center bg-white z-50 transition-opacity duration-500">
+        <div class="flex flex-col items-center">
+            <svg class="animate-spin h-12 w-12 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+            </svg>
+            <span class="text-blue-700 font-semibold text-lg">Cargando mapa...</span>
+        </div>
+    </div>
+    <header style="background: linear-gradient(135deg, hsl(210, 60%, 25%), hsl(210, 90%, 55%));" class="text-white text-center py-6 px-4 shadow-lg z-20">
+        <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="max-w-[250px] mx-auto mb-4">
+        <h1 class="text-4xl font-extrabold tracking-tight">Portal de Consulta SIF</h1>
+        <p class="text-md font-light opacity-90 mt-1">Secretaría de Infraestructura Física | Gestión 2025</p>
+    </header>
+    <div id="geovisor-container" class="flex-grow relative">
+        <div id="map" class="absolute top-0 left-0 w-full h-full" aria-label="Mapa de comunas de Medellín"></div>
+        <aside id="info-sidebar" class="absolute top-0 left-0 h-full w-full max-w-md bg-white/95 backdrop-blur-sm shadow-2xl z-30 transform -translate-x-full transition-transform duration-500 ease-in-out" aria-live="polite">
+            <button id="close-sidebar-btn" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors z-50" aria-label="Cerrar panel de información">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <div id="report-content" class="p-8 overflow-y-auto h-full"></div>
+        </aside>
+        <div class="absolute top-4 left-1/2 -translate-x-1/2 w-11/12 max-w-lg z-20">
+            <div class="relative">
+                <label for="comuna-search-input" class="sr-only">Buscador por Comunas</label>
+                <input type="text" id="comuna-search-input" placeholder="Buscar comuna por nombre o número..." class="w-full p-4 pr-12 border-none rounded-full shadow-lg text-lg bg-white focus:ring-4 focus:ring-orange-400 focus:outline-none transition" aria-label="Buscar comuna por nombre o número">
+                <i class="fas fa-search absolute right-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
+            <div id="search-results" class="absolute z-10 w-full bg-white border border-gray-200 rounded-md mt-2 shadow-lg hidden max-h-60 overflow-y-auto"></div>
+        </div>
+        
+        <!-- Nuevo botón de geolocalización mejorado -->
+        <button id="locate-btn" class="fixed bottom-8 right-8 bg-blue-600 text-white shadow-xl rounded-full p-4 z-40 flex items-center justify-center hover:bg-blue-700 transition-all group">
+            <div class="absolute -inset-1 bg-blue-500 rounded-full animate-pulse opacity-75 group-hover:opacity-100"></div>
+            <div class="relative flex items-center">
+                <i class="fas fa-location-crosshairs text-2xl mr-2"></i>
+                <span class="font-medium">Ubicar mi comuna</span>
+            </div>
+        </button>
+
+        <!-- Tooltip de geolocalización -->
+        <div id="location-status" class="fixed bottom-24 right-8 bg-white/95 backdrop-blur-sm shadow-lg rounded-lg p-4 transform translate-y-2 opacity-0 transition-all duration-300 pointer-events-none z-40">
+            <div class="flex items-center gap-3">
+                <div class="animate-spin">
+                    <i class="fas fa-circle-notch text-blue-600 text-xl"></i>
+                </div>
+                <span class="text-gray-700 font-medium">Buscando tu ubicación...</span>
+            </div>
+        </div>
+    </div>
+    <script src="html2canvas.min.js"></script>
+    <script src="jspdf.umd.min.js"></script>
+    <script src="app.v2-geolocation.js"></script>
+    <script>
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          document.getElementById('loader').style.opacity = 0;
+          setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+        }, 1200);
+      });
+    </script>
+</body>
+</html>
