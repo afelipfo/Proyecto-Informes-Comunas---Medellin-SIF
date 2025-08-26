@@ -194,78 +194,56 @@ document.addEventListener('DOMContentLoaded', function () {
         infoSidebar.classList.remove('-translate-x-full');
     }
 
-    // **VERSIÓN FINAL Y DEFINITIVA DE LA FUNCIÓN PARA GENERAR PDF**
+    // **MÉTODO NATIVO DE RENDERIZADO HTML A PDF - LA SOLUCIÓN DEFINITIVA**
     async function generatePDFFromHTMLFile(comunaProperties) {
         const { jsPDF } = window.jspdf;
         const pdfButton = document.getElementById('generate-pdf-btn');
         const fileName = `comuna${comunaProperties.IDENTIFICADOR}.html`;
 
-        pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando reporte...';
+        pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando reporte...';
         pdfButton.disabled = true;
 
         try {
             const response = await fetch(fileName);
-            if (!response.ok) throw new Error(`HTML not found: ${fileName}`);
-            const htmlContent = await response.text();
+            if (!response.ok) throw new Error(`No se pudo encontrar el archivo: ${fileName}`);
+            const htmlContent = await response.text(); // Obtenemos el HTML como texto
 
-            const tempContainer = document.createElement('div');
-            tempContainer.style.position = 'absolute';
-            tempContainer.style.left = '-9999px';
-            tempContainer.style.top = '0';
-            tempContainer.style.width = '800px';
-            tempContainer.innerHTML = htmlContent;
-            document.body.appendChild(tempContainer);
+            pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF nativo...';
 
-            pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
-            
-            const canvas = await html2canvas(tempContainer, {
-                scale: 2,
-                useCORS: true,
-                logging: false, // Opcional: para un log más limpio
-                width: tempContainer.scrollWidth,
-                height: tempContainer.scrollHeight
-            });
-
-            document.body.removeChild(tempContainer);
-
-            const imgData = canvas.toDataURL('image/png');
             const pdf = new jsPDF('p', 'mm', 'a4');
-            
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = pdf.internal.pageSize.getHeight();
-            
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const ratio = canvasWidth / canvasHeight;
-            
-            const imgHeight = pdfWidth / ratio;
-            let finalImgHeight = imgHeight;
 
-            // *** LÓGICA DE PAGINACIÓN DEFINITIVA Y A PRUEBA DE ERRORES ***
-            let heightLeft = finalImgHeight;
-            let position = 0;
-
-            // 1. Agrega la primera página con la imagen completa
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, finalImgHeight);
-            heightLeft -= pdfHeight;
-
-            // 2. Si la imagen es más alta que una página, crea un bucle
-            while (heightLeft > 0) {
-                position = -heightLeft; // La nueva posición es negativa, moviendo la imagen "hacia arriba"
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, finalImgHeight);
-                heightLeft -= pdfHeight;
-            }
-
-            pdf.save(`Reporte-${comunaProperties.NOMBRE.replace(/ /g, '_')}.pdf`);
+            // **Esta es la nueva función. Ya no usamos html2canvas.**
+            // Le pasamos el HTML directamente y la librería se encarga de todo.
+            await pdf.html(htmlContent, {
+                // El 'callback' se ejecuta cuando la conversión termina.
+                // Dentro, guardamos el documento.
+                callback: function (doc) {
+                    doc.save(`Reporte-${comunaProperties.NOMBRE.replace(/ /g, '_')}.pdf`);
+                },
+                // Márgenes para que el contenido no quede pegado a los bordes.
+                margin: [15, 15, 15, 15], // [arriba, derecha, abajo, izquierda]
+                
+                // **La clave de la paginación inteligente:**
+                // 'autoPaging: 'text'' intenta evitar cortar el texto a mitad de línea.
+                autoPaging: 'text',
+                
+                // Ancho del contenido dentro del PDF (A4 es 210mm, le restamos los márgenes).
+                width: 180, 
+                // Ancho de la "ventana" virtual en la que se renderiza el HTML.
+                windowWidth: 800 
+            });
 
         } catch (error) {
             console.error('Error final generando el PDF:', error);
-            alert(`No se pudo generar el reporte. Asegúrate de que el archivo "${fileName}" exista.`);
+            alert(`No se pudo generar el reporte. Asegúrate de que el archivo "${fileName}" exista y no tenga errores.`);
         } finally {
-            pdfButton.style.display = 'flex';
-            pdfButton.innerHTML = '<i class="fas fa-file-pdf"></i> Generar Reporte PDF';
-            pdfButton.disabled = false;
+            // Restauramos el botón después de que `save()` se complete.
+            // Le damos un pequeño respiro para que la descarga inicie.
+            setTimeout(() => {
+                pdfButton.style.display = 'flex';
+                pdfButton.innerHTML = '<i class="fas fa-file-pdf"></i> Generar Reporte PDF';
+                pdfButton.disabled = false;
+            }, 1000);
         }
     }
 });
