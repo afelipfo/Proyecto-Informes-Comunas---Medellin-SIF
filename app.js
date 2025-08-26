@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
             filtered.forEach(feature => {
                 const item = document.createElement('div');
                 // **CORRECCIÓN**: Se añaden clases de Tailwind para asegurar que los resultados sean visibles y funcionales.
-                item.className = 'p-4 hover:bg-gray-100 cursor-pointer border-b border-gray-200';
+                item.className = 'result-item';
                 item.textContent = feature.properties.NOMBRE;
                 item.addEventListener('click', () => {
                     showComunaInfo(feature.properties);

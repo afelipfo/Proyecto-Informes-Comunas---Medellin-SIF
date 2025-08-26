@@ -37,12 +37,12 @@ h1, h2, h3, h4, h5, h6 {
 
 /* --- ESTILOS DEL MAPA --- */
 #map {
-    height: 600px; /* Mayor altura para una mejor inmersión */
+    height: 600px;
     width: 100%;
     border-radius: 0.75rem;
     border: 1px solid var(--border-color);
     z-index: 10;
-    cursor: grab; /* Cursor para indicar que el mapa es movible */
+    cursor: grab;
 }
 
 #map:active {
