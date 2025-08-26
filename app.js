@@ -7,9 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchResultsContainer = document.getElementById('search-results');
     const infoSidebar = document.getElementById('info-sidebar');
     const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+    const locateBtn = document.getElementById('locate-btn'); // NUEVO: Referencia al botón
     
     let comunasData = null;
     let hoveredComunaId = null;
+    let userMarker = null; // NUEVO: Variable para el marcador del usuario
 
     // --- INICIALIZACIÓN DEL MAPA ---
     const map = new mapboxgl.Map({
@@ -127,9 +129,11 @@ document.addEventListener('DOMContentLoaded', function () {
         closeSidebarBtn.addEventListener('click', () => {
             infoSidebar.classList.add('-translate-x-full');
         });
+        
+        // NUEVO: Event listener para el botón de geolocalización
+        locateBtn.addEventListener('click', handleLocate);
     }
     
-    // --- FUNCIÓN DE BÚSQUEDA CORREGIDA ---
     function handleSearch(e) {
         const query = e.target.value.toLowerCase();
         if (!comunasData || query.length < 1) {
@@ -145,12 +149,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (filtered.length > 0) {
             filtered.forEach(feature => {
                 const item = document.createElement('div');
-                // **CORRECCIÓN**: Se añaden clases de Tailwind para asegurar que los resultados sean visibles y funcionales.
-                item.className = 'result-item';
+                // CORRECCIÓN: Usar la clase .result-item para aplicar estilos de styles.css
+                item.className = 'result-item'; 
                 item.textContent = feature.properties.NOMBRE;
                 item.addEventListener('click', () => {
                     showComunaInfo(feature.properties);
-                    searchInput.value = ''; // Limpiar el input después de seleccionar
+                    searchInput.value = '';
                     searchResultsContainer.classList.add('hidden');
                 });
                 searchResultsContainer.appendChild(item);
@@ -160,20 +164,77 @@ document.addEventListener('DOMContentLoaded', function () {
             searchResultsContainer.classList.add('hidden');
         }
     }
+    
+    // --- NUEVA LÓGICA DE GEOLOCALIZACIÓN ---
+    function handleLocate() {
+        if (!navigator.geolocation) {
+            alert('La geolocalización no es soportada por tu navegador.');
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { longitude, latitude } = position.coords;
+                const userPoint = [longitude, latitude];
+
+                // Añadir o mover el marcador del usuario
+                if (userMarker) {
+                    userMarker.setLngLat(userPoint);
+                } else {
+                    userMarker = new mapboxgl.Marker({ color: '#FF5733' })
+                        .setLngLat(userPoint)
+                        .addTo(map);
+                }
+                
+                // Encontrar la comuna que contiene la ubicación del usuario
+                const foundComuna = comunasData.features.find(feature => 
+                    pointInPolygon(userPoint, feature.geometry.coordinates[0])
+                );
+
+                if (foundComuna) {
+                    showComunaInfo(foundComuna.properties);
+                } else {
+                    alert('Tu ubicación actual está fuera de los límites de las comunas de Medellín.');
+                    map.flyTo({ center: userPoint, zoom: 14 });
+                }
+            },
+            (error) => {
+                alert('No se pudo obtener tu ubicación. Asegúrate de haber concedido los permisos.');
+                console.error("Error de Geolocalización:", error);
+            }
+        );
+    }
+    
+    // Función para detectar si un punto está dentro de un polígono (algoritmo ray-casting)
+    function pointInPolygon(point, polygon) {
+        let x = point[0], y = point[1];
+        let inside = false;
+        for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+            let xi = polygon[i][0], yi = polygon[i][1];
+            let xj = polygon[j][0], yj = polygon[j][1];
+
+            let intersect = ((yi > y) !== (yj > y))
+                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+            if (intersect) inside = !inside;
+        }
+        return inside;
+    }
+
+    // --- FIN DE LA NUEVA LÓGICA ---
 
     function showComunaInfo(properties) {
         const feature = comunasData.features.find(f => f.properties.IDENTIFICADOR === properties.IDENTIFICADOR);
         if (feature) {
              const coordinates = feature.geometry.coordinates[0];
              const bounds = coordinates.reduce((bounds, coord) => {
-                return bounds.extend(coord);
-            }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+                 return bounds.extend(coord);
+             }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
 
-            map.fitBounds(bounds, {
-                padding: { top: 100, bottom: 100, left: infoSidebar.offsetWidth + 50, right: 50 },
-                pitch: 65,
-                duration: 2000
-            });
+             map.fitBounds(bounds, {
+                 padding: { top: 100, bottom: 100, left: infoSidebar.offsetWidth + 50, right: 50 },
+                 pitch: 65,
+                 duration: 2000
+             });
         }
         
         reportContent.innerHTML = `
@@ -196,7 +257,6 @@ document.addEventListener('DOMContentLoaded', function () {
         infoSidebar.classList.remove('-translate-x-full');
     }
 
-    // VERSIÓN FINAL PARA GENERAR PDF DESDE ARCHIVOS HTML
     async function generatePDFFromHTMLFile(comunaProperties) {
         const pdfButton = document.getElementById('generate-pdf-btn');
         const fileName = `data/comuna${comunaProperties.IDENTIFICADOR}.html`;
@@ -262,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (error) {
             console.error('Error generando el PDF:', error);
-            console.error(`No se pudo generar el reporte. Asegúrate de que el archivo "${fileName}" exista.`);
+            alert(`No se pudo generar el reporte. Asegúrate de que el archivo "${fileName}" exista.`);
         } finally {
             if (tempContainer && document.body.contains(tempContainer)) {
                 document.body.removeChild(tempContainer);
