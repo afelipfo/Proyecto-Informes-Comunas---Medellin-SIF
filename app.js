@@ -129,9 +129,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
+    // --- FUNCIÓN DE BÚSQUEDA CORREGIDA ---
     function handleSearch(e) {
         const query = e.target.value.toLowerCase();
-        if (query.length < 1) {
+        if (!comunasData || query.length < 1) {
             searchResultsContainer.classList.add('hidden');
             return;
         }
@@ -144,11 +145,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (filtered.length > 0) {
             filtered.forEach(feature => {
                 const item = document.createElement('div');
-                item.className = 'result-item';
+                // **CORRECCIÓN**: Se añaden clases de Tailwind para asegurar que los resultados sean visibles y funcionales.
+                item.className = 'p-4 hover:bg-gray-100 cursor-pointer border-b border-gray-200';
                 item.textContent = feature.properties.NOMBRE;
                 item.addEventListener('click', () => {
                     showComunaInfo(feature.properties);
-                    searchInput.value = feature.properties.NOMBRE;
+                    searchInput.value = ''; // Limpiar el input después de seleccionar
                     searchResultsContainer.classList.add('hidden');
                 });
                 searchResultsContainer.appendChild(item);
@@ -168,23 +170,23 @@ document.addEventListener('DOMContentLoaded', function () {
             }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
 
             map.fitBounds(bounds, {
-                padding: { top: 50, bottom:50, left: 500, right: 50 },
+                padding: { top: 100, bottom: 100, left: infoSidebar.offsetWidth + 50, right: 50 },
                 pitch: 65,
                 duration: 2000
             });
         }
         
         reportContent.innerHTML = `
-            <div id="printable-area">
-                <h2 class="text-3xl font-extrabold text-blue-900 border-b-4 border-orange-500 pb-3 mb-6">${properties.NOMBRE}</h2>
+            <div class="p-4">
+                <h2 class="text-3xl font-extrabold text-gray-800 border-b-4 border-orange-500 pb-3 mb-6">${properties.NOMBRE}</h2>
                 <div class="space-y-4 text-lg">
-                    <p><strong class="text-gray-800">Identificador:</strong> ${properties.IDENTIFICADOR}</p>
+                    <p><strong class="text-gray-700">Identificador:</strong> ${properties.IDENTIFICADOR}</p>
                     <p class="text-gray-600 leading-relaxed">Haz clic en el botón de abajo para generar el reporte detallado de esta comuna.</p>
                 </div>
+                <button id="generate-pdf-btn" class="w-full mt-8 bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-all duration-300 flex items-center justify-center gap-3 text-lg">
+                    <i class="fas fa-file-pdf"></i> Generar Reporte PDF
+                </button>
             </div>
-            <button id="generate-pdf-btn" class="w-full mt-8 bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-3">
-                <i class="fas fa-file-pdf"></i> Generar Reporte PDF
-            </button>
         `;
         
         document.getElementById('generate-pdf-btn').addEventListener('click', () => {
@@ -194,10 +196,10 @@ document.addEventListener('DOMContentLoaded', function () {
         infoSidebar.classList.remove('-translate-x-full');
     }
 
-    // **VERSIÓN FINAL Y DEFINITIVA PARA GENERAR PDF**
+    // VERSIÓN FINAL PARA GENERAR PDF DESDE ARCHIVOS HTML
     async function generatePDFFromHTMLFile(comunaProperties) {
         const pdfButton = document.getElementById('generate-pdf-btn');
-        const fileName = `comuna${comunaProperties.IDENTIFICADOR}.html`;
+        const fileName = `data/comuna${comunaProperties.IDENTIFICADOR}.html`;
         const pdfFileName = `Reporte-${comunaProperties.NOMBRE.replace(/ /g, '_')}.pdf`;
 
         pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando reporte...';
@@ -214,26 +216,22 @@ document.addEventListener('DOMContentLoaded', function () {
             tempContainer.style.position = 'absolute';
             tempContainer.style.left = '-9999px';
             tempContainer.style.top = '0';
-            // Usar un ancho fijo consistente para el renderizado
             tempContainer.style.width = '800px'; 
             tempContainer.innerHTML = htmlContent;
             document.body.appendChild(tempContainer);
             
             pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
 
-            // **LA SOLUCIÓN CLAVE**: Esperar un breve momento para que el navegador renderice
-            // el contenido del div, incluyendo imágenes y estilos.
             await new Promise(resolve => setTimeout(resolve, 500));
 
             const canvas = await html2canvas(tempContainer, {
-                scale: 2, // Mayor escala para mejor calidad de imagen
+                scale: 2,
                 useCORS: true,
                 logging: false
             });
 
-            // Una vez capturado, el div temporal ya no es necesario
             document.body.removeChild(tempContainer);
-            tempContainer = null; // Liberar memoria
+            tempContainer = null;
 
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
@@ -250,13 +248,11 @@ document.addEventListener('DOMContentLoaded', function () {
             let heightLeft = imgHeightOnPDF;
             let position = 0;
 
-            // Añadir la primera página
             pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeightOnPDF);
             heightLeft -= pdfHeight;
 
-            // Bucle para añadir páginas adicionales si el contenido es más alto que una página
             while (heightLeft > 0) {
-                position -= pdfHeight; // Mover la posición de la imagen hacia arriba
+                position -= pdfHeight;
                 pdf.addPage();
                 pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeightOnPDF);
                 heightLeft -= pdfHeight;
@@ -268,7 +264,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error generando el PDF:', error);
             console.error(`No se pudo generar el reporte. Asegúrate de que el archivo "${fileName}" exista.`);
         } finally {
-            // Asegurarse de que el div temporal se elimine incluso si hay un error
             if (tempContainer && document.body.contains(tempContainer)) {
                 document.body.removeChild(tempContainer);
             }

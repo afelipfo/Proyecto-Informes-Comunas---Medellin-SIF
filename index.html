@@ -1,93 +1,66 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Consulta SIF | Alcaldía de Medellín</title>
     
     <meta name="description" content="Consulta de manera interactiva las obras y reportes de la Secretaría de Infraestructura Física de Medellín. Gestión 2025.">
-    <meta name="author" content="Alcaldía de Medellín">
-
-    <meta property="og:title" content="Portal de Consulta SIF | Alcaldía de Medellín">
-    <meta property="og:description" content="Explora los proyectos de infraestructura por comunas y accede a reportes detallados.">
-    <meta property="og:image" content="https://www.medellin.gov.co/content/uploads/2023/12/alcaldia-de-medellin-logo.png">
-    <meta property="og:url" content="https://www.medellin.gov.co/sif-portal/">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="es_CO">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Portal de Consulta SIF | Alcaldía de Medellín">
-    <meta name="twitter:description" content="Explora los proyectos de infraestructura por comunas y accede a reportes detallados.">
-    <meta name="twitter:image" content="https://www.medellin.gov.co/content/uploads/2023/12/alcaldia-de-medellin-logo.png">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
+    <!-- Estilos -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
-
-    <script src='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css' rel='stylesheet' />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body class="bg-gray-50 font-[Inter] h-screen flex flex-col">
+
+    <!-- Encabezado -->
+    <header style="background: linear-gradient(135deg, hsl(210, 60%, 25%), hsl(210, 90%, 55%));" class="text-white text-center py-6 px-4 shadow-lg z-20">
+        <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="max-w-[250px] mx-auto mb-4">
+        <h1 class="text-4xl font-extrabold tracking-tight">Portal de Consulta SIF</h1>
+        <p class="text-md font-light opacity-90 mt-1">Secretaría de Infraestructura Física | Gestión 2025</p>
+    </header>
+
+    <!-- Contenedor principal del Geovisor -->
+    <div id="geovisor-container" class="flex-grow relative">
+        
+        <!-- Mapa -->
+        <div id="map" class="absolute top-0 left-0 w-full h-full"></div>
+
+        <!-- Panel lateral de información -->
+        <aside id="info-sidebar" class="absolute top-0 left-0 h-full w-full max-w-md bg-white/95 backdrop-blur-sm shadow-2xl z-30 transform -translate-x-full transition-transform duration-500 ease-in-out">
+            <button id="close-sidebar-btn" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors z-50">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <div id="report-content" class="p-8 overflow-y-auto h-full">
+                <!-- El contenido del reporte se cargará aquí dinámicamente -->
+            </div>
+        </aside>
+
+        <!-- Barra de búsqueda sobre el mapa -->
+        <div class="absolute top-4 left-1/2 -translate-x-1/2 w-11/12 max-w-lg z-20">
+            <div class="relative">
+                <label for="comuna-search-input" class="sr-only">Buscador por Comunas</label>
+                <input type="text" id="comuna-search-input" placeholder="Buscar comuna por nombre o número..." class="w-full p-4 pr-12 border-none rounded-full shadow-lg text-lg bg-white focus:ring-4 focus:ring-orange-400 focus:outline-none transition">
+                <i class="fas fa-search absolute right-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
+            <div id="search-results" class="absolute z-10 w-full bg-white border border-gray-200 rounded-md mt-2 shadow-lg hidden max-h-60 overflow-y-auto"></div>
+        </div>
+    </div>
+    
+    <!-- Scripts para generar PDF -->
     <script src="html2canvas.min.js"></script>
     <script src="jspdf.umd.min.js"></script>
     
-
-</head>
-<body class="bg-gray-50">
-
-    <header style="background: linear-gradient(135deg, hsl(210, 60%, 25%), hsl(210, 90%, 55%));" class="text-white text-center py-12 px-5 shadow-lg">
-        <img src="logo_footer.png" alt="Logo Alcaldía de Medellín" class="max-w-[280px] mx-auto mb-6" width="280" height="75">
-        <h1 class="text-5xl font-extrabold tracking-tight">Portal de Consulta SIF</h1>
-        <p class="text-lg font-light opacity-90 mt-2 max-w-2xl mx-auto">Secretaría de Infraestructura Física | Gestión 2025</p>
-    </header>
-
-    <main class="max-w-screen-xl mx-auto p-5 md:p-8">
-
-        <div class="intro-block bg-white border-l-4 border-blue-600 p-8 my-12 rounded-lg shadow-md max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">¡Bienvenido al Geovisor Inteligente!</h2>
-            <p class="text-lg text-gray-600 leading-relaxed">Explora un mapa 3D de Medellín. Usa el buscador o haz clic directamente sobre una comuna para ver su información detallada.</p>
-        </div>
-
-        <div id="geovisor-container" class="relative">
-            <aside id="info-sidebar" class="absolute top-0 left-0 h-full w-full max-w-md bg-white shadow-2xl z-30 transform -translate-x-full transition-transform duration-500 ease-in-out overflow-y-auto">
-                <button id="close-sidebar-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors z-50">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-                <div id="report-content" class="p-6">
-                    </div>
-            </aside>
-
-            <section id="consulta-comuna" class="my-12" aria-labelledby="buscador-titulo">
-                <div class="card bg-white rounded-xl shadow-lg p-8 md:p-10">
-                    <div class="flex items-center gap-4 mb-6">
-                        <i class="fa-solid fa-map-location-dot text-3xl text-blue-600"></i>
-                        <h3 id="buscador-titulo" class="text-2xl font-bold text-gray-800">Buscador por Comunas</h3>
-                    </div>
-                    
-                    <div class="flex flex-col md:flex-row gap-4 mb-6">
-                        <div class="flex-grow relative">
-                            <label for="comuna-search-input" class="font-semibold text-gray-700 block mb-2">1. Escribe el nombre o número de la comuna:</label>
-                            <input type="text" id="comuna-search-input" placeholder="Ej: 'Comuna 13' o 'San Javier'" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
-                            <div id="search-results" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg hidden"></div>
-                        </div>
-                    </div>
-
-                    <p class="text-gray-600 mt-2 mb-8">2. O navega por el mapa interactivo y haz clic en una comuna para abrir su reporte.</p>
-                    <div id="map" class="shadow-inner bg-gray-200"></div>
-                </div>
-            </section>
-        </div>
-        
-    </main>
-
-    <footer class="text-center mt-12 p-8 border-t border-gray-200 text-gray-500">
-        <p><strong class="text-gray-800">Reporte: Agosto de 2025</strong></p>
-        <p class="text-sm mt-1">Alcaldía de Medellín - Secretaría de Infraestructura Física</p>
-    </footer>
-    
+    <!-- Lógica de la aplicación -->
     <script src="app.js"></script>
 </body>
 </html>
