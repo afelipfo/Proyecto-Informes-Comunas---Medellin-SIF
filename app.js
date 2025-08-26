@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // --- CONFIGURACIÓN INICIAL ---
-    mapboxgl.accessToken = 'pk.eyJ1IjoiYWZlbGlwZm8iLCJhIjoiY21lcnF1cXh2MDllMDJscHk2eHFxMmVsdSJ9.afb7XVzY_ZAQcu0JLS9xaA'; // <-- RECUERDA PONER TU CLAVE AQUÍ
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYWZlbGlwZm8iLCJhIjoiY21lcnF1cXh2MDllMDJscHk2eHFxMmVsdSJ9.afb7XVzY_ZAQcu0JLS9xaA';
 
     const reportContent = document.getElementById('report-content');
     const searchInput = document.getElementById('comuna-search-input');
@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         zoom: 11.5,
         pitch: 60,
         bearing: -17.6,
-        antialias: true,
-        preserveDrawingBuffer: true // **NUEVO**: Necesario para poder tomar capturas del mapa
+        antialias: true
     });
 
     // --- CONTROLES DEL MAPA ---
@@ -175,13 +174,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
         
-        // **NUEVO**: Contenido del panel con el botón para generar PDF
         reportContent.innerHTML = `
             <div id="printable-area">
                 <h2 class="text-3xl font-extrabold text-blue-900 border-b-4 border-orange-500 pb-3 mb-6">${properties.NOMBRE}</h2>
                 <div class="space-y-4 text-lg">
                     <p><strong class="text-gray-800">Identificador:</strong> ${properties.IDENTIFICADOR}</p>
-                    <p class="text-gray-600 leading-relaxed">Aquí se mostraría la información detallada, estadísticas, proyectos y reportes específicos para esta comuna, cargados dinámicamente.</p>
+                    <p class="text-gray-600 leading-relaxed">Haz clic en el botón de abajo para generar el reporte detallado de esta comuna.</p>
                 </div>
             </div>
             <button id="generate-pdf-btn" class="w-full mt-8 bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-3">
@@ -190,67 +188,84 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
         
         document.getElementById('generate-pdf-btn').addEventListener('click', () => {
-            generatePDF(properties.NOMBRE);
+            generatePDFFromHTMLFile(properties);
         });
 
         infoSidebar.classList.remove('-translate-x-full');
     }
 
-    // **NUEVA FUNCIÓN**: Para generar el PDF
-    async function generatePDF(comunaName) {
+    // **VERSIÓN FINAL Y DEFINITIVA DE LA FUNCIÓN PARA GENERAR PDF**
+    async function generatePDFFromHTMLFile(comunaProperties) {
         const { jsPDF } = window.jspdf;
-        const reportArea = document.getElementById('printable-area');
-        const mapCanvas = map.getCanvas();
         const pdfButton = document.getElementById('generate-pdf-btn');
+        const fileName = `comuna${comunaProperties.IDENTIFICADOR}.html`;
 
-        // Ocultar el botón para que no salga en la captura
-        pdfButton.style.display = 'none';
-        
-        // Mostrar un mensaje de carga
-        pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+        pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando reporte...';
         pdfButton.disabled = true;
 
-        // Capturar el contenido del panel y del mapa
-        const reportCanvas = await html2canvas(reportArea);
-        const mapImage = mapCanvas.toDataURL();
+        try {
+            const response = await fetch(fileName);
+            if (!response.ok) throw new Error(`HTML not found: ${fileName}`);
+            const htmlContent = await response.text();
 
-        const reportImgData = reportCanvas.toDataURL('image/png');
-        
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        
-        // Añadir Título
-        pdf.setFontSize(22);
-        pdf.text(`Reporte - ${comunaName}`, pdfWidth / 2, 20, { align: 'center' });
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'absolute';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '0';
+            tempContainer.style.width = '800px';
+            tempContainer.innerHTML = htmlContent;
+            document.body.appendChild(tempContainer);
 
-        // Añadir información del panel
-        const reportImgProps = pdf.getImageProperties(reportImgData);
-        const reportAspectRatio = reportImgProps.height / reportImgProps.width;
-        const reportPdfWidth = pdfWidth - 20;
-        const reportPdfHeight = reportPdfWidth * reportAspectRatio;
-        pdf.addImage(reportImgData, 'PNG', 10, 30, reportPdfWidth, reportPdfHeight);
+            pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+            
+            const canvas = await html2canvas(tempContainer, {
+                scale: 2,
+                useCORS: true,
+                logging: false, // Opcional: para un log más limpio
+                width: tempContainer.scrollWidth,
+                height: tempContainer.scrollHeight
+            });
 
-        // Añadir captura del mapa
-        const mapImgProps = pdf.getImageProperties(mapImage);
-        const mapAspectRatio = mapImgProps.height / mapImgProps.width;
-        const mapPdfWidth = pdfWidth - 20;
-        const mapPdfHeight = mapPdfWidth * mapAspectRatio;
-        const mapYPosition = 35 + reportPdfHeight; // Posición debajo del reporte
-        
-        if (mapYPosition + mapPdfHeight < pdfHeight) {
-             pdf.addImage(mapImage, 'PNG', 10, mapYPosition, mapPdfWidth, mapPdfHeight);
-        } else {
-            pdf.addPage();
-            pdf.addImage(mapImage, 'PNG', 10, 20, mapPdfWidth, mapPdfHeight);
+            document.body.removeChild(tempContainer);
+
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const ratio = canvasWidth / canvasHeight;
+            
+            const imgHeight = pdfWidth / ratio;
+            let finalImgHeight = imgHeight;
+
+            // *** LÓGICA DE PAGINACIÓN DEFINITIVA Y A PRUEBA DE ERRORES ***
+            let heightLeft = finalImgHeight;
+            let position = 0;
+
+            // 1. Agrega la primera página con la imagen completa
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, finalImgHeight);
+            heightLeft -= pdfHeight;
+
+            // 2. Si la imagen es más alta que una página, crea un bucle
+            while (heightLeft > 0) {
+                position = -heightLeft; // La nueva posición es negativa, moviendo la imagen "hacia arriba"
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, finalImgHeight);
+                heightLeft -= pdfHeight;
+            }
+
+            pdf.save(`Reporte-${comunaProperties.NOMBRE.replace(/ /g, '_')}.pdf`);
+
+        } catch (error) {
+            console.error('Error final generando el PDF:', error);
+            alert(`No se pudo generar el reporte. Asegúrate de que el archivo "${fileName}" exista.`);
+        } finally {
+            pdfButton.style.display = 'flex';
+            pdfButton.innerHTML = '<i class="fas fa-file-pdf"></i> Generar Reporte PDF';
+            pdfButton.disabled = false;
         }
-       
-        // Descargar el PDF
-        pdf.save(`Reporte-${comunaName.replace(/ /g, '_')}.pdf`);
-        
-        // Restaurar el botón
-        pdfButton.style.display = 'flex';
-        pdfButton.innerHTML = '<i class="fas fa-file-pdf"></i> Generar Reporte PDF';
-        pdfButton.disabled = false;
     }
 });
