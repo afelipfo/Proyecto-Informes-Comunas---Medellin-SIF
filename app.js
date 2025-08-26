@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // --- UTILIDADES GLOBALES ---
+    function debounce(fn, delay) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fn(...args), delay);
+        };
+    }
     // --- CONFIGURACIÓN INICIAL ---
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWZlbGlwZm8iLCJhIjoiY21lcnF1cXh2MDllMDJscHk2eHFxMmVsdSJ9.afb7XVzY_ZAQcu0JLS9xaA';
 
@@ -11,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
     
     let comunasData = null;
     let hoveredComunaId = null;
-    let userMarker = null; // NUEVO: Variable para el marcador del usuario
+    let userMarker = null;
+    let lastComunaId = localStorage.getItem('lastComunaId') || null;
 
     // --- INICIALIZACIÓN DEL MAPA ---
     const map = new mapboxgl.Map({
@@ -33,13 +42,20 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch('comunas.geojson');
             comunasData = await response.json();
-            
             initializeMapLayers();
             setupInteractions();
-            
+            // Deep linking: abrir comuna por hash
+            if (window.location.hash.startsWith('#comuna-')) {
+                const id = window.location.hash.replace('#comuna-', '');
+                const feature = comunasData.features.find(f => f.properties.IDENTIFICADOR === id);
+                if (feature) showComunaInfo(feature.properties, true);
+            } else if (lastComunaId) {
+                const feature = comunasData.features.find(f => f.properties.IDENTIFICADOR === lastComunaId);
+                if (feature) showComunaInfo(feature.properties, true);
+            }
         } catch (error) {
             console.error("Error cargando los datos de las comunas:", error);
-            console.error("No se pudo cargar el archivo comunas.geojson. Asegúrate de que el archivo exista en la misma carpeta.");
+            alert("No se pudo cargar el archivo comunas.geojson. Asegúrate de que el archivo exista en la misma carpeta.");
         }
     });
 
@@ -118,8 +134,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        searchInput.addEventListener('input', handleSearch);
+        searchInput.addEventListener('input', debounce(handleSearch, 120));
         searchInput.addEventListener('focus', handleSearch);
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const first = searchResultsContainer.querySelector('.result-item');
+                if (first) first.click();
+            }
+        });
         document.addEventListener('click', (e) => {
             if (!searchResultsContainer.contains(e.target) && e.target !== searchInput) {
                 searchResultsContainer.classList.add('hidden');
@@ -140,18 +162,16 @@ document.addEventListener('DOMContentLoaded', function () {
             searchResultsContainer.classList.add('hidden');
             return;
         }
-
-        const filtered = comunasData.features.filter(feature => 
-            feature.properties.NOMBRE.toLowerCase().includes(query)
+        const filtered = comunasData.features.filter(feature =>
+            feature.properties.NOMBRE.toLowerCase().includes(query) ||
+            feature.properties.IDENTIFICADOR === query
         );
-
         searchResultsContainer.innerHTML = '';
         if (filtered.length > 0) {
             filtered.forEach(feature => {
                 const item = document.createElement('div');
-                // CORRECCIÓN: Usar la clase .result-item para aplicar estilos de styles.css
-                item.className = 'result-item'; 
-                item.textContent = feature.properties.NOMBRE;
+                item.className = 'result-item px-4 py-2 cursor-pointer hover:bg-blue-50 transition';
+                item.innerHTML = `<span class="font-semibold">${feature.properties.NOMBRE}</span> <span class="text-gray-400 ml-2 text-sm">#${feature.properties.IDENTIFICADOR}</span>`;
                 item.addEventListener('click', () => {
                     showComunaInfo(feature.properties);
                     searchInput.value = '';
@@ -222,23 +242,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- FIN DE LA NUEVA LÓGICA ---
 
-    function showComunaInfo(properties) {
+    function showComunaInfo(properties, skipHash) {
         const feature = comunasData.features.find(f => f.properties.IDENTIFICADOR === properties.IDENTIFICADOR);
         if (feature) {
-             const coordinates = feature.geometry.coordinates[0];
-             const bounds = coordinates.reduce((bounds, coord) => {
-                 return bounds.extend(coord);
-             }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-
-             map.fitBounds(bounds, {
-                 padding: { top: 100, bottom: 100, left: infoSidebar.offsetWidth + 50, right: 50 },
-                 pitch: 65,
-                 duration: 2000
-             });
+            const coordinates = feature.geometry.coordinates[0];
+            const bounds = coordinates.reduce((bounds, coord) => bounds.extend(coord), new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+            map.fitBounds(bounds, {
+                padding: { top: 100, bottom: 100, left: infoSidebar.offsetWidth + 50, right: 50 },
+                pitch: 65,
+                duration: 1200
+            });
         }
-        
+        // Guardar última comuna consultada
+        localStorage.setItem('lastComunaId', properties.IDENTIFICADOR);
+        if (!skipHash) {
+            window.location.hash = `comuna-${properties.IDENTIFICADOR}`;
+        }
+        // Animación panel
+        infoSidebar.classList.remove('opacity-0');
+        infoSidebar.classList.remove('-translate-x-full');
+        setTimeout(() => infoSidebar.classList.add('shadow-2xl'), 200);
+        // Render panel
         reportContent.innerHTML = `
-            <div class="p-4">
+            <div class="p-4 animate-fadeIn">
                 <h2 class="text-3xl font-extrabold text-gray-800 border-b-4 border-orange-500 pb-3 mb-6">${properties.NOMBRE}</h2>
                 <div class="space-y-4 text-lg">
                     <p><strong class="text-gray-700">Identificador:</strong> ${properties.IDENTIFICADOR}</p>
@@ -249,12 +275,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 </button>
             </div>
         `;
-        
         document.getElementById('generate-pdf-btn').addEventListener('click', () => {
             generatePDFFromHTMLFile(properties);
         });
-
-        infoSidebar.classList.remove('-translate-x-full');
     }
 
     async function generatePDFFromHTMLFile(comunaProperties) {
