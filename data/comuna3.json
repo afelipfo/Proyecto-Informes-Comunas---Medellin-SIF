@@ -1,0 +1,185 @@
+{
+  "reporteAnaliticaDatos": {
+  "titulo": "Reporte de Analítica de Datos Comuna 3 - Manrique",
+  "fechaCorte": "04 de agosto de 2025",
+  "seguimientoContratosObra": {
+  "titulo": "Seguimiento a Contratos de Obra",
+  "actividades": [
+  {
+  "actividad": "Andenes mantenidos",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Cicloparqueaderos instalados",
+  "cantidadAcumulada": 10,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Diseño",
+  "cantidadAcumulada": 173,
+  "unidadMedida": "%"
+  },
+  {
+  "actividad": "Huecos tapados",
+  "cantidadAcumulada": 946,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Obras de estabilización",
+  "cantidadAcumulada": 11,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Parcheo de huecos",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Pasamanos y defensas instalados",
+  "cantidadAcumulada": 24,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Vía asfalto mantenida (Fallos y Repav.)",
+  "cantidadAcumulada": 5451,
+  "unidadMedida": "m²"
+  },
+  {
+  "actividad": "Vías urbanas mantenidas",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "km"
+  }
+  ]
+  },
+  "ejecucionBaches": {
+  "titulo": "Ejecución de Baches",
+  "totalBachesEjecutados": 946,
+  "costoTotalEjecutado": "2.853.437.356",
+  "detallePorBarrio": [
+  {
+  "barrio": "Santa Inés",
+  "numeroBaches": 169,
+  "costo": "485.727.183"
+  },
+  {
+  "barrio": "Campo Valdés No.2",
+  "numeroBaches": 152,
+  "costo": "296.684.618"
+  },
+  {
+  "barrio": "Versalles No.1",
+  "numeroBaches": 138,
+  "costo": "397.074.578"
+  },
+  {
+  "barrio": "Las Granjas",
+  "numeroBaches": 87,
+  "costo": "292.714.968"
+  },
+  {
+  "barrio": "La Salle",
+  "numeroBaches": 68,
+  "costo": "200.210.776"
+  },
+  {
+  "barrio": "Manrique Oriental",
+  "numeroBaches": 64,
+  "costo": "179.441.424"
+  },
+  {
+  "barrio": "María Cano-Carambolas",
+  "numeroBaches": 64,
+  "costo": "247.558.504"
+  },
+  {
+  "barrio": "El Raizal",
+  "numeroBaches": 59,
+  "costo": "154.801.962"
+  },
+  {
+  "barrio": "Versalles No.2",
+  "numeroBaches": 51,
+  "costo": "249.285.283"
+  },
+  {
+  "barrio": "Oriente",
+  "numeroBaches": 39,
+  "costo": "159.711.145"
+  },
+  {
+  "barrio": "El Pomar",
+  "numeroBaches": 26,
+  "costo": "39.462.831"
+  },
+  {
+  "barrio": "La Cruz",
+  "numeroBaches": 17,
+  "costo": "117.429.158"
+  },
+  {
+  "barrio": "Manrique Central No.2",
+  "numeroBaches": 10,
+  "costo": "18.890.973"
+  },
+  {
+  "barrio": "San José La Cima No.1",
+  "numeroBaches": 2,
+  "costo": "14.443.953"
+  }
+  ],
+  "detallePorContrato": [
+  {
+  "contrato": "4600102144 - Malla Vial (2024 - 2025)",
+  "numeroBaches": 724,
+  "costo": "2.483.409.247"
+  },
+  {
+  "contrato": "4600098664 - Malla Vial (2023 - 2024)",
+  "numeroBaches": 140,
+  "costo": "183.932.054"
+  },
+  {
+  "contrato": "4600098513 - Suministro de Mezcla (2023 - 2024)",
+  "numeroBaches": 74,
+  "costo": "159.544.738"
+  },
+  {
+  "contrato": "4600103229 - Suministro de Mezcla (2024 - 2025)",
+  "numeroBaches": 5,
+  "costo": "21.949.361"
+  },
+  {
+  "contrato": "4600105052 - Malla Vial 2025",
+  "numeroBaches": 3,
+  "costo": "4.601.957"
+  }
+  ]
+  },
+  "intervencionesDirectas": {
+  "titulo": "Intervenciones Directas",
+  "totalSolicitudes2024_2025": 49,
+  "costoTotalObra": "904.792.189",
+  "distribucionSolicitudes": {
+  "vigencia2024": 39,
+  "vigencia2025": 10
+  },
+  "costoPorGrupoObra": {
+  "pavimentos": "723 millones",
+  "parquesYCerrajeria": "125 millones",
+  "obrasCivilesMenores": "57 millones"
+  },
+  "distribucionPorIndicador": {
+  "mantenimientoEnViasUrbanas": 18,
+  "pasamanosDefensasVialesYRejas": 10,
+  "andenesYCordones": 7,
+  "mantenimientoDeParques": 6,
+  "espaciosPublicosMantenidos": 4,
+  "enAtencionAFallos": 1,
+  "andenesMantenidos": 1,
+  "infraestructuraVialMantenida": 1,
+  "limpiezaDeVias": 1
+  }
+  }
+  }
+ }
