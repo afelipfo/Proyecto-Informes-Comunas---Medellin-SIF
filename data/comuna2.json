@@ -1,0 +1,225 @@
+{
+  "reporteAnaliticaDatos": {
+  "titulo": "Reporte de Analítica de Datos Comuna 2 - Santa Cruz",
+  "fechaCorte": "19 de agosto de 2025",
+  "seguimientoContratosObra": {
+  "titulo": "Seguimiento a Contratos de Obra",
+  "actividades": [
+  {
+  "actividad": "Andén construido",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Andenes construidos y mejorados",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Andenes mantenidos",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Árbol mantenido",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Árbol sembrado",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Barandas y pasamanos",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Bordillos-cunetas",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Cicloparqueaderos instalados",
+  "cantidadAcumulada": 11,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Cicloruta construida",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Diseño",
+  "cantidadAcumulada": 182,
+  "unidadMedida": "%"
+  },
+  {
+  "actividad": "Gestión predial",
+  "cantidadAcumulada": 100,
+  "unidadMedida": "%"
+  },
+  {
+  "actividad": "Huecos tapados",
+  "cantidadAcumulada": 486,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Jardín sembrado",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m²"
+  },
+  {
+  "actividad": "Juego infantil o elemento de gimnasio nuevo",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Obras de estabilización",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Parcheo de huecos",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Parque y plazoleta construido",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m²"
+  },
+  {
+  "actividad": "Pasamanos y defensas instalados",
+  "cantidadAcumulada": 539,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Puente construido",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Vía asfalto mantenida (Fallos y Repav.)",
+  "cantidadAcumulada": 1668,
+  "unidadMedida": "m²"
+  },
+  {
+  "actividad": "Vías urbanas mantenidas",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "km"
+  },
+  {
+  "actividad": "Zona verde sembrada",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m²"
+  }
+  ]
+  },
+  "ejecucionBaches": {
+  "titulo": "Ejecución de Baches",
+  "totalBachesEjecutados": 485,
+  "costoTotalEjecutado": "1.119.454.134",
+  "detallePorBarrio": [
+  {
+  "barrio": "La Francia",
+  "numeroBaches": 103,
+  "costo": "294.769.688"
+  },
+  {
+  "barrio": "La Frontera",
+  "numeroBaches": 88,
+  "costo": "130.920.752"
+  },
+  {
+  "barrio": "Playón de Los Comuneros",
+  "numeroBaches": 73,
+  "costo": "122.364.609"
+  },
+  {
+  "barrio": "Santa Cruz",
+  "numeroBaches": 43,
+  "costo": "95.930.665"
+  },
+  {
+  "barrio": "La Isla",
+  "numeroBaches": 37,
+  "costo": "160.611.268"
+  },
+  {
+  "barrio": "Villa Niza",
+  "numeroBaches": 35,
+  "costo": "79.348.299"
+  },
+  {
+  "barrio": "Moscú No.1",
+  "numeroBaches": 30,
+  "costo": "82.326.888"
+  },
+  {
+  "barrio": "Villa del Socorro",
+  "numeroBaches": 30,
+  "costo": "56.592.174"
+  },
+  {
+  "barrio": "Andalucía",
+  "numeroBaches": 22,
+  "costo": "43.865.832"
+  },
+  {
+  "barrio": "La Rosa",
+  "numeroBaches": 20,
+  "costo": "56.040.403"
+  },
+  {
+  "barrio": "Pablo VI",
+  "numeroBaches": 4,
+  "costo": "6.683.555"
+  }
+  ],
+  "detallePorContrato": [
+  {
+  "contrato": "4600102144 - Malla Vial (2024 - 2025)",
+  "numeroBaches": 373,
+  "costo": "1.022.884.940"
+  },
+  {
+  "contrato": "4600098664 - Malla Vial (2023 - 2024)",
+  "numeroBaches": 93,
+  "costo": "96.569.194"
+  },
+  {
+  "contrato": "4600105052 - Malla Vial 2025",
+  "numeroBaches": 19,
+  "costo": "N/D"
+  }
+  ]
+  },
+  "intervencionesDirectas": {
+  "titulo": "Intervenciones Directas",
+  "totalSolicitudes2024_2025": 34,
+  "costoTotalObra": "208.604.046",
+  "distribucionSolicitudes": {
+  "vigencia2024": 23,
+  "vigencia2025": 11
+  },
+  "costoPorGrupoObra": {
+  "pavimentos": "83 millones",
+  "parquesYCerrajería": "70 millones",
+  "obrasCivilesMenores": "55 millones",
+  "apoyoAOtrasEntidades": "1 millón"
+  },
+  "distribucionPorIndicador": {
+  "pasamanosDefensasVialesYRejas": 13,
+  "mantenimientoEnViasUrbanas": 7,
+  "mantenimientoDeParques": 5,
+  "espaciosPublicosMantenidos": 3,
+  "limpiezaDeVias": 2,
+  "andenesYCordones": 1,
+  "apoyoAOtrasEntidades": 1,
+  "infraestructuraVialMantenida": 1
+  }
+  }
+  }
+ }

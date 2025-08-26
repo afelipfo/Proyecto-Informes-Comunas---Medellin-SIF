@@ -1,0 +1,240 @@
+{
+  "reporteAnaliticaDatos": {
+  "titulo": "Reporte de Analítica de Datos Comuna 1 - Popular",
+  "fechaCorte": "25 de agosto de 2025",
+  "seguimientoContratosObra": {
+  "titulo": "Seguimiento a Contratos de Obra",
+  "actividades": [
+  {
+  "actividad": "Andén construido",
+  "cantidadAcumulada": 300,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Andén mantenido",
+  "cantidadAcumulada": 481,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Andenes construidos y mejorados",
+  "cantidadAcumulada": 1345,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Andenes mantenidos",
+  "cantidadAcumulada": 296,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Barandas y pasamanos",
+  "cantidadAcumulada": 543,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Bordillos-cunetas",
+  "cantidadAcumulada": 916,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Caja 1",
+  "cantidadAcumulada": 100,
+  "unidadMedida": "%"
+  },
+  {
+  "actividad": "Caja 2",
+  "cantidadAcumulada": 98,
+  "unidadMedida": "%"
+  },
+  {
+  "actividad": "Caja 3",
+  "cantidadAcumulada": 91,
+  "unidadMedida": "%"
+  },
+  {
+  "actividad": "Cicloparqueaderos instalados",
+  "cantidadAcumulada": 37,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Defensa vial",
+  "cantidadAcumulada": 23,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Huecos tapados",
+  "cantidadAcumulada": 535,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Jardín sembrado",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m²"
+  },
+  {
+  "actividad": "Obra de estabilización (longitud)",
+  "cantidadAcumulada": 322,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Obra de estabilización (cantidad)",
+  "cantidadAcumulada": 1,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Obras de estabilización",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Parcheo de huecos",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "un"
+  },
+  {
+  "actividad": "Parque y plazoleta construido",
+  "cantidadAcumulada": 588,
+  "unidadMedida": "m²"
+  },
+  {
+  "actividad": "Pasamanos y defensas instalados",
+  "cantidadAcumulada": 389,
+  "unidadMedida": "m"
+  },
+  {
+  "actividad": "Vía asfalto mantenida (Fallos y Repav.)",
+  "cantidadAcumulada": 3253,
+  "unidadMedida": "m²"
+  },
+  {
+  "actividad": "Vías urbanas construidas y mejoradas",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "km"
+  },
+  {
+  "actividad": "Vías urbanas mantenidas",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "km"
+  },
+  {
+  "actividad": "Zona verde mantenida",
+  "cantidadAcumulada": 0,
+  "unidadMedida": "m²"
+  }
+  ]
+  },
+  "ejecucionBaches": {
+  "titulo": "Ejecución de Baches",
+  "totalBachesEjecutados": 492,
+  "costoTotalEjecutado": "1.360.776.792",
+  "detallePorBarrio": [
+  {
+  "barrio": "Aldea Pablo VI",
+  "numeroBaches": 17,
+  "costo": "40.991.282"
+  },
+  {
+  "barrio": "Carpinelo",
+  "numeroBaches": 31,
+  "costo": "118.651.412"
+  },
+  {
+  "barrio": "El Compromiso",
+  "numeroBaches": 4,
+  "costo": "14.764.337"
+  },
+  {
+  "barrio": "Granizal",
+  "numeroBaches": 54,
+  "costo": "163.869.910"
+  },
+  {
+  "barrio": "La Esperanza No. 2",
+  "numeroBaches": 4,
+  "costo": "78.356.080"
+  },
+  {
+  "barrio": "Moscú No. 2",
+  "numeroBaches": 37,
+  "costo": "94.119.092"
+  },
+  {
+  "barrio": "Popular",
+  "numeroBaches": 68,
+  "costo": "123.196.329"
+  },
+  {
+  "barrio": "San Pablo",
+  "numeroBaches": 129,
+  "costo": "263.659.153"
+  },
+  {
+  "barrio": "Santo Domingo Savio No. 1",
+  "numeroBaches": 49,
+  "costo": "221.747.768"
+  },
+  {
+  "barrio": "Santo Domingo Savio No. 2",
+  "numeroBaches": 7,
+  "costo": "12.194.800"
+  },
+  {
+  "barrio": "Villa Guadalupe",
+  "numeroBaches": 92,
+  "costo": "229.226.629"
+  }
+  ],
+  "detallePorContrato": [
+  {
+  "contrato": "4600102144 - Malla Vial (2024 - 2025)",
+  "numeroBaches": 465,
+  "costo": "1.316.185.594"
+  },
+  {
+  "contrato": "4600098664 - Malla Vial (2023 - 2024)",
+  "numeroBaches": 23,
+  "costo": "28.842.347"
+  },
+  {
+  "contrato": "4600103229 - Suministro de Mezcla (2024 - 2025)",
+  "numeroBaches": 2,
+  "costo": "15.655.777"
+  },
+  {
+  "contrato": "4600105052 - Malla Vial 2025",
+  "numeroBaches": 1,
+  "costo": "93.073"
+  },
+  {
+  "contrato": "4600098513 - Suministro de Mezcla (2023 - 2024)",
+  "numeroBaches": 1,
+  "costo": "N/D"
+  }
+  ]
+  },
+  "intervencionesDirectas": {
+  "titulo": "Intervenciones Directas",
+  "totalSolicitudes2024_2025": 48,
+  "costoTotalObra": "318.024.085",
+  "distribucionSolicitudes": {
+  "vigencia2024": 32,
+  "vigencia2025": 16
+  },
+  "costoPorGrupoObra": {
+  "pavimentos": "179 millones",
+  "parquesYCerrajería": "96 millones",
+  "obrasCivilesMenores": "43 millones",
+  "apoyoAOtrasEntidades": "0 millones"
+  },
+  "distribucionPorIndicador": {
+  "pasamanosDefensasVialesYRejas": 24,
+  "mantenimientoEnViasUrbanas": 7,
+  "mantenimientoDeParques": 6,
+  "andenesYCordones": 3,
+  "infraestructuraVialMantenida": 3,
+  "limpiezaDeVias": 3,
+  "apoyoAOtrasEntidades": 1,
+  "espaciosPublicosMantenidos": 1
+  }
+  }
+  }
+ }
