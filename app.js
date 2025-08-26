@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
         } catch (error) {
             console.error("Error cargando los datos de las comunas:", error);
-            alert("No se pudo cargar el archivo comunas.geojson. Asegúrate de que el archivo exista en la misma carpeta.");
+            console.error("No se pudo cargar el archivo comunas.geojson. Asegúrate de que el archivo exista en la misma carpeta.");
         }
     });
 
@@ -194,41 +194,49 @@ document.addEventListener('DOMContentLoaded', function () {
         infoSidebar.classList.remove('-translate-x-full');
     }
 
-    // **VERSIÓN FINAL Y DEFINITIVA DE LA FUNCIÓN PARA GENERAR PDF**
+    // **VERSIÓN FINAL Y DEFINITIVA PARA GENERAR PDF**
     async function generatePDFFromHTMLFile(comunaProperties) {
-        const { jsPDF } = window.jspdf;
         const pdfButton = document.getElementById('generate-pdf-btn');
         const fileName = `comuna${comunaProperties.IDENTIFICADOR}.html`;
+        const pdfFileName = `Reporte-${comunaProperties.NOMBRE.replace(/ /g, '_')}.pdf`;
 
         pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando reporte...';
         pdfButton.disabled = true;
+
+        let tempContainer;
 
         try {
             const response = await fetch(fileName);
             if (!response.ok) throw new Error(`HTML not found: ${fileName}`);
             const htmlContent = await response.text();
 
-            const tempContainer = document.createElement('div');
+            tempContainer = document.createElement('div');
             tempContainer.style.position = 'absolute';
             tempContainer.style.left = '-9999px';
             tempContainer.style.top = '0';
-            tempContainer.style.width = '800px';
+            // Usar un ancho fijo consistente para el renderizado
+            tempContainer.style.width = '800px'; 
             tempContainer.innerHTML = htmlContent;
             document.body.appendChild(tempContainer);
-
-            pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
             
+            pdfButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando PDF...';
+
+            // **LA SOLUCIÓN CLAVE**: Esperar un breve momento para que el navegador renderice
+            // el contenido del div, incluyendo imágenes y estilos.
+            await new Promise(resolve => setTimeout(resolve, 500));
+
             const canvas = await html2canvas(tempContainer, {
-                scale: 2,
+                scale: 2, // Mayor escala para mejor calidad de imagen
                 useCORS: true,
-                logging: false, // Opcional: para un log más limpio
-                width: tempContainer.scrollWidth,
-                height: tempContainer.scrollHeight
+                logging: false
             });
 
+            // Una vez capturado, el div temporal ya no es necesario
             document.body.removeChild(tempContainer);
+            tempContainer = null; // Liberar memoria
 
             const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
             
             const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -238,32 +246,33 @@ document.addEventListener('DOMContentLoaded', function () {
             const canvasHeight = canvas.height;
             const ratio = canvasWidth / canvasHeight;
             
-            const imgHeight = pdfWidth / ratio;
-            let finalImgHeight = imgHeight;
-
-            // *** LÓGICA DE PAGINACIÓN DEFINITIVA Y A PRUEBA DE ERRORES ***
-            let heightLeft = finalImgHeight;
+            const imgHeightOnPDF = pdfWidth / ratio;
+            let heightLeft = imgHeightOnPDF;
             let position = 0;
 
-            // 1. Agrega la primera página con la imagen completa
-            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, finalImgHeight);
+            // Añadir la primera página
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeightOnPDF);
             heightLeft -= pdfHeight;
 
-            // 2. Si la imagen es más alta que una página, crea un bucle
+            // Bucle para añadir páginas adicionales si el contenido es más alto que una página
             while (heightLeft > 0) {
-                position = -heightLeft; // La nueva posición es negativa, moviendo la imagen "hacia arriba"
+                position -= pdfHeight; // Mover la posición de la imagen hacia arriba
                 pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, finalImgHeight);
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeightOnPDF);
                 heightLeft -= pdfHeight;
             }
 
-            pdf.save(`Reporte-${comunaProperties.NOMBRE.replace(/ /g, '_')}.pdf`);
+            pdf.save(pdfFileName);
 
         } catch (error) {
-            console.error('Error final generando el PDF:', error);
-            alert(`No se pudo generar el reporte. Asegúrate de que el archivo "${fileName}" exista.`);
+            console.error('Error generando el PDF:', error);
+            console.error(`No se pudo generar el reporte. Asegúrate de que el archivo "${fileName}" exista.`);
         } finally {
-            pdfButton.style.display = 'flex';
+            // Asegurarse de que el div temporal se elimine incluso si hay un error
+            if (tempContainer && document.body.contains(tempContainer)) {
+                document.body.removeChild(tempContainer);
+            }
+            
             pdfButton.innerHTML = '<i class="fas fa-file-pdf"></i> Generar Reporte PDF';
             pdfButton.disabled = false;
         }
